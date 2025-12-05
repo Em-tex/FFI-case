@@ -14,12 +14,12 @@
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
         <div>
             <h1>Flight Authorization Tool</h1>
-            <span style="font-size: 1rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
+            <span style="font-size: 0.95rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
         </div>
         <div class="preset-container">
             <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation" style="color:#dc3545"></i> Case Jørgen</button>
             <button class="preset-btn" onclick="loadScenario('hydrogen_safe')"><i class="fa-solid fa-check" style="color:#28a745"></i> Jørgen (Fixed)</button>
-            <button class="preset-btn" onclick="loadScenario('demo_flight')"><i class="fa-solid fa-users" style="color:#007bff"></i> Demo Flight</button>
+            <button class="preset-btn" onclick="loadScenario('attack_drone')"><i class="fa-solid fa-jet-fighter" style="color:#2c3e50"></i> Attack Drone</button>
             <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-paper-plane" style="color:#6c757d"></i> Standard</button>
         </div>
     </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label><i class="fa-solid fa-plane"></i> Drone Type</label>
+                <label>Drone Type <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('droneType')"></i></label>
                 <select id="droneType">
                     <option value="multirotor">Multirotor</option>
                     <option value="fixed_prop">Fixed wing (propeller)</option>
@@ -40,7 +40,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label><i class="fa-solid fa-scale-balanced"></i> Weight (MTOM)</label>
+                <label>Weight (MTOM) <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('weight')"></i></label>
                 <select id="weight">
                     <option value="sub250">Sub 250 g</option>
                     <option value="sub4">250 g - 4 kg</option>
@@ -52,15 +52,15 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label><i class="fa-solid fa-certificate"></i> Class / Status</label>
+                <label>System Class / Status <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('class')"></i></label>
                 <select id="classStatus">
                     <option value="c_class">C-Class (C0-C6)</option>
-                    <option value="mass_produced">Legacy / Mass Produced</option>
+                    <option value="mass_produced">Mass Produced / Standard</option>
                     <option value="experimental">Prototype / Experimental</option>
                 </select>
             </div>
             <div class="form-group">
-                <label><i class="fa-solid fa-battery-full"></i> Energy Source</label>
+                <label>Energy Source</label>
                 <select id="energySource">
                     <option value="battery">Battery (LiPo/LiIon)</option>
                     <option value="fuel">Fossil Fuel</option>
@@ -70,14 +70,14 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label><i class="fa-solid fa-robot"></i> Autopilot</label>
+                <label>Autopilot</label>
                 <select id="autopilot">
                     <option value="stabilized">Stabilization Assist / GPS</option>
                     <option value="manual">None / Full Manual</option>
                 </select>
             </div>
             <div class="form-group">
-                <label><i class="fa-solid fa-bomb"></i> Dangerous Goods</label>
+                <label>Payload / Dangerous Goods</label>
                 <select id="dangerousGoods">
                     <option value="no">None</option>
                     <option value="yes">Live weapons or munitions</option>
@@ -97,17 +97,17 @@
                 <select id="purpose">
                     <option value="testing">Testing / Research</option>
                     <option value="demo">Demonstration for audience</option>
-                    <option value="exercise">Part of exercise</option>
+                    <option value="exercise">Part of military exercise</option>
                     <option value="training">Pilot Training</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Area of Operation</label>
+                <label>Area of Operation <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('area')"></i></label>
                 <select id="area">
                     <option value="sparsely">Sparsely populated area</option>
                     <option value="populated">Populated area</option>
                     <option value="controlled_ground">Controlled ground area</option>
-                    <option value="firing_range">Controlled firing range</option>
+                    <option value="firing_range">Controlled firing range (Danger Area)</option>
                 </select>
             </div>
         </div>
@@ -130,7 +130,7 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label>Covered by Approved Risk Assessment?</label>
+                <label>Approved Risk Assessment?</label>
                 <select id="riskAssessment">
                     <option value="no">No</option>
                     <option value="yes">Yes (Approved RA for this mission)</option>
@@ -141,6 +141,7 @@
                 <select id="otherUsers">
                     <option value="none">None / Segregated</option>
                     <option value="low">Low probability</option>
+                    <option value="medium">Medium probability</option>
                     <option value="high">High probability</option>
                 </select>
             </div>
@@ -188,10 +189,22 @@
                     <i class="fa-solid fa-gamepad"></i> Drone System Ratings
                 </div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                    <label class="checkbox-item"><input type="checkbox" id="rate_multi"> Multirotor</label>
-                    <label class="checkbox-item"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
-                    <label class="checkbox-item"><input type="checkbox" id="rate_heli"> Helicopter</label>
-                    <label class="checkbox-item"><input type="checkbox" id="rate_heavy"> Heavy Class (>25 kg)</label>
+                    <label class="checkbox-item" id="lbl_rate_multi"><input type="checkbox" id="rate_multi"> Multirotor</label>
+                    <label class="checkbox-item" id="lbl_rate_fixed"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
+                    <label class="checkbox-item" id="lbl_rate_heli"><input type="checkbox" id="rate_heli"> Helicopter</label>
+                </div>
+            </div>
+
+            <div style="flex: 1; min-width: 300px; border-right: 1px solid #eee;">
+                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
+                    <i class="fa-solid fa-weight-hanging"></i> Weight Ratings
+                </div>
+                <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+                    <label class="checkbox-item"><input type="checkbox" checked disabled> Sub 250g</label>
+                    <label class="checkbox-item" id="lbl_rate_4"><input type="checkbox" id="rate_4"> 250g - 4 kg</label>
+                    <label class="checkbox-item" id="lbl_rate_25"><input type="checkbox" id="rate_25"> 4 kg - 25 kg</label>
+                    <label class="checkbox-item" id="lbl_rate_150"><input type="checkbox" id="rate_150"> 25 kg - 150 kg</label>
+                    <label class="checkbox-item" id="lbl_rate_heavy"><input type="checkbox" id="rate_heavy"> Heavy (> 150 kg)</label>
                 </div>
             </div>
 
@@ -200,9 +213,9 @@
                     <i class="fa-solid fa-id-badge"></i> Operational Authorizations
                 </div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS (Visual Line of Sight)</label>
-                    <label class="checkbox-item"><input type="checkbox" id="rate_bvlos"> BVLOS (Beyond Visual Line of Sight)</label>
-                    <label class="checkbox-item"><input type="checkbox" id="rate_instructor"> Instructor</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS</label>
+                    <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
+                    <label class="checkbox-item" id="lbl_rate_instructor"><input type="checkbox" id="rate_instructor"> Instructor</label>
                 </div>
             </div>
         </div>
@@ -211,9 +224,10 @@
             <label style="margin-bottom: 10px;"><i class="fa-solid fa-file-contract"></i> Qualified for Specific Risk Assessments</label>
             <div style="color:#666; font-size:0.85rem; margin-bottom:10px;">Check only if you have completed the read-in/training for the specific RA.</div>
             <div class="checkbox-grid">
-                <label class="checkbox-item"><input type="checkbox" id="qual_heavy"> RA-002 (Heavy Lift)</label>
-                <label class="checkbox-item"><input type="checkbox" id="qual_hydrogen"> RA-003 (Hydrogen)</label>
-                <label class="checkbox-item"><input type="checkbox" id="qual_demo"> RA-005 (Display/Demo)</label>
+                <label class="checkbox-item" id="lbl_qual_heavy"><input type="checkbox" id="qual_heavy"> RA-002 (Heavy Lift)</label>
+                <label class="checkbox-item" id="lbl_qual_hydrogen"><input type="checkbox" id="qual_hydrogen"> RA-003 (Hydrogen)</label>
+                <label class="checkbox-item" id="lbl_qual_demo"><input type="checkbox" id="qual_demo"> RA-005 (Display/Demo)</label>
+                <label class="checkbox-item" id="lbl_qual_attack"><input type="checkbox" id="qual_attack"> RA-006 (Live Fire)</label>
             </div>
         </div>
 
@@ -225,6 +239,14 @@
     <span class="result-title">AWAITING INPUT</span>
     <span class="result-desc">Please fill out all sections.</span>
     <div class="warning-list" id="warningList"></div>
+</div>
+
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeInfo()">&times;</span>
+    <h2 id="modalTitle" style="color:var(--ffi-blue); margin-bottom:10px;">Info</h2>
+    <p id="modalText">Some text.</p>
+  </div>
 </div>
 
 <script src="js/auth-logic.js"></script>

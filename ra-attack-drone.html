@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA-006: Attack Drone Live Fire</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+    <script src="js/menu.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div style="display:flex; justify-content: space-between; align-items: flex-start;">
+        <h1>RA-006: Attack Drone Live Fire</h1>
+        <span class="tag tag-active" style="font-size: 1rem; padding: 8px 12px; background:var(--status-orange); color:var(--text-orange);">Restricted / Active</span>
+    </div>
+    
+    <div style="background-color: #fff8e1; padding: 20px; border-left: 5px solid var(--status-orange); margin-bottom: 30px; border-radius: 4px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div><strong>Case ID:</strong> Oppgave 2 (Forsvaret)</div>
+            <div><strong>Operation Type:</strong> Specific / Military Test</div>
+            <div><strong>Payload:</strong> NAMMO Warhead (Live)</div>
+            <div><strong>Location:</strong> Active Firing Range (Skytefelt)</div>
+        </div>
+    </div>
+
+    <h2>1. Concept of Operations</h2>
+    <p>Live fire testing of a Norwegian-supplied attack drone against armored targets. The drone has undocumented specifications and open air intakes. Warhead is equipped with a custom "Safe & Arm" device.</p>
+
+    <h2>2. Critical Information Needs (Uncertainties)</h2>
+    <ul style="margin-bottom: 30px; background: #fff; padding: 15px 30px; border: 1px solid #eee; border-radius: 6px;">
+        <li><strong>Reliability:</strong> Probability of unintended detonation if drone crashes?</li>
+        <li><strong>FTS:</strong> Does the drone have an independent Flight Termination System?</li>
+        <li><strong>Safe & Arm:</strong> What are the specific arming criteria (altitude, speed, manual)?</li>
+        <li><strong>IP Rating:</strong> Verification of IP rating vs open air intakes (moisture/dust ingress risk).</li>
+    </ul>
+
+    <h2>3. Hazard Log (Extract)</h2>
+    
+    <table class="hazard-table">
+        <thead>
+            <tr>
+                <th style="width: 5%">ID</th>
+                <th style="width: 20%">Hazard</th>
+                <th style="width: 25%">Cause</th>
+                <th style="width: 35%">Mitigation (Safety Barriers)</th>
+                <th style="width: 15%">Residual Risk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>H-01</strong></td>
+                <td><strong>Unintended Detonation</strong></td>
+                <td>Faulty Safe & Arm unit, vibration, or hard landing.</td>
+                <td>
+                    <ul>
+                        <li><strong>Safe Zone:</strong> Only essential personnel (bunker).</li>
+                        <li><strong>Arming:</strong> Only arm immediately before launch.</li>
+                        <li><strong>Verify:</strong> Technical inspection of S&A unit before each flight.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-high">HIGH</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-02</strong></td>
+                <td><strong>Fly-away (Lost Control)</strong></td>
+                <td>Navigational error or loss of link causing drone to leave range.</td>
+                <td>
+                    <ul>
+                        <li><strong>Geofence:</strong> Hard limit set well within range boundaries.</li>
+                        <li><strong>Energy Limit:</strong> Fly with 30% fuel to ensure physical inability to reach populated areas.</li>
+                        <li>Independent FTS (Kill switch).</li>
+                    </ul>
+                </td>
+                <td><span class="risk-med">MEDIUM</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-03</strong></td>
+                <td><strong>System Failure (Env)</strong></td>
+                <td>Water/dust ingress via open intakes causing short circuit.</td>
+                <td>
+                    <ul>
+                        <li><strong>Limit:</strong> Fly only in VMC (Visual Meteorological Conditions), no rain.</li>
+                        <li>Visual inspection of intakes pre-flight.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-med">MEDIUM</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-04</strong></td>
+                <td><strong>Emergency (Injury)</strong></td>
+                <td>Accident during handling or testing.</td>
+                <td>
+                    <ul>
+                        <li><strong>ERP:</strong> Designated Scene Commander & Medic.</li>
+                        <li>Evacuation vehicle (Sanitet) on standby.</li>
+                        <li>Pre-briefed route to hospital.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-low">LOW</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+        <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
+        <a href="flight-auth.html" class="btn">Go to Flight Auth Tool</a>
+    </div>
+</div>
+
+</body>
+</html>
