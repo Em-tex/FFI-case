@@ -7,101 +7,91 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
     <script src="js/menu.js"></script>
+    <style>
+        .meta-header { background-color: #f8f9fa; padding: 15px; border-left: 5px solid var(--ffi-blue); margin-bottom: 20px; border-radius: 4px; }
+        .risk-mtx { font-weight:bold; padding:2px 6px; border-radius:4px; font-size:0.85em; display:inline-block; min-width:30px; text-align:center;}
+        .risk-L { background:#d4edda; color:#155724; }
+        .risk-M { background:#fff3cd; color:#856404; }
+        .risk-H { background:#f8d7da; color:#721c24; }
+    </style>
 </head>
 <body>
 
 <div class="container">
     <div style="display:flex; justify-content: space-between; align-items: flex-start;">
         <h1>RA-003: Hydrogen Prototype VLOS</h1>
-        <span class="tag tag-active" style="font-size: 1rem; padding: 8px 12px;">Active / Approved</span>
+        <span class="tag tag-active" style="font-size: 1rem; padding: 8px 12px;">Active</span>
     </div>
     
-    <div style="background-color: #f8f9fa; padding: 20px; border-left: 5px solid var(--ffi-blue); margin-bottom: 30px; border-radius: 4px;">
+    <div class="meta-header">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div><strong>SORA ID:</strong> FFI-SORA-2023-H2</div>
+            <div><strong>Assessment ID:</strong> FFI-RA-003</div>
             <div><strong>Operation Type:</strong> Specific / Test</div>
             <div><strong>Drone:</strong> Custom Quadcopter w/ 800W Fuel Cell</div>
-            <div><strong>Location:</strong> Segregated Area (Controlled Ground)</div>
+            <div><strong>Location:</strong> Segregated Area (Kjeller)</div>
         </div>
     </div>
 
-    <h2>1. Concept of Operations (ConOps)</h2>
-    <p>Testing of range extension capabilities using hydrogen fuel cells in sub-zero temperatures. 
-    The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
-    <p><em>Methodology: BowTie analysis and team brainstorming session (Jørgen & Safety Board).</em></p>
+    <h2>1. Concept of Operations</h2>
+    <p>Testing of range extension capabilities using hydrogen fuel cells. The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
+    <p><em>Methodology: Team brainstorming with Pilot (Jørgen) & Safety Manager.</em></p>
 
     <h2>2. Hazard Log (Extract)</h2>
-    <p>Identifiserte farer og mitigerende tiltak i henhold til SORA metodikk.</p>
-
+    
     <table class="hazard-table">
         <thead>
             <tr>
                 <th style="width: 5%">ID</th>
                 <th style="width: 20%">Hazard</th>
-                <th style="width: 25%">Cause</th>
+                <th style="width: 10%">Initial Risk</th>
                 <th style="width: 35%">Mitigation (Safety Barriers)</th>
-                <th style="width: 15%">Residual Risk</th>
+                <th style="width: 10%">Residual Risk</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>H-01</strong></td>
-                <td><strong>Tank Rupture / Explosion</strong></td>
-                <td>Structural failure of H2 tank due to crash or manufacturing defect.</td>
+                <td>H-01</td>
+                <td>Tank Rupture</td>
+                <td><span class="risk-mtx risk-H">5C</span></td>
                 <td>
                     <ul>
                         <li>Use only CE/TÜV certified tanks.</li>
-                        <li>Pressure relief valve installed.</li>
-                        <li><strong>Flight Zone:</strong> Min. 50m buffer to personnel.</li>
+                        <li>Pressure relief valve.</li>
+                        <li>Min. 50m buffer zone.</li>
                     </ul>
                 </td>
-                <td><span class="risk-med">MEDIUM</span></td>
+                <td><span class="risk-mtx risk-M">3C</span></td>
             </tr>
             <tr>
-                <td><strong>H-02</strong></td>
-                <td><strong>Fuel Cell Freeze</strong></td>
-                <td>Water byproduct freezing in venting valves during sub-zero operations.</td>
+                <td>H-02</td>
+                <td>Fuel Cell Freeze</td>
+                <td><span class="risk-mtx risk-M">4D</span></td>
                 <td>
                     <ul>
-                        <li><strong>Pre-flight:</strong> Heated purging procedure.</li>
-                        <li><strong>Test:</strong> Incremental exposure (Ground -> Hover).</li>
-                        <li>Fail-safe: Battery backup for landing.</li>
+                        <li>Heated purging procedure.</li>
+                        <li>Incremental exposure testing.</li>
+                        <li>Battery backup fail-safe.</li>
                     </ul>
                 </td>
-                <td><span class="risk-low">LOW</span></td>
+                <td><span class="risk-mtx risk-L">2E</span></td>
             </tr>
             <tr>
-                <td><strong>H-03</strong></td>
-                <td><strong>Public Demonstration Risk</strong></td>
-                <td>Loss of control near audience during demo flights.</td>
+                <td>H-04</td>
+                <td>Hydrogen Leak</td>
+                <td><span class="risk-mtx risk-H">4B</span></td>
                 <td>
                     <ul>
-                        <li><strong>Crowd Control:</strong> Dedicated Safety Officer.</li>
-                        <li>Defined "Crash Zones" with physical barriers.</li>
-                        <li>Flight path parallel to audience, never towards.</li>
+                        <li>On-board H2 Sniffer.</li>
+                        <li>Leak = Land Immediately SOP.</li>
+                        <li>No open flames near launch.</li>
                     </ul>
                 </td>
-                <td><span class="risk-low">LOW</span></td>
-            </tr>
-            <tr>
-                <td><strong>H-04</strong></td>
-                <td><strong>Hydrogen Leak</strong></td>
-                <td>Loose fittings due to vibration or thermal contraction.</td>
-                <td>
-                    <ul>
-                        <li>H2 Sniffer/Detector on drone and ground station.</li>
-                        <li>"Leak -> Land Immediately" procedure.</li>
-                        <li>No open flames/electronics near launch site.</li>
-                    </ul>
-                </td>
-                <td><span class="risk-med">MEDIUM</span></td>
+                <td><span class="risk-mtx risk-M">3C</span></td>
             </tr>
         </tbody>
     </table>
 
     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
-        <h3>Next Steps</h3>
-        <p>This Hazard Log defines the requirements for RA-003. To fly under this approval, select "Yes" for Approved Risk Assessment in the Flight Authorization tool and confirm pilot qualification.</p>
         <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
         <a href="flight-auth.html" class="btn">Go to Flight Auth Tool</a>
     </div>
