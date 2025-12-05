@@ -177,7 +177,7 @@
         <div style="padding: 15px; background: #fff; border-bottom: 1px solid #eee;">
             <label style="margin-bottom: 10px;">Mandatory FFI Requirements</label>
             <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                <label class="checkbox-item" style="border-color: #b8daff; background-color: #e8f4fd;">
+                <label class="checkbox-item" id="lbl_ffiCourse" style="border-color: #b8daff; background-color: #e8f4fd;">
                     <input type="checkbox" id="ffiCourse"> 
                     <strong>FFI UAS Introduction Ground Course (Completed)</strong>
                 </label>
@@ -216,8 +216,8 @@
                     <i class="fa-solid fa-id-badge"></i> Operational Authorizations
                 </div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS</label>
-                    <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked disabled> VLOS (Standard)</label>
+                    <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS (Beyond Visual Line of Sight)</label>
                     <label class="checkbox-item" id="lbl_rate_above120"><input type="checkbox" id="rate_above120"> Above 120m AGL</label>
                     <label class="checkbox-item" id="lbl_rate_instructor"><input type="checkbox" id="rate_instructor"> Instructor</label>
                 </div>
@@ -231,7 +231,7 @@
                 <label class="checkbox-item" id="lbl_qual_heavy"><input type="checkbox" id="qual_heavy"> RA-002 (Heavy Lift)</label>
                 <label class="checkbox-item" id="lbl_qual_hydrogen"><input type="checkbox" id="qual_hydrogen"> RA-003 (Hydrogen)</label>
                 <label class="checkbox-item" id="lbl_qual_demo"><input type="checkbox" id="qual_demo"> RA-005 (Display/Demo)</label>
-                <label class="checkbox-item" id="lbl_qual_attack"><input type="checkbox" id="qual_attack"> RA-006 (Live Fire)</label>
+                <label class="checkbox-item" id="lbl_qual_attack"><input type="checkbox" id="qual_attack"> RA-006 (Attack Drone)</label>
             </div>
         </div>
 
@@ -242,6 +242,40 @@
         <span class="result-title">AWAITING INPUT</span>
         <span class="result-desc">Please fill out all sections.</span>
         <div class="warning-list" id="warningList"></div>
+    </div>
+
+    <div id="submissionForm">
+        <h3 style="color:#d35400; border-bottom:1px solid #e0e0e0; padding-bottom:10px; margin-top:0;">
+            <i class="fa-solid fa-file-signature"></i> Flight Information Submission
+        </h3>
+        <p style="font-size:0.9rem; color:#555;">This operation requires logging with Head of Operations due to elevated risk profile.</p>
+        
+        <div class="grid-row" style="margin-top:15px;">
+            <div class="form-group" style="border:none; padding:0;">
+                <label>Pilot in Command</label>
+                <input type="text" placeholder="Enter full name">
+            </div>
+            <div class="form-group" style="border:none; padding:0;">
+                <label>Date & Time</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="date">
+                    <input type="time">
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="form-group" style="border:none; padding:0;">
+                <label>Location (Coordinates/Name)</label>
+                <input type="text" placeholder="e.g. Kjeller airfield">
+            </div>
+            <div class="form-group" style="border:none; padding:0;">
+                <label>Flight Area Map</label>
+                <div style="height:45px; background:#eee; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#777; font-size:0.85rem; border:1px dashed #ccc;">
+                    <i class="fa-solid fa-map"></i>&nbsp; Click to draw area (Mockup)
+                </div>
+            </div>
+        </div>
+        <button class="btn" style="width:100%; margin-top:15px; background-color:#d35400;" onclick="alert('Information submitted to Head of Operations. You may proceed.')">Submit to Head of Operations</button>
     </div>
 
 </div>

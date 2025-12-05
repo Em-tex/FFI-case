@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RA-003: Hydrogen Drone Hazard Log</title>
+    <title>RA-003: Hydrogen Drone Risk Matrix</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
     <script src="js/menu.js"></script>
@@ -36,7 +36,7 @@
     <p>Testing of range extension capabilities using hydrogen fuel cells. The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
     <p><em>Methodology: Team brainstorming with Pilot (Jørgen) & Safety Manager.</em></p>
 
-    <h2>2. Hazard Log (Extract)</h2>
+    <h2>2. Risk Matrix (Extract)</h2>
     
     <table class="hazard-table">
         <thead>
@@ -51,13 +51,14 @@
         <tbody>
             <tr>
                 <td>H-01</td>
-                <td>Tank Rupture</td>
+                <td>Tank Rupture (Hard Landing)</td>
                 <td><span class="risk-mtx risk-H">5C</span></td>
                 <td>
                     <ul>
                         <li>Use only CE/TÜV certified tanks.</li>
                         <li>Pressure relief valve.</li>
-                        <li>Min. 50m buffer zone.</li>
+                        <li><strong>Buffer:</strong> Maintain min. 200m horizontal buffer from uninvolved persons and inhabited buildings.</li>
+                        <li><strong>Post-crash SOP:</strong> Evacuate area, verify no leak before approach.</li>
                     </ul>
                 </td>
                 <td><span class="risk-mtx risk-M">3C</span></td>
@@ -77,13 +78,13 @@
             </tr>
             <tr>
                 <td>H-04</td>
-                <td>Hydrogen Leak</td>
+                <td>Hydrogen Leak (Flight/Ground)</td>
                 <td><span class="risk-mtx risk-H">4B</span></td>
                 <td>
                     <ul>
-                        <li>On-board H2 Sniffer.</li>
-                        <li>Leak = Land Immediately SOP.</li>
-                        <li>No open flames near launch.</li>
+                        <li><strong>Pre-flight:</strong> Soap water/Sniffer check on all valves.</li>
+                        <li>On-board H2 Sniffer (lightweight) with alarm.</li>
+                        <li>No open flames/static sources near launch.</li>
                     </ul>
                 </td>
                 <td><span class="risk-mtx risk-M">3C</span></td>

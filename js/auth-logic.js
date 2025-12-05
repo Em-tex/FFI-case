@@ -5,7 +5,7 @@ const infoData = {
     "droneType": "Velg plattformen som best beskriver luftfartøyet. For hybrider (f.eks. VTOL fixed wing), velg VTOL.",
     "weight": "Maksimal avgangsvekt (MTOM) inkludert nyttelast og drivstoff.",
     "class": "C-klasse gjelder kun droner som er CE-merket med klassemerke (C0-C6). Eksperimentell/Prototype gjelder egenbygde eller modifiserte droner.",
-    "area": "Et kontrollert bakkeområde innebærer at du har kontroll på risikoen for tredjepart på bakken. Dette kan være et inngjerdet område, eller et åpent område (f.eks. jorde) med god sikt der operasjonen kan stanses hvis uvedkommende nærmer seg. Fareområde (Firing Range) er for militær øvelse/testing.",
+    "area": "Kontrollert bakkeområde: Et område der du kan sikre at ingen utenforstående utsettes for risiko. Dette kan være et inngjerdet militært område, eller et åpent jorde med god oversikt der operasjonen kan stanses umiddelbart om noen nærmer seg. Fareområde (Firing Range) er aktive skytefelt.",
     "competence": "Gyldig sertifikat fra Luftfartstilsynet eller EASA-medlemsland."
 };
 
@@ -36,9 +36,7 @@ window.onclick = function(event) {
 function toggleWarningIcon(groupId, show, type) {
     const group = document.getElementById('grp_' + groupId);
     if (!group) return;
-    const icon = group.querySelector(type === 'danger' ? '.warning-icon-dynamic' : '.warning-icon-dynamic');
-    // For enkelhets skyld bruker vi samme icon class i HTML men bytter farge via CSS eller bare viser den
-    // Her viser vi den hvis show = true
+    const icon = group.querySelector('.warning-icon-dynamic');
     if (icon) {
         icon.style.display = show ? 'inline-block' : 'none';
         icon.style.color = type === 'danger' ? '#dc3545' : '#ffc107';
@@ -86,25 +84,26 @@ function calculateRisk() {
     const rateHeavy = document.getElementById('rate_heavy').checked;
 
     // Ops Ratings
-    const rateBvlos = document.getElementById('rate_bvlos').checked;
     const rateAbove120 = document.getElementById('rate_above120').checked;
 
     // RESET VISUALS
-    document.querySelectorAll('.input-warning, .input-danger, .missing-competence').forEach(el => {
-        el.classList.remove('input-warning', 'input-danger', 'missing-competence');
+    document.querySelectorAll('.input-warning, .input-danger, .missing-competence, .checkbox-danger').forEach(el => {
+        el.classList.remove('input-warning', 'input-danger', 'missing-competence', 'checkbox-danger');
     });
     document.querySelectorAll('.warning-icon-dynamic').forEach(el => el.style.display = 'none');
 
     function mark(id, level) {
         const el = document.getElementById(id);
         if(el) el.classList.add(level === 'red' ? 'input-danger' : 'input-warning');
-        // Show icon
         toggleWarningIcon(id, true, level === 'red' ? 'danger' : 'warning');
     }
     
-    function markLabel(id) {
+    function markLabel(id, level) {
         const el = document.getElementById('lbl_' + id);
-        if(el) el.classList.add('missing-competence');
+        if(el) {
+            el.classList.add('missing-competence');
+            if(level==='red') el.classList.add('checkbox-danger');
+        }
     }
 
     let status = "green"; 
@@ -116,21 +115,39 @@ function calculateRisk() {
     // --- LOGIC ---
 
     // 1. CRITICAL STOPPERS (RED)
-    if (!ffiCourse) { status = "red"; warnings.push("STOP: Pilot has not completed mandatory FFI UAS Ground Course."); }
-    if (competence === "none") { status = "red"; mark('competence', 'red'); warnings.push("STOP: Pilot lacks valid EASA competency certificate."); }
+    
+    // Pilot Formalities
+    if (!ffiCourse) { 
+        status = "red"; 
+        markLabel('ffiCourse', 'red'); // Rød ramme rundt FFI course checkbox
+        warnings.push("STOP: Pilot has not completed mandatory FFI UAS Ground Course."); 
+    }
+    if (competence === "none") { 
+        status = "red"; mark('competence', 'red'); 
+        warnings.push("STOP: Pilot lacks valid EASA competency certificate."); 
+    }
+
+    // Recency - High Risk Logic
+    if (recency === "expired") {
+        // Hvis dronen er tung eller eksperimentell = RØD (Trening påkrevd)
+        if (weight === 'sub150' || weight === 'over150' || classStatus === 'experimental' || dangerousGoods === 'yes') {
+            status = "red"; mark('recency', 'red');
+            warnings.push("STOP: Recency >90 days on High Risk/Heavy system. Mandatory simulator or small-drone training required before flight.");
+        }
+    }
 
     // Type Rating Mismatch
-    if ((droneType === 'multirotor' && !rateMulti)) { status = "red"; mark('droneType', 'red'); markLabel('rate_multi'); warnings.push(`STOP: Pilot lacks type rating for MULTIROTOR.`); }
-    if ((droneType.includes('fixed') && !rateFixed)) { status = "red"; mark('droneType', 'red'); markLabel('rate_fixed'); warnings.push(`STOP: Pilot lacks type rating for FIXED WING.`); }
-    if ((droneType === 'helicopter' && !rateHeli)) { status = "red"; mark('droneType', 'red'); markLabel('rate_heli'); warnings.push(`STOP: Pilot lacks type rating for HELICOPTER.`); }
-    if ((droneType === 'vtol' && !rateVtol)) { status = "red"; mark('droneType', 'red'); markLabel('rate_vtol'); warnings.push(`STOP: Pilot lacks type rating for VTOL.`); }
-    if ((droneType === 'lta' && !rateLta)) { status = "red"; mark('droneType', 'red'); markLabel('rate_lta'); warnings.push(`STOP: Pilot lacks type rating for LIGHTER THAN AIR.`); }
+    if ((droneType === 'multirotor' && !rateMulti)) { status = "red"; mark('droneType', 'red'); markLabel('rate_multi', 'red'); warnings.push(`STOP: Pilot lacks type rating for MULTIROTOR.`); }
+    if ((droneType.includes('fixed') && !rateFixed)) { status = "red"; mark('droneType', 'red'); markLabel('rate_fixed', 'red'); warnings.push(`STOP: Pilot lacks type rating for FIXED WING.`); }
+    if ((droneType === 'helicopter' && !rateHeli)) { status = "red"; mark('droneType', 'red'); markLabel('rate_heli', 'red'); warnings.push(`STOP: Pilot lacks type rating for HELICOPTER.`); }
+    if ((droneType === 'vtol' && !rateVtol)) { status = "red"; mark('droneType', 'red'); markLabel('rate_vtol', 'red'); warnings.push(`STOP: Pilot lacks type rating for VTOL.`); }
+    if ((droneType === 'lta' && !rateLta)) { status = "red"; mark('droneType', 'red'); markLabel('rate_lta', 'red'); warnings.push(`STOP: Pilot lacks type rating for LIGHTER THAN AIR.`); }
 
     // Weight Mismatch
-    if (weight === 'sub4' && !rate4) { status = "red"; mark('weight', 'red'); markLabel('rate_4'); warnings.push("STOP: Pilot lacks '250g - 4kg' rating."); }
-    if (weight === 'sub25' && !rate25) { status = "red"; mark('weight', 'red'); markLabel('rate_25'); warnings.push("STOP: Pilot lacks '4 - 25kg' rating."); }
-    if (weight === 'sub150' && !rate150) { status = "red"; mark('weight', 'red'); markLabel('rate_150'); warnings.push("STOP: Pilot lacks '25 - 150kg' rating."); }
-    if (weight === 'over150' && !rateHeavy) { status = "red"; mark('weight', 'red'); markLabel('rate_heavy'); warnings.push("STOP: Pilot lacks 'Heavy (>150kg)' rating."); }
+    if (weight === 'sub4' && !rate4) { status = "red"; mark('weight', 'red'); markLabel('rate_4', 'red'); warnings.push("STOP: Pilot lacks '250g - 4kg' rating."); }
+    if (weight === 'sub25' && !rate25) { status = "red"; mark('weight', 'red'); markLabel('rate_25', 'red'); warnings.push("STOP: Pilot lacks '4 - 25kg' rating."); }
+    if (weight === 'sub150' && !rate150) { status = "red"; mark('weight', 'red'); markLabel('rate_150', 'red'); warnings.push("STOP: Pilot lacks '25 - 150kg' rating."); }
+    if (weight === 'over150' && !rateHeavy) { status = "red"; mark('weight', 'red'); markLabel('rate_heavy', 'red'); warnings.push("STOP: Pilot lacks 'Heavy (>150kg)' rating."); }
 
     // Hydrogen
     if (energySource === "hydrogen") {
@@ -138,7 +155,7 @@ function calculateRisk() {
             status = "red"; mark('energySource', 'red'); mark('riskAssessment', 'red');
             warnings.push("STOP: Hydrogen operations require an approved Risk Assessment.");
         } else if (!qualHydrogen) {
-            status = "red"; markLabel('qual_hydrogen');
+            status = "red"; markLabel('qual_hydrogen', 'red');
             warnings.push("STOP: Pilot is not qualified for RA-003 (Hydrogen Ops).");
         }
     }
@@ -149,7 +166,7 @@ function calculateRisk() {
             status = "red"; mark('dangerousGoods', 'red');
             warnings.push("STOP: Live weapons/munitions require an APPROVED risk assessment.");
         } else if (!qualAttack) {
-            status = "red"; markLabel('qual_attack');
+            status = "red"; markLabel('qual_attack', 'red');
             warnings.push("STOP: Pilot is not qualified for RA-006 (Live Fire).");
         }
     }
@@ -160,22 +177,21 @@ function calculateRisk() {
             status = "red"; mark('altitude', 'red');
             warnings.push("STOP: Flight above 120m requires approved Risk Assessment.");
         } else if (!rateAbove120) {
-            status = "red"; markLabel('rate_above120');
+            status = "red"; markLabel('rate_above120', 'red');
             warnings.push("STOP: Pilot lacks 'Above 120m' operational rating.");
         }
     }
 
-    // Demo Flight Logic (FIXED)
+    // Demo Flight Logic
     if (purpose === "demo") {
         if (!hasRA) {
             status = "red"; mark('purpose', 'red');
             warnings.push("STOP: Public demonstrations require an approved Risk Assessment (RA-005).");
         } else if (!qualDemo) {
-            status = "red"; markLabel('qual_demo');
+            status = "red"; markLabel('qual_demo', 'red');
             warnings.push("STOP: Pilot is not qualified for Display/Demo flying.");
-        } else {
-            // If Pilot has RA and Qual -> OK (Green/Orange depending on other factors)
         }
+        // Hvis RA + Qual er OK, blir det ikke rødt her.
     }
 
     // Experimental
@@ -184,30 +200,35 @@ function calculateRisk() {
         warnings.push("STOP: Experimental drones prohibited in populated areas without approved risk assessment.");
     }
 
-    // 2. WARNINGS (YELLOW/ORANGE)
+    // 2. WARNINGS (ORANGE / YELLOW)
     if (status !== "red") {
-        // Flight Info Form logic (Orange)
+        
+        // Flight Info Form Logic (Orange) - Våpen, Tunge, Eksperimentell uten RA, eller bare tung vekt generelt?
+        // La oss si at tunge droner (>25kg) eller våpen ALLTID krever info form selv om de er "grønne" ellers.
         if (weight === 'sub150' || weight === 'over150' || dangerousGoods === 'yes') {
             status = "orange";
-            warnings.push("REQUIREMENT: High Risk Asset. <strong>Submit Flight Information Form</strong> to Head of Ops before flight.");
+            warnings.push("REQUIREMENT: High Risk Asset/Payload. <strong>Submit Flight Information Form</strong> below.");
         }
 
+        // Experimental without RA -> Yellow
         if (classStatus === "experimental" && !hasRA) {
             if(status!=='orange') status = "yellow";
             mark('classStatus', 'yellow');
             warnings.push("NOTICE: Experimental hardware requires Head of Operations awareness.");
         }
 
-        if (recency === "expired") {
+        // Recency (Simple drones) -> Yellow
+        if (recency === "expired" && status !== "red") {
             if(status!=='orange') status = "yellow";
             mark('recency', 'yellow');
-            warnings.push("NOTICE: Pilot recency >90 days. Practical checkflight required.");
+            warnings.push("NOTICE: Pilot recency >90 days. Refresher training recommended.");
         }
     }
 
     // UI UPDATE
     const resultBox = document.getElementById('result-box');
     const warningDiv = document.getElementById('warningList');
+    const submissionForm = document.getElementById('submissionForm');
     
     // Clean old classes
     resultBox.className = '';
@@ -217,18 +238,22 @@ function calculateRisk() {
         title = "AUTHORIZATION DENIED";
         desc = "Critical safety requirements missing.";
         icon = "fa-circle-xmark";
+        submissionForm.style.display = 'none';
     } else if (status === "orange") {
         title = "FLIGHT INFO FORM REQUIRED";
-        desc = "Operation approved, but Flight Information Form must be filed due to risk profile.";
-        icon = "fa-file-contract";
+        desc = "Operation approved pending submission of flight details.";
+        icon = "fa-file-signature";
+        submissionForm.style.display = 'block'; // Vis skjema
     } else if (status === "yellow") {
         title = "REQUIRES APPROVAL (HEAD OF OPS)";
-        desc = "Elevated risk profile. Submit for approval.";
+        desc = "Elevated risk profile. Submit for approval or log details.";
         icon = "fa-triangle-exclamation";
+        submissionForm.style.display = 'block'; // Vis skjema for approval/logging
     } else {
         title = "SELF-AUTHORIZATION PERMITTED";
         desc = "Standard operation. Fly safe!";
         icon = "fa-circle-check";
+        submissionForm.style.display = 'none';
     }
 
     resultBox.querySelector('.result-icon').innerHTML = `<i class="fa-solid ${icon}"></i>`;
@@ -247,7 +272,7 @@ function loadScenario(type) {
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
     document.getElementById('ffiCourse').checked = true;
     document.getElementById('rate_multi').checked = true;
-    document.getElementById('rate_vlos').checked = true;
+    // VLOS er alltid checked/disabled
     document.getElementById('rate_4').checked = true; 
     document.getElementById('dangerousGoods').value = 'no';
     document.getElementById('recency').value = 'recent';
@@ -291,13 +316,8 @@ function loadScenario(type) {
         document.getElementById('riskAssessment').value = 'yes';
         document.getElementById('competence').value = 'sts';
         document.getElementById('qual_attack').checked = true;
-    } else if (type === 'demo_flight') {
-        document.getElementById('droneType').value = 'multirotor';
-        document.getElementById('purpose').value = 'demo';
-        document.getElementById('area').value = 'populated';
-        document.getElementById('riskAssessment').value = 'yes';
-        document.getElementById('competence').value = 'sts';
-        document.getElementById('qual_demo').checked = true;
+        document.getElementById('rate_4').checked = true; 
+        document.getElementById('weight').value = 'sub4'; // Antar lett angrepsdrone
     }
 
     calculateRisk();
