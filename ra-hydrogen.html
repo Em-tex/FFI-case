@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA-003: Hydrogen Drone Hazard Log</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+</head>
+<body>
+
+<nav>
+    <div class="brand"><span>🚁</span> FFI UAS OPS</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="flight-auth.html">Flight Authorization</a></li>
+        <li><a href="risk-assessments.html">Risk Assessments</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div style="display:flex; justify-content: space-between; align-items: flex-start;">
+        <h1>RA-003: Hydrogen Prototype VLOS</h1>
+        <span class="tag tag-active" style="font-size: 1rem; padding: 8px 12px;">Active / Approved</span>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-left: 5px solid var(--ffi-blue); margin-bottom: 30px; border-radius: 4px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div><strong>SORA ID:</strong> FFI-SORA-2023-H2</div>
+            <div><strong>Operation Type:</strong> Specific / Test</div>
+            <div><strong>Drone:</strong> Custom Quadcopter w/ 800W Fuel Cell</div>
+            <div><strong>Location:</strong> Segregated Area (Controlled Ground)</div>
+        </div>
+    </div>
+
+    <h2>1. Concept of Operations (ConOps)</h2>
+    <p>Testing of range extension capabilities using hydrogen fuel cells in sub-zero temperatures. 
+    The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
+
+    <h2>2. Hazard Log (Utdrag)</h2>
+    <p>Identifiserte farer og mitigerende tiltak i henhold til CAA UK CAP 722 standard.</p>
+
+    <table class="hazard-table">
+        <thead>
+            <tr>
+                <th style="width: 5%">ID</th>
+                <th style="width: 20%">Hazard</th>
+                <th style="width: 25%">Cause</th>
+                <th style="width: 35%">Mitigation (Safety Barriers)</th>
+                <th style="width: 15%">Residual Risk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>H-01</strong></td>
+                <td><strong>Tank Rupture / Explosion</strong></td>
+                <td>Structural failure of H2 tank due to crash or manufacturing defect ("Internet purchase").</td>
+                <td>
+                    <ul>
+                        <li>Use only CE/TÜV certified tanks (MSDS check).</li>
+                        <li>Pressure relief valve installed.</li>
+                        <li><strong>Flight Zone:</strong> Min. 50m buffer to personnel.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-med">MEDIUM</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-02</strong></td>
+                <td><strong>Fuel Cell Freeze</strong></td>
+                <td>Water byproduct freezing in venting valves during sub-zero operations, causing stack failure.</td>
+                <td>
+                    <ul>
+                        <li><strong>Pre-flight:</strong> Heated purging procedure.</li>
+                        <li><strong>Test:</strong> Incremental exposure (Ground test -> Hover).</li>
+                        <li>Fail-safe: Battery backup for landing.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-low">LOW</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-03</strong></td>
+                <td><strong>Loss of Control (C2)</strong></td>
+                <td>Unknown EMI interference from Fuel Cell electronics affecting receiver.</td>
+                <td>
+                    <ul>
+                        <li>Ground range test with system active before flight.</li>
+                        <li>Independent Flight Termination System (FTS).</li>
+                        <li>Geofencing active.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-low">LOW</span></td>
+            </tr>
+            <tr>
+                <td><strong>H-04</strong></td>
+                <td><strong>Hydrogen Leak</strong></td>
+                <td>Loose fittings due to vibration or thermal contraction.</td>
+                <td>
+                    <ul>
+                        <li>H2 Sniffer/Detector on drone and ground station.</li>
+                        <li>"Leak -> Land Immediately" procedure.</li>
+                        <li>No open flames/electronics near launch site.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-med">MEDIUM</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+        <h3>Next Steps</h3>
+        <p>This Hazard Log defines the requirements for RA-003. To fly under this approval, select "Yes" for Approved Risk Assessment in the Flight Authorization tool.</p>
+        <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
+        <a href="flight-auth.html" class="btn">Go to Flight Auth Tool</a>
+    </div>
+</div>
+
+</body>
+</html>

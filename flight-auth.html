@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Authorization - FFI UAS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html"><strong>FFI UAS OPS</strong></a></li>
+        <li><a href="flight-auth.html">Flight Authorization</a></li>
+        <li><a href="risk-assessments.html">Approved Risk Assessments</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid var(--ffi-blue); padding-bottom: 20px; margin-bottom: 30px;">
+        <div>
+            <h1>Flight Authorization Tool</h1>
+            <span style="font-size: 0.9rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
+        </div>
+        <div>
+            <button class="preset-btn" onclick="loadScenario('jorgen')">Load: Case Jørgen</button>
+            <button class="preset-btn" onclick="loadScenario('standard')">Load: Standard</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>1. UAS System Configuration</h2>
+        <div class="grid-row">
+            <div>
+                <label>Drone Type</label>
+                <select id="droneType"><option value="multirotor">Multirotor</option></select>
+            </div>
+            </div>
+        </div>
+    
+    </div>
+
+<div id="result-box" class="status-gray">
+    <span class="result-title">AWAITING INPUT</span>
+    <span class="result-desc">Please fill out all sections to receive authorization status.</span>
+    <div class="warning-list" id="warningList"></div>
+</div>
+
+<script src="js/auth-logic.js"></script>
+</body>
+</html>

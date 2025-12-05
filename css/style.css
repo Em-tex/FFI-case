@@ -1,0 +1,119 @@
+/* css/style.css */
+:root {
+    --ffi-blue: #005073;
+    --ffi-dark: #003d59;
+    --ffi-light: #f0f4f8;
+    --status-green: #28a745;
+    --status-yellow: #ffc107;
+    --status-red: #dc3545;
+    --text-color: #333;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--ffi-light);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Navigasjon --- */
+nav {
+    background-color: var(--ffi-blue);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 1000px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: opacity 0.2s;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+nav .brand {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-right: auto; /* Skyver menyen til høyre om ønskelig, eller behold tett */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- Hovedinnhold --- */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex: 1;
+}
+
+h1 { color: var(--ffi-blue); margin-top: 0; }
+h2 { font-size: 1.25rem; color: var(--ffi-blue); border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-top: 30px; }
+p { line-height: 1.6; }
+
+/* --- Tabeller --- */
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { text-align: left; padding: 15px; border-bottom: 1px solid #ddd; }
+th { background-color: var(--ffi-blue); color: white; }
+tr:hover { background-color: #f9f9f9; }
+
+/* --- Skjema-elementer --- */
+.grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.95rem; }
+select, input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box; background: #fff; }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+.checkbox-item { display: flex; align-items: center; font-size: 0.95rem; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; border: 1px solid #eee; }
+.checkbox-item input { margin-right: 10px; transform: scale(1.2); }
+
+/* --- Resultatboks --- */
+#result-box {
+    position: sticky; bottom: 30px; padding: 25px; border-radius: 8px; text-align: center;
+    color: white; font-weight: bold; box-shadow: 0 5px 25px rgba(0,0,0,0.2); margin: 0 auto; max-width: 900px; width: 90%;
+    z-index: 100; transition: all 0.3s ease;
+}
+.status-gray { background-color: #6c757d; }
+.status-green { background-color: var(--status-green); }
+.status-yellow { background-color: var(--status-yellow); color: #333 !important; }
+.status-red { background-color: var(--status-red); }
+
+.result-title { font-size: 1.6rem; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.result-desc { font-weight: 400; font-size: 1rem; }
+.warning-list { text-align: left; margin-top: 15px; font-size: 0.9rem; background: rgba(255,255,255,0.9); color: #333; padding: 15px; border-radius: 4px; display: none; }
+
+/* --- Knapper og Tags --- */
+.btn { display: inline-block; background: var(--ffi-blue); color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px; transition: background 0.2s; }
+.btn:hover { background-color: var(--ffi-dark); }
+.preset-btn { background: #e2e6ea; border: 1px solid #ced4da; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; font-weight: 500; }
+.preset-btn:hover { background: #dbe2e8; }
+
+.tag { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+.tag-active { background: #d4edda; color: #155724; }
+.tag-draft { background: #fff3cd; color: #856404; }
+
+/* --- Hazard Table Specifics --- */
+.hazard-table td { vertical-align: top; }
+.risk-low { background-color: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; display:inline-block;}
+.risk-med { background-color: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; display:inline-block;}
+.risk-high { background-color: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; display:inline-block;}
