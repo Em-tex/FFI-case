@@ -5,38 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Authorization - FFI UAS</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
 </head>
 <body>
 
 <nav>
-    <div class="brand"><span>🚁</span> FFI UAS OPS</div>
+    <div class="brand">
+        <i class="fa-solid fa-plane-up"></i> FFI UAS OPS
+    </div>
     <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="flight-auth.html" style="text-decoration: underline;">Flight Authorization</a></li>
+        <li><a href="flight-auth.html" class="active">Flight Authorization</a></li>
         <li><a href="risk-assessments.html">Risk Assessments</a></li>
     </ul>
 </nav>
 
 <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid var(--ffi-blue); padding-bottom: 20px; margin-bottom: 30px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
         <div>
             <h1>Flight Authorization Tool</h1>
-            <span style="font-size: 0.9rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
+            <span style="font-size: 0.95rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
         </div>
-        <div>
-            <button class="preset-btn" onclick="loadScenario('jorgen')">Load: Case Jørgen</button>
-            <button class="preset-btn" onclick="loadScenario('hydrogen_safe')">Load: Jørgen (Fixed)</button>
-            <button class="preset-btn" onclick="loadScenario('standard')">Load: Standard</button>
+        <div class="preset-container">
+            <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation"></i> Case Jørgen</button>
+            <button class="preset-btn" onclick="loadScenario('hydrogen_safe')"><i class="fa-solid fa-check"></i> Jørgen (Fixed)</button>
+            <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-drone"></i> Standard</button>
         </div>
     </div>
 
-    <div class="section" style="border-left: 5px solid #17a2b8;">
-        <h2>1. UAS System Configuration</h2>
+    <div class="section">
+        <div class="section-header" style="border-left: 5px solid #17a2b8;">
+            <i class="fa-solid fa-microchip" style="color: white;"></i> <h2 style="font-size:1.1rem; color:white;">1. UAS System Configuration</h2>
+        </div>
         <div class="grid-row">
-            <div>
-                <label>Drone Type</label>
+            <div class="form-group">
+                <label><i class="fa-solid fa-plane"></i> Drone Type</label>
                 <select id="droneType">
                     <option value="multirotor">Multirotor</option>
                     <option value="fixed_prop">Fixed wing (propeller)</option>
@@ -45,8 +48,8 @@
                     <option value="vtol">VTOL</option>
                 </select>
             </div>
-            <div>
-                <label>Weight (MTOM)</label>
+            <div class="form-group">
+                <label><i class="fa-solid fa-scale-balanced"></i> Weight (MTOM)</label>
                 <select id="weight">
                     <option value="sub250">Sub 250 g</option>
                     <option value="sub4">250 g - 4 kg</option>
@@ -57,16 +60,16 @@
             </div>
         </div>
         <div class="grid-row">
-            <div>
-                <label>System Class / Status</label>
+            <div class="form-group">
+                <label><i class="fa-solid fa-certificate"></i> Class / Status</label>
                 <select id="classStatus">
                     <option value="c_class">C-Class (C0-C6)</option>
                     <option value="mass_produced">Legacy / Mass Produced</option>
                     <option value="experimental">Prototype / Experimental</option>
                 </select>
             </div>
-            <div>
-                <label>Energy Source</label>
+            <div class="form-group">
+                <label><i class="fa-solid fa-battery-full"></i> Energy Source</label>
                 <select id="energySource">
                     <option value="battery">Battery (LiPo/LiIon)</option>
                     <option value="fuel">Fossil Fuel</option>
@@ -75,8 +78,15 @@
             </div>
         </div>
         <div class="grid-row">
-            <div>
-                <label>Dangerous Goods</label>
+            <div class="form-group">
+                <label><i class="fa-solid fa-robot"></i> Autopilot</label>
+                <select id="autopilot">
+                    <option value="stabilized">Stabilization Assist / GPS</option>
+                    <option value="manual">None / Full Manual</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label><i class="fa-solid fa-bomb"></i> Dangerous Goods</label>
                 <select id="dangerousGoods">
                     <option value="no">None</option>
                     <option value="yes">Live weapons or munitions</option>
@@ -86,10 +96,12 @@
         </div>
     </div>
 
-    <div class="section" style="border-left: 5px solid #ffc107;">
-        <h2>2. Operational Profile</h2>
+    <div class="section">
+        <div class="section-header" style="border-left: 5px solid #ffc107;">
+            <i class="fa-solid fa-location-dot" style="color: white;"></i> <h2 style="font-size:1.1rem; color:white;">2. Operational Profile</h2>
+        </div>
         <div class="grid-row">
-            <div>
+            <div class="form-group">
                 <label>Purpose</label>
                 <select id="purpose">
                     <option value="testing">Testing / Research</option>
@@ -98,7 +110,7 @@
                     <option value="training">Pilot Training</option>
                 </select>
             </div>
-            <div>
+            <div class="form-group">
                 <label>Area of Operation</label>
                 <select id="area">
                     <option value="sparsely">Sparsely populated area</option>
@@ -109,7 +121,7 @@
             </div>
         </div>
         <div class="grid-row">
-            <div>
+            <div class="form-group">
                 <label>Airspace</label>
                 <select id="airspace">
                     <option value="uncontrolled">Uncontrolled airspace (G)</option>
@@ -117,7 +129,7 @@
                     <option value="danger_area">Active Danger/Restricted Area</option>
                 </select>
             </div>
-            <div>
+            <div class="form-group">
                 <label>Altitude</label>
                 <select id="altitude">
                     <option value="below120">Below 120 m (400 ft)</option>
@@ -126,26 +138,38 @@
             </div>
         </div>
         <div class="grid-row">
-            <div>
-                <label>Approved Risk Assessment (SORA/PDRA)?</label>
+            <div class="form-group">
+                <label>Risk Assessment (SORA/PDRA)?</label>
                 <select id="riskAssessment">
                     <option value="no">No</option>
                     <option value="yes">Yes (Approved RA)</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label>Other Airspace Users</label>
+                <select id="otherUsers">
+                    <option value="none">None / Segregated</option>
+                    <option value="low">Low probability</option>
+                    <option value="high">High probability</option>
+                </select>
+            </div>
         </div>
     </div>
 
-    <div class="section" style="border-left: 5px solid #28a745;">
-        <h2>3. Pilot Competency</h2>
-        <div style="margin-bottom: 20px;">
-            <label>Mandatory Requirements</label>
-            <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" id="ffiCourse"> FFI UAS Introduction Ground Course</label>
+    <div class="section">
+        <div class="section-header" style="border-left: 5px solid #28a745;">
+            <i class="fa-solid fa-user-pilot" style="color: white;"></i> <h2 style="font-size:1.1rem; color:white;">3. Pilot Competency</h2>
+        </div>
+        
+        <div style="padding: 15px; background: #fdfdfd; border-bottom: 1px solid #eee;">
+            <label style="margin-bottom: 10px;">Mandatory Requirements</label>
+            <div class="checkbox-item" style="max-width: 300px;">
+                <input type="checkbox" id="ffiCourse"> FFI UAS Introduction Ground Course
             </div>
         </div>
+
         <div class="grid-row">
-            <div>
+            <div class="form-group">
                 <label>EASA Competence Level</label>
                 <select id="competence">
                     <option value="none">None / Expired</option>
@@ -154,7 +178,7 @@
                     <option value="sts">STS / Specific</option>
                 </select>
             </div>
-            <div>
+            <div class="form-group">
                 <label>Recency (Time since last flight)</label>
                 <select id="recency">
                     <option value="recent">Less than 30 days</option>
@@ -163,10 +187,24 @@
                 </select>
             </div>
         </div>
+
+        <div style="border-top: 1px solid #eee;">
+            <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 600; font-size: 0.9rem; color: #555;">Authorizations & Ratings (Check all that apply)</div>
+            <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" id="rate_multi"> Multirotor</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_heli"> Helicopter</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_heavy"> Heavy (>4kg)</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
+                <label class="checkbox-item"><input type="checkbox" id="rate_instructor"> Instructor</label>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="result-box" class="status-gray">
+<div id="result-box" class="res-gray">
+    <span class="result-icon"><i class="fa-solid fa-spinner"></i></span>
     <span class="result-title">AWAITING INPUT</span>
     <span class="result-desc">Please fill out all sections.</span>
     <div class="warning-list" id="warningList"></div>
