@@ -5,19 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RA-003: Hydrogen Drone Hazard Log</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+    <script src="js/menu.js"></script>
 </head>
 <body>
-
-<nav>
-    <div class="brand"><span>🚁</span> FFI UAS OPS</div>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="flight-auth.html">Flight Authorization</a></li>
-        <li><a href="risk-assessments.html">Risk Assessments</a></li>
-    </ul>
-</nav>
 
 <div class="container">
     <div style="display:flex; justify-content: space-between; align-items: flex-start;">
@@ -37,9 +28,10 @@
     <h2>1. Concept of Operations (ConOps)</h2>
     <p>Testing of range extension capabilities using hydrogen fuel cells in sub-zero temperatures. 
     The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
+    <p><em>Methodology: BowTie analysis and team brainstorming session (Jørgen & Safety Board).</em></p>
 
-    <h2>2. Hazard Log (Utdrag)</h2>
-    <p>Identifiserte farer og mitigerende tiltak i henhold til CAA UK CAP 722 standard.</p>
+    <h2>2. Hazard Log (Extract)</h2>
+    <p>Identifiserte farer og mitigerende tiltak i henhold til SORA metodikk.</p>
 
     <table class="hazard-table">
         <thead>
@@ -55,10 +47,10 @@
             <tr>
                 <td><strong>H-01</strong></td>
                 <td><strong>Tank Rupture / Explosion</strong></td>
-                <td>Structural failure of H2 tank due to crash or manufacturing defect ("Internet purchase").</td>
+                <td>Structural failure of H2 tank due to crash or manufacturing defect.</td>
                 <td>
                     <ul>
-                        <li>Use only CE/TÜV certified tanks (MSDS check).</li>
+                        <li>Use only CE/TÜV certified tanks.</li>
                         <li>Pressure relief valve installed.</li>
                         <li><strong>Flight Zone:</strong> Min. 50m buffer to personnel.</li>
                     </ul>
@@ -68,11 +60,11 @@
             <tr>
                 <td><strong>H-02</strong></td>
                 <td><strong>Fuel Cell Freeze</strong></td>
-                <td>Water byproduct freezing in venting valves during sub-zero operations, causing stack failure.</td>
+                <td>Water byproduct freezing in venting valves during sub-zero operations.</td>
                 <td>
                     <ul>
                         <li><strong>Pre-flight:</strong> Heated purging procedure.</li>
-                        <li><strong>Test:</strong> Incremental exposure (Ground test -> Hover).</li>
+                        <li><strong>Test:</strong> Incremental exposure (Ground -> Hover).</li>
                         <li>Fail-safe: Battery backup for landing.</li>
                     </ul>
                 </td>
@@ -80,13 +72,13 @@
             </tr>
             <tr>
                 <td><strong>H-03</strong></td>
-                <td><strong>Loss of Control (C2)</strong></td>
-                <td>Unknown EMI interference from Fuel Cell electronics affecting receiver.</td>
+                <td><strong>Public Demonstration Risk</strong></td>
+                <td>Loss of control near audience during demo flights.</td>
                 <td>
                     <ul>
-                        <li>Ground range test with system active before flight.</li>
-                        <li>Independent Flight Termination System (FTS).</li>
-                        <li>Geofencing active.</li>
+                        <li><strong>Crowd Control:</strong> Dedicated Safety Officer.</li>
+                        <li>Defined "Crash Zones" with physical barriers.</li>
+                        <li>Flight path parallel to audience, never towards.</li>
                     </ul>
                 </td>
                 <td><span class="risk-low">LOW</span></td>
@@ -109,7 +101,7 @@
 
     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
         <h3>Next Steps</h3>
-        <p>This Hazard Log defines the requirements for RA-003. To fly under this approval, select "Yes" for Approved Risk Assessment in the Flight Authorization tool.</p>
+        <p>This Hazard Log defines the requirements for RA-003. To fly under this approval, select "Yes" for Approved Risk Assessment in the Flight Authorization tool and confirm pilot qualification.</p>
         <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
         <a href="flight-auth.html" class="btn">Go to Flight Auth Tool</a>
     </div>

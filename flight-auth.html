@@ -6,30 +6,21 @@
     <title>Flight Authorization - FFI UAS</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+    <script src="js/menu.js"></script>
 </head>
 <body>
 
-<nav>
-    <div class="brand">
-        <i class="fa-solid fa-plane-up"></i> FFI UAS OPS
-    </div>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="flight-auth.html" class="active">Flight Authorization</a></li>
-        <li><a href="risk-assessments.html">Risk Assessments</a></li>
-    </ul>
-</nav>
-
 <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
         <div>
             <h1>Flight Authorization Tool</h1>
-            <span style="font-size: 0.95rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
+            <span style="font-size: 1rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
         </div>
         <div class="preset-container">
-            <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation"></i> Case Jørgen</button>
-            <button class="preset-btn" onclick="loadScenario('hydrogen_safe')"><i class="fa-solid fa-check"></i> Jørgen (Fixed)</button>
-            <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-drone"></i> Standard</button>
+            <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation" style="color:#dc3545"></i> Case Jørgen</button>
+            <button class="preset-btn" onclick="loadScenario('hydrogen_safe')"><i class="fa-solid fa-check" style="color:#28a745"></i> Jørgen (Fixed)</button>
+            <button class="preset-btn" onclick="loadScenario('demo_flight')"><i class="fa-solid fa-users" style="color:#007bff"></i> Demo Flight</button>
+            <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-paper-plane" style="color:#6c757d"></i> Standard</button>
         </div>
     </div>
 
@@ -139,10 +130,10 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label>Risk Assessment (SORA/PDRA)?</label>
+                <label>Covered by Approved Risk Assessment?</label>
                 <select id="riskAssessment">
                     <option value="no">No</option>
-                    <option value="yes">Yes (Approved RA)</option>
+                    <option value="yes">Yes (Approved RA for this mission)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -161,13 +152,6 @@
             <i class="fa-solid fa-user-pilot" style="color: white;"></i> <h2 style="font-size:1.1rem; color:white;">3. Pilot Competency</h2>
         </div>
         
-        <div style="padding: 15px; background: #fdfdfd; border-bottom: 1px solid #eee;">
-            <label style="margin-bottom: 10px;">Mandatory Requirements</label>
-            <div class="checkbox-item" style="max-width: 300px;">
-                <input type="checkbox" id="ffiCourse"> FFI UAS Introduction Ground Course
-            </div>
-        </div>
-
         <div class="grid-row">
             <div class="form-group">
                 <label>EASA Competence Level</label>
@@ -188,18 +172,51 @@
             </div>
         </div>
 
-        <div style="border-top: 1px solid #eee;">
-            <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 600; font-size: 0.9rem; color: #555;">Authorizations & Ratings (Check all that apply)</div>
-            <div class="checkbox-grid">
-                <label class="checkbox-item"><input type="checkbox" id="rate_multi"> Multirotor</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_heli"> Helicopter</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_heavy"> Heavy (>4kg)</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
-                <label class="checkbox-item"><input type="checkbox" id="rate_instructor"> Instructor</label>
+        <div style="padding: 15px; background: #fff; border-bottom: 1px solid #eee;">
+            <label style="margin-bottom: 10px;">Mandatory FFI Requirements</label>
+            <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+                <label class="checkbox-item" style="border-color: #b8daff; background-color: #e8f4fd;">
+                    <input type="checkbox" id="ffiCourse"> 
+                    <strong>FFI UAS Introduction Ground Course (Completed)</strong>
+                </label>
             </div>
         </div>
+
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px; border-right: 1px solid #eee;">
+                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
+                    <i class="fa-solid fa-gamepad"></i> Drone System Ratings
+                </div>
+                <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+                    <label class="checkbox-item"><input type="checkbox" id="rate_multi"> Multirotor</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_heli"> Helicopter</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_heavy"> Heavy Class (>25 kg)</label>
+                </div>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
+                    <i class="fa-solid fa-id-badge"></i> Operational Authorizations
+                </div>
+                <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked> VLOS (Visual Line of Sight)</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_bvlos"> BVLOS (Beyond Visual Line of Sight)</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_instructor"> Instructor</label>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 15px; background: #fff; border-top: 1px solid #eee;">
+            <label style="margin-bottom: 10px;"><i class="fa-solid fa-file-contract"></i> Qualified for Specific Risk Assessments</label>
+            <div style="color:#666; font-size:0.85rem; margin-bottom:10px;">Check only if you have completed the read-in/training for the specific RA.</div>
+            <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" id="qual_heavy"> RA-002 (Heavy Lift)</label>
+                <label class="checkbox-item"><input type="checkbox" id="qual_hydrogen"> RA-003 (Hydrogen)</label>
+                <label class="checkbox-item"><input type="checkbox" id="qual_demo"> RA-005 (Display/Demo)</label>
+            </div>
+        </div>
+
     </div>
 </div>
 
