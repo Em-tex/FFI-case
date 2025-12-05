@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let menuHtml = `
     <nav>
         <div class="brand">
-            <i class="fa-solid fa-plane-up"></i> FFI UAS OPS
+            <i class="fa-solid fa-plane-up"></i> FFI UAS OPS (caseoppgave)
         </div>
         <ul>`;
 
