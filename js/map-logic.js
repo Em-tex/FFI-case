@@ -12,11 +12,11 @@ function initMap() {
     }
 
     // Startposisjon: Kjeller (FFI) - Du kan endre dette til en annen default
-    const startLat = 59.9700; 
+    const startLat = 61.9700; 
     const startLon = 11.0500;
 
     // Opprett kartet i <div id="map">
-    map = L.map('map').setView([startLat, startLon], 13);
+    map = L.map('map').setView([startLat, startLon], 8);
 
     // Legg til OpenStreetMap bakgrunnskart (Gratis, krever ingen API-nøkkel)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
