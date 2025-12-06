@@ -47,8 +47,8 @@
             <div class="form-group" style="border:none;">
                 <label>Date & Lead Assessor</label>
                 <div style="display:flex; gap:10px;">
-                    <input type="date">
-                    <input type="text" placeholder="Assessor Name">
+                    <input type="date" id="raDate">
+                    <input type="text" placeholder="Assessor Name" id="raAssessor">
                 </div>
             </div>
         </div>
@@ -98,8 +98,8 @@
     </div>
 
     <div style="text-align: right; margin-top: 20px;">
-        <button class="btn" style="background-color: #28a745;" onclick="alert('Risk Assessment Saved as Draft (RA-007)')">
-            <i class="fa-solid fa-floppy-disk"></i> Save Assessment
+        <button class="btn" style="background-color: #28a745;" onclick="downloadRiskAssessment()">
+            <i class="fa-solid fa-file-arrow-down"></i> Save Assessment (JSON)
         </button>
     </div>
 </div>
