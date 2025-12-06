@@ -26,10 +26,11 @@ const templateSections = [
         ]
     },
     {
-        title: "SAFEGUARD FAILURES",
+        // RENAMED from "SAFEGUARD FAILURES" for clarity
+        title: "CONTAINMENT & COLLISION RISKS",
         hazards: [
-            "Airspace violation",
-            "Mid-air Collision"
+            "Airspace violation (Geofence failure)",
+            "Mid-air Collision (DAA failure)"
         ]
     }
 ];
@@ -77,6 +78,7 @@ function loadFromStorage() {
 
         // Restore Sections & Rows
         const container = document.getElementById('raTableContainer');
+        // Reset table header
         container.innerHTML = `
         <colgroup>
             <col style="width: 3%;"> <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 12%;"> 
@@ -89,9 +91,9 @@ function loadFromStorage() {
                 <th>Recovery Measures<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Severity)</span></th> 
                 <th>Residual Risk</th> <th></th>
             </tr>
-        </thead>`; // Reset table
+        </thead>`; 
 
-        sectionCount = 0; // Reset counter
+        sectionCount = 0; 
 
         if (data.sections && data.sections.length > 0) {
             data.sections.forEach(sec => {
@@ -103,25 +105,25 @@ function loadFromStorage() {
                 });
             });
         } else {
-            initTemplate(); // Fallback if empty sections
+            initTemplate(); 
         }
         
         updateComplexity();
 
     } catch (e) {
         console.error("Failed to load save:", e);
-        initTemplate(); // Fallback on error
+        initTemplate(); 
     }
 }
 
 function clearForm() {
     if (confirm("Are you sure you want to clear the form? All unsaved data will be lost.")) {
         localStorage.removeItem(STORAGE_KEY);
-        location.reload(); // Reload to reset to template
+        location.reload(); 
     }
 }
 
-/* --- DATA GATHERING (Shared for Save & Download) --- */
+/* --- DATA GATHERING --- */
 function gatherFormData() {
     const raName = document.getElementById('raName').value;
     const date = document.getElementById('raDate').value;
@@ -163,12 +165,6 @@ function gatherFormData() {
 
 /* --- TEMPLATE INITIALIZATION --- */
 function initTemplate() {
-    const container = document.getElementById('raTableContainer');
-    // Ensure header exists (if re-initializing)
-    if (!container.querySelector('thead')) {
-         // (Header is in HTML, so usually fine, but safe to keep logic simple)
-    }
-
     templateSections.forEach(section => {
         addSection(section.title, section.hazards);
     });
@@ -211,7 +207,7 @@ function addSection(title = "", hazards = [], skipRows = false) {
     }
 
     addFooterRow(tbodyId);
-    saveDataToStorage(); // Save on new section
+    if (!skipRows) saveDataToStorage(); 
 }
 
 function addFooterRow(tbodyId) {
@@ -317,12 +313,10 @@ function addRowToSection(tbodyId, rowData = {}) {
     // Initial color update
     updateCellColor(tr.querySelector('.risk-cell[data-type="initial"]'));
     updateCellColor(tr.querySelector('.risk-cell[data-type="residual"]'));
-    
-    // Update dropdown colors
     tr.querySelectorAll('select').forEach(s => updateSelectStyle(s));
 
     renumberRows();
-    saveDataToStorage(); // Auto-save on add
+    saveDataToStorage(); // Auto-save
 }
 
 function removeRow(btn) {
@@ -330,7 +324,7 @@ function removeRow(btn) {
         btn.closest('tr').remove();
         renumberRows();
         updateComplexity();
-        saveDataToStorage(); // Auto-save on remove
+        saveDataToStorage(); // Auto-save
     }
 }
 
@@ -349,7 +343,7 @@ function updateRow(selectElement) {
     updateCellColor(cell);
     updateSelectStyle(selectElement); 
     updateComplexity();
-    saveDataToStorage(); // Auto-save on change
+    saveDataToStorage(); // Auto-save
 }
 
 function updateSelectStyle(select) {
@@ -381,10 +375,10 @@ function updateCellColor(cell) {
     let color = '#d4edda'; let text = '#155724'; let score = 1;
 
     if ((sev === 5 && prob >= 3) || (sev === 4 && prob >= 4) || (sev === 3 && prob === 5)) {
-        color = '#f8d7da'; text = '#721c24'; score = 3; // Red
+        color = '#f8d7da'; text = '#721c24'; score = 3; 
     } 
     else if ((sev >= 3 && prob >= 2) || (sev === 2 && prob >= 4) || (sev === 5 && prob <= 2) || (sev === 1 && prob === 5)) {
-        color = '#fff3cd'; text = '#856404'; score = 2; // Yellow
+        color = '#fff3cd'; text = '#856404'; score = 2; 
     }
 
     badge.style.backgroundColor = color;
