@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RA-006: Attack Drone Live Fire</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/menu.js"></script>
+    <script src="js/ra-logic.js"></script>
     <style>
-        .meta-header { background-color: #fff3cd; padding: 15px; border-left: 5px solid var(--status-yellow); margin-bottom: 20px; border-radius: 4px; }
+        .meta-header { background-color: #fff3cd; padding: 15px; border-left: 5px solid var(--status-orange); margin-bottom: 20px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" style="max-width: 1400px;">
     <div style="display:flex; justify-content: space-between; align-items: flex-start;">
         <h1>RA-006: Attack Drone Live Fire</h1>
-        <span class="tag tag-active" style="background:var(--status-orange); color:var(--text-orange);">Restricted / Active</span>
+        <div>
+            <button class="btn-sm" style="background:#6c757d; margin-right:10px;" onclick="openLegend()">Matrix Legend</button>
+            <span class="tag tag-active" style="background:var(--status-orange); color:var(--text-orange);">Restricted / Active</span>
+        </div>
     </div>
     
     <div class="meta-header">
@@ -29,65 +33,64 @@
     </div>
 
     <h2>1. Concept of Operations</h2>
-    <p>Live fire testing of a Norwegian-supplied attack drone against armored targets. Drone specifications are undocumented. Warhead is equipped with a custom "Safe & Arm" device.</p>
+    <p>Live fire testing of a Norwegian-supplied attack drone against armored targets.</p>
 
-    <h2>2. Critical Information Needs</h2>
-    <ul style="margin-bottom: 30px; padding-left: 20px;">
-        <li><strong>Reliability:</strong> Probability of unintended detonation if drone crashes?</li>
-        <li><strong>FTS:</strong> Independent Flight Termination System present?</li>
-        <li><strong>Safe & Arm:</strong> Specific arming criteria (altitude/speed)?</li>
-    </ul>
-
-    <h2>3. Risk Matrix (Extract)</h2>
+    <h2>2. Risk Matrix (Extract)</h2>
     
-    <table class="hazard-table">
+    <table class="hazard-table" style="width:100%; border-collapse: collapse;">
         <thead>
             <tr>
                 <th style="width: 5%">ID</th>
                 <th style="width: 20%">Hazard</th>
-                <th style="width: 10%">Initial Risk</th>
-                <th style="width: 35%">Mitigation (Safety Barriers)</th>
-                <th style="width: 10%">Residual Risk</th>
+                <th style="width: 10%">Initial</th>
+                <th style="width: 25%">Preventative Barriers</th>
+                <th style="width: 25%">Recovery Measures</th>
+                <th style="width: 10%">Residual</th>
             </tr>
         </thead>
+        
         <tbody>
+            <tr class="section-header-row"><td colspan="6" class="section-header-cell">GENERAL / PAYLOAD RISKS</td></tr>
             <tr>
                 <td>H-01</td>
-                <td>Unintended Detonation</td>
+                <td><strong>Unintended Detonation</strong><br><span style="font-size:0.8rem; color:#666;">Safe & Arm failure</span></td>
                 <td><span class="risk-mtx risk-H">5A</span></td>
                 <td>
                     <ul>
                         <li><strong>Safe Zone:</strong> Personnel in bunker.</li>
                         <li><strong>Arming:</strong> Only immediately before launch.</li>
-                        <li>Technical inspection of S&A unit.</li>
+                        <li>Electronic Safe & Arm (ESA) logic verified.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>EOD Team on standby.</li>
+                        <li>Minimum Safe Distance (MSD) enforcement.</li>
                     </ul>
                 </td>
                 <td><span class="risk-mtx risk-M">3B</span></td>
             </tr>
+        </tbody>
+
+        <tbody>
+            <tr class="section-header-row"><td colspan="6" class="section-header-cell">SAFEGUARD FAILURES</td></tr>
             <tr>
                 <td>H-02</td>
-                <td>Fly-away (Armed)</td>
+                <td><strong>Fly-away (Armed)</strong><br><span style="font-size:0.8rem; color:#666;">Nav failure</span></td>
                 <td><span class="risk-mtx risk-H">4B</span></td>
                 <td>
                     <ul>
                         <li><strong>Geofence:</strong> Hard limit within range.</li>
                         <li><strong>Energy Limit:</strong> Max 30% fuel (cannot reach civ area).</li>
-                        <li>Independent Kill-switch (FTS).</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-M">3C</span></td>
-            </tr>
-            <tr>
-                <td>H-04</td>
-                <td>Emergency (Injury)</td>
-                <td><span class="risk-mtx risk-M">3C</span></td>
                 <td>
                     <ul>
-                        <li>Designated Medic & Scene Commander.</li>
-                        <li>Evac vehicle on standby.</li>
+                        <li>Independent Flight Termination System (FTS).</li>
+                        <li>Radar tracking.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-L">2D</span></td>
+                <td><span class="risk-mtx risk-M">3C</span></td>
             </tr>
         </tbody>
     </table>

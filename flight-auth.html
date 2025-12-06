@@ -45,12 +45,11 @@
             <div class="form-group" id="grp_weight">
                 <label>Weight (MTOM) [BLF Ref] <i class="fa-solid fa-triangle-exclamation warning-icon-dynamic"></i></label>
                 <select id="weight">
-                    <option value="sub250">Class 0 (< 250 g)</option>
-                    <option value="sub4">Class 1A (250 g - 4 kg)</option>
-                    <option value="sub25">Class 1A (4 kg - 25 kg)</option>
-                    <option value="sub150">Class 1B (25 kg - 150 kg)</option>
-                    <option value="sub600">Class 2 (150 kg - 600 kg)</option>
-                    <option value="over600">Class 3 (> 600 kg)</option>
+                    <option value="sub250">Class 0 (< 250 g) - EU 2019/945 C0, C1 or equiv.</option>
+                    <option value="sub25">Class 1A (0 - 25 kg) - EU 2019/945 C0-C3 or equiv.</option>
+                    <option value="sub150">Class 1B (25 - 150 kg) - MAA-NOR Form MUASTA reqs</option>
+                    <option value="sub600">Class 2 (150 - 600 kg) - MAA-NOR Form MUASTA reqs</option>
+                    <option value="over600">Class 3 (> 600 kg) - MAA-NOR Form MUASTA reqs</option>
                 </select>
             </div>
         </div>
@@ -246,9 +245,6 @@
             </div>
             <div class="gauge-label" id="gaugeText" style="color:inherit;">Risk Score: 0</div>
         </div>
-    </div>
-        
-        <div class="warning-list" id="warningList"></div>
     </div>
 
     <div id="submissionForm">

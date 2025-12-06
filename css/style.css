@@ -346,4 +346,17 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 
 .bg-r { background: #f8d7da; color: #721c24; } 
 .bg-y { background: #fff3cd; color: #856404; } 
-.bg-g { background: #d4edda; color: #155724; }
+.bg-g { background: #d4edda; color: #155724; } 
+
+/* --- COLOR DROPDOWNS --- */
+.opt-sev-5 { background-color: #f8d7da; color: #721c24; }
+.opt-sev-4 { background-color: #f8d7da; color: #721c24; }
+.opt-sev-3 { background-color: #fff3cd; color: #856404; }
+.opt-sev-2 { background-color: #d4edda; color: #155724; }
+.opt-sev-1 { background-color: #d4edda; color: #155724; }
+
+.opt-prob-5 { background-color: #f8d7da; color: #721c24; }
+.opt-prob-4 { background-color: #f8d7da; color: #721c24; }
+.opt-prob-3 { background-color: #fff3cd; color: #856404; }
+.opt-prob-2 { background-color: #d4edda; color: #155724; }
+.opt-prob-1 { background-color: #d4edda; color: #155724; }

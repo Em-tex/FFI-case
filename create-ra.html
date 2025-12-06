@@ -9,34 +9,32 @@
     <script src="js/menu.js"></script>
     <script src="js/ra-logic.js"></script>
     <style>
-        .ra-table th { font-size: 0.85rem; vertical-align: top; background-color: #f8f9fa; color: #333; }
-        .ra-table td { vertical-align: top; padding: 10px; border-bottom: 1px solid #eee; }
-        .ra-input { width: 100%; border: 1px solid #ced4da; border-radius: 4px; padding: 6px; font-family: inherit; font-size: 0.9rem; }
-        textarea.ra-input { height: 70px; resize: vertical; }
+        .ra-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px; }
+        .ra-table th { position: sticky; top: 0; background-color: #f8f9fa; color: #333; padding: 10px; border-bottom: 2px solid #ddd; text-align: left; font-size: 0.85rem; z-index: 10;}
+        .ra-table td { vertical-align: top; padding: 8px; border-bottom: 1px solid #eee; background: white; }
         
-        /* Select styling for compact fit */
-        select.ra-input { font-size: 0.85rem; padding: 4px; margin-bottom: 4px; }
+        .ra-input { width: 100%; border: 1px solid #ced4da; border-radius: 4px; padding: 6px; font-family: inherit; font-size: 0.9rem; box-sizing: border-box; }
+        textarea.ra-input { height: 65px; resize: vertical; }
+        select.ra-input { cursor: pointer; margin-bottom: 4px; }
 
-        .complexity-bar {
-            height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px;
-        }
-        .complexity-fill {
-            height: 100%; width: 0%; background: #28a745; transition: width 0.5s, background 0.5s;
-        }
+        .complexity-bar { height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px; }
+        .complexity-fill { height: 100%; width: 0%; background: #28a745; transition: width 0.5s, background 0.5s; }
         
-        /* Badge styling */
-        .risk-badge { 
-            text-align:center; padding:6px; border-radius:4px; font-weight:bold; 
-            background:#e9ecef; color: #666; font-size: 0.9rem; margin-top: 5px;
-        }
+        .risk-badge { text-align:center; padding:4px; border-radius:4px; font-weight:bold; background:#e9ecef; color: #666; font-size: 0.85rem; margin-top: 2px; }
+        
+        /* Section styling */
+        .section-header-row td { background-color: var(--ffi-blue); color: white; padding: 8px 15px; font-weight: 600; }
+        .btn-xs { padding: 2px 6px; font-size: 0.75rem; margin-left: 10px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); color: white; border-radius: 3px; cursor: pointer; }
+        .btn-xs:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
 
-<div class="container" style="max-width: 1400px;"> <div style="display:flex; justify-content:space-between; align-items:center;">
+<div class="container" style="max-width: 1400px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
         <h1><i class="fa-solid fa-file-shield"></i> Create New Risk Assessment</h1>
         <button class="btn-sm" style="background:#6c757d;" onclick="openLegend()">
-            <i class="fa-solid fa-table-cells"></i> Matrix Legend (CAP 1059)
+            <i class="fa-solid fa-table-cells"></i> Matrix Legend
         </button>
     </div>
 
@@ -56,33 +54,31 @@
         </div>
     </div>
 
-    <table class="ra-table">
+    <table class="ra-table" id="raTableContainer">
         <thead>
             <tr>
                 <th style="width: 4%">ID</th>
-                <th style="width: 18%">Hazard & Cause<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Bow-Tie Center/Left)</span></th>
-                <th style="width: 12%">Initial Risk<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Pre-mitigation)</span></th>
-                <th style="width: 20%">Preventative Barriers<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Probability)</span></th>
-                <th style="width: 20%">Recovery Measures<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Severity)</span></th>
-                <th style="width: 12%">Residual Risk<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Post-mitigation)</span></th>
+                <th style="width: 18%">Hazard & Cause<br><span style="font-weight:normal; color:#666;">(Bow-Tie Center/Left)</span></th>
+                <th style="width: 12%">Initial Risk<br><span style="font-weight:normal; color:#666;">(Pre-mitigation)</span></th>
+                <th style="width: 20%">Preventative Barriers<br><span style="font-weight:normal; color:#666;">(Reduce Probability)</span></th>
+                <th style="width: 20%">Recovery Measures<br><span style="font-weight:normal; color:#666;">(Reduce Severity)</span></th>
+                <th style="width: 12%">Residual Risk<br><span style="font-weight:normal; color:#666;">(Post-mitigation)</span></th>
                 <th style="width: 4%"></th>
             </tr>
         </thead>
-        <tbody id="raTableBody">
-            </tbody>
-    </table>
+        </table>
 
-    <button class="btn" onclick="addRow()" style="margin-top: 15px; background:#6c757d;">
-        <i class="fa-solid fa-plus"></i> Add Hazard
+    <button class="btn" onclick="addSection()" style="margin-top: 10px; background:#03477F; width: 100%;">
+        <i class="fa-solid fa-folder-plus"></i> Add New Section
     </button>
 
     <div class="section" style="margin-top: 30px; padding: 25px; background: #fff; border: 1px solid #e0e0e0;">
         <div style="display:flex; justify-content: space-between; align-items: flex-start;">
             <div style="flex:2; padding-right: 40px;">
-                <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity Assessment</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
                     Calculated based on the <strong>gap</strong> between Initial and Residual risk. 
-                    Large reductions in risk imply a heavy reliance on barriers, increasing operational complexity.
+                    Large reductions in risk imply a heavy reliance on barriers functioning correctly, which increases operational complexity (management burden).
                 </p>
                 <div id="compAdvice" style="font-size: 0.95rem; font-style: italic; color: #555; background: #f8f9fa; padding: 10px; border-radius: 4px;">
                     Add hazards to assess complexity.
@@ -92,7 +88,7 @@
             <div style="flex: 1;">
                 <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1rem; margin-bottom: 5px;">
                     <span id="compLabel">Low</span>
-                    <span id="compScore">0</span>
+                    <span id="compScore">0 pts</span>
                 </div>
                 <div class="complexity-bar">
                     <div class="complexity-fill" id="compFill"></div>
@@ -102,7 +98,7 @@
     </div>
 
     <div style="text-align: right; margin-top: 20px;">
-        <button class="btn" style="background-color: #28a745;" onclick="alert('Risk Assessment Saved!')">
+        <button class="btn" style="background-color: #28a745;" onclick="alert('Risk Assessment Saved as Draft (RA-007)')">
             <i class="fa-solid fa-floppy-disk"></i> Save Assessment
         </button>
     </div>
