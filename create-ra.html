@@ -9,7 +9,7 @@
     <script src="js/menu.js"></script>
     <script src="js/ra-logic.js"></script>
     <style>
-        /* Container width increased to fit extra columns */
+        /* Øk bredden for å få plass til flere kolonner */
         .container { max-width: 95% !important; }
 
         .ra-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px; table-layout: fixed; }
@@ -21,13 +21,13 @@
             text-align: left; font-size: 0.85rem; z-index: 10;
         }
         
-        /* Layout fix to make inputs fill cell height */
+        /* CSS-triks for å få textarea til å fylle hele cellehøyden */
         .ra-table td { 
             vertical-align: top; 
             padding: 5px; 
             border-bottom: 1px solid #eee; 
             background: white; 
-            height: 1px; /* Trick to allow children to use height:100% */
+            height: 1px; /* Viktig for at children skal kunne bruke height: 100% */
         }
         
         .ra-input { 
@@ -39,10 +39,10 @@
             background-color: #fff;
         }
 
-        /* Make textareas fill the cell height */
+        /* Textareas fyller nå høyden */
         textarea.ra-input { 
             height: 100%; 
-            min-height: 80px; /* Good default height */
+            min-height: 60px; 
             resize: vertical; 
             display: block;
         }
@@ -51,11 +51,16 @@
 
         .complexity-bar { height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px; }
         .complexity-fill { height: 100%; width: 0%; background: #28a745; transition: width 0.5s, background 0.5s; }
+        
         .risk-badge { text-align:center; padding:4px; border-radius:4px; font-weight:bold; background:#e9ecef; color: #666; font-size: 0.85rem; margin-top: 2px; }
         
+        /* Section styling */
         .section-header-row td { background-color: var(--ffi-blue); color: white; padding: 8px 15px; font-weight: 600; height: auto; }
+        
+        /* Add button in footer */
+        .section-footer td { padding: 10px; background-color: #fff; border-bottom: 2px solid #ddd; height: auto; }
+        
         .btn-xs { padding: 2px 6px; font-size: 0.75rem; margin-left: 10px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); color: white; border-radius: 3px; cursor: pointer; }
-        .btn-xs:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
@@ -112,7 +117,7 @@
                 <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity Assessment</h3>
                 <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
                     Calculated based on the <strong>gap</strong> between Initial and Residual risk. 
-                    Large reductions in risk imply a heavy reliance on barriers functioning correctly, which increases operational complexity.
+                    Large reductions in risk imply a heavy reliance on barriers functioning correctly, which increases operational complexity (management burden).
                 </p>
                 <div id="compAdvice" style="font-size: 0.95rem; font-style: italic; color: #555; background: #f8f9fa; padding: 10px; border-radius: 4px;">
                     Add hazards to assess complexity.

@@ -64,6 +64,7 @@ function addSection(title = "", hazards = []) {
     tbody.id = tbodyId;
     tbody.dataset.title = displayTitle; 
     
+    // Header row
     tbody.innerHTML = `
         <tr class="section-header-row">
             <td colspan="9">
@@ -73,6 +74,7 @@ function addSection(title = "", hazards = []) {
     `;
     container.appendChild(tbody);
 
+    // Add hazards or empty row
     if (hazards.length > 0) {
         hazards.forEach(hazardName => {
             addRowToSection(tbodyId, hazardName);
@@ -81,6 +83,7 @@ function addSection(title = "", hazards = []) {
         addRowToSection(tbodyId); 
     }
 
+    // Add footer row with "Add Hazard" button
     addFooterRow(tbodyId);
 }
 
@@ -106,6 +109,7 @@ function addRowToSection(tbodyId, hazardText = "") {
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
     
+    // Grey delete button
     const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
     const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
 
@@ -172,6 +176,7 @@ function addRowToSection(tbodyId, hazardText = "") {
         </td>
     `;
 
+    // Insert before footer
     const footer = tbody.querySelector('.section-footer');
     if (footer) {
         tbody.insertBefore(tr, footer);

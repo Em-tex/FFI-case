@@ -184,7 +184,8 @@ select:focus, input:focus {
 
 /* Validation states */
 .input-warning { border: 2px solid var(--status-yellow) !important; background-color: #fffff0 !important; }
-.input-danger { border: 2px solid var(--text-red) !important; background-color: #fffafa !important; }
+.input-danger { background-color: #ffebee !important; border: 2px solid #ef5350 !important; color: #c62828 !important; }
+.input-missing { background-color: #fffde7 !important; border: 2px solid #fdd835 !important; }
 
 /* Checkboxes */
 .checkbox-grid {
@@ -208,7 +209,7 @@ select:focus, input:focus {
 }
 .checkbox-item:hover { background-color: #e2e6ea; border-color: #ced4da; }
 .checkbox-item input { margin-right: 12px; transform: scale(1.3); cursor: pointer; }
-.checkbox-danger { border: 2px solid var(--text-red) !important; background-color: #fff5f5 !important; color: var(--text-red); }
+.checkbox-danger { background-color: #ffebee !important; border: 2px solid #ef5350 !important; }
 
 .grp-header {
     padding: 10px 15px; 
