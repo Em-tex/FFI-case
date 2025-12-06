@@ -94,6 +94,11 @@ function addRowToSection(tbodyId, hazardText = "") {
 
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
+    
+    // Her settes delete-knappen til en diskret gråfarge som blir rød ved hover
+    const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
+    const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
+
     tr.innerHTML = `
         <td class="row-id" style="font-size:0.8rem; color:#888;">...</td>
         <td>
@@ -113,7 +118,7 @@ function addRowToSection(tbodyId, hazardText = "") {
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
                 <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Haz)</option>
+                <option value="4" class="opt-sev-4">4 (Hazard)</option>
                 <option value="3" class="opt-sev-3">3 (Major)</option>
                 <option value="2" class="opt-sev-2">2 (Minor)</option>
                 <option value="1" class="opt-sev-1">1 (Negl)</option>
@@ -136,7 +141,7 @@ function addRowToSection(tbodyId, hazardText = "") {
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
                 <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Haz)</option>
+                <option value="4" class="opt-sev-4">4 (Hazard)</option>
                 <option value="3" class="opt-sev-3">3 (Major)</option>
                 <option value="2" class="opt-sev-2">2 (Minor)</option>
                 <option value="1" class="opt-sev-1">1 (Negl)</option>
@@ -144,7 +149,11 @@ function addRowToSection(tbodyId, hazardText = "") {
             <div class="risk-badge">...</div>
         </td>
 
-        <td><button class="btn-sm" style="background:transparent; color:#dc3545; border:1px solid #dc3545;" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+        <td style="text-align:center;">
+            <button style="${deleteBtnStyle}" onclick="removeRow(this)" title="Delete Row">
+                ${deleteIcon}
+            </button>
+        </td>
     `;
     tbody.appendChild(tr);
     renumberRows();
