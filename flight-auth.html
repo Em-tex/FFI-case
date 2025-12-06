@@ -176,7 +176,7 @@
                     <option value="maak">MÅK (Militær Åpen Kategori)</option>
                     <option value="a1a3">Open A1 / A3</option>
                     <option value="a2">Open A2</option>
-                    <option value="sts">STS / Specific</option>
+                    <option value="sts">Specific (STS/PDRA/SORA)</option>
                 </select>
             </div>
             <div class="form-group" id="grp_recency">
@@ -207,6 +207,8 @@
                     <label class="checkbox-item" id="lbl_rate_multi"><input type="checkbox" id="rate_multi"> Multirotor</label>
                     <label class="checkbox-item" id="lbl_rate_fixed"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
                     <label class="checkbox-item" id="lbl_rate_heli"><input type="checkbox" id="rate_heli"> Helicopter</label>
+                    <label class="checkbox-item" id="lbl_rate_vtol"><input type="checkbox" id="rate_vtol"> VTOL</label>
+                    <label class="checkbox-item" id="lbl_rate_lta"><input type="checkbox" id="rate_lta"> Lighter than Air</label>
                 </div>
             </div>
 
@@ -226,6 +228,7 @@
                     <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked disabled> VLOS</label>
                     <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
                     <label class="checkbox-item" id="lbl_rate_instructor"><input type="checkbox" id="rate_instructor"> Instructor</label>
+                    <label class="checkbox-item" id="lbl_rate_above120"><input type="checkbox" id="rate_above120"> Above 120m</label>
                 </div>
             </div>
         </div>
@@ -243,10 +246,8 @@
 
     <div id="result-box" class="res-gray">
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            
             <span class="result-title" style="margin-top:15px;">AWAITING INPUT</span>
             <span class="result-desc">Please fill out all highlighted fields.</span>
-
             <div class="gauge-wrapper">
                 <div class="gauge-body">
                     <div class="gauge-fill"></div>
@@ -256,7 +257,6 @@
                 <div class="gauge-label" id="gaugeText">Risk Score: -</div>
             </div>
         </div>
-        
         <div class="warning-list" id="warningList"></div>
     </div>
 
@@ -275,7 +275,7 @@
                 <label>Date & Time</label>
                 <div style="display:flex; gap:10px;">
                     <input type="date" id="flightDate" onchange="calculateRisk()">
-                    <input type="time" id="flightTime" onclick="this.showPicker()">
+                    <input type="time" id="flightTime" onclick="try{this.showPicker()}catch(e){}">
                 </div>
             </div>
         </div>

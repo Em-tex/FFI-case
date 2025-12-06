@@ -116,12 +116,20 @@ function calculateRisk() {
     const recency = elRecency.value;
     const ffiCourse = document.getElementById('ffiCourse').checked;
 
-    // Checkboxes
-    const qualHydrogen = document.getElementById('qual_hydrogen').checked;
-    const qualAttack = document.getElementById('qual_attack').checked;
+    // Checkboxes (Rating)
     const rateMulti = document.getElementById('rate_multi').checked;
     const rateFixed = document.getElementById('rate_fixed').checked;
     const rateHeli = document.getElementById('rate_heli').checked;
+    const rateVtol = document.getElementById('rate_vtol').checked;
+    const rateLta = document.getElementById('rate_lta').checked;
+    const rateAbove120 = document.getElementById('rate_above120').checked;
+    const rate25 = document.getElementById('rate_25').checked;
+    const rate150 = document.getElementById('rate_150').checked;
+    const rateHeavy = document.getElementById('rate_heavy').checked;
+
+    // Checkboxes (Qual)
+    const qualHydrogen = document.getElementById('qual_hydrogen').checked;
+    const qualAttack = document.getElementById('qual_attack').checked;
     
     // Helpers
     function mark(id, level) {
@@ -138,7 +146,7 @@ function calculateRisk() {
     let title = "SELF-AUTHORIZATION PERMITTED";
     let desc = "Standard operation. Please provide flight information below.";
     let warnings = [];
-    let riskFactors = []; // For High Risk Summary
+    let riskFactors = []; 
     let temNotes = []; 
     let riskScore = 5; 
 
@@ -175,26 +183,22 @@ function calculateRisk() {
     if (competence === "none") { status = "red"; mark('competence', 'red'); warnings.push("STOP: Invalid competence certificate."); }
 
     // 2. Military vs Civil Competence Rules
-    // A1/A3 & A2 (Civil) cannot carry Dangerous Goods (Military Ops)
     if ((competence === 'a1a3' || competence === 'a2') && (dangerousGoods === 'yes' || dangerousGoods === 'pyro')) {
         status = "red"; mark('competence', 'red'); mark('dangerousGoods', 'red');
         warnings.push("STOP: Civil Open Category (A1/A3/A2) prohibits Dangerous Goods / Munitions.");
     }
 
     // 3. MÅK Rules
-    // MÅK builds on A2 but is still "Open Category" -> Max 25kg
     if (competence === 'maak' && (weight === 'sub150' || weight === 'sub600' || weight === 'over600')) {
         status = "red"; mark('competence', 'red'); mark('weight', 'red');
         warnings.push("STOP: MÅK is limited to 25kg. Heavier UAS requires Specific Category.");
     }
-    // MÅK prohibits dangerous goods
     if (competence === 'maak' && (dangerousGoods === 'yes' || dangerousGoods === 'pyro')) {
         status = "red"; mark('competence', 'red'); mark('dangerousGoods', 'red');
         warnings.push("STOP: MÅK prohibits armament/dangerous goods. Requires Specific Category.");
     }
 
     // 4. Weight vs Category General Check
-    // Open (A1/A3, A2) cannot fly > 25kg
     if ((competence === 'a1a3' || competence === 'a2') && (weight === 'sub150' || weight === 'sub600' || weight === 'over600')) {
         status = "red"; mark('competence', 'red'); mark('weight', 'red');
         warnings.push("STOP: Open Category is limited to 25kg.");
@@ -203,8 +207,17 @@ function calculateRisk() {
     // 5. Ratings
     if (droneType === 'multirotor' && !rateMulti) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Multirotor rating."); }
     if (droneType.includes('fixed') && !rateFixed) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Fixed Wing rating."); }
+    if (droneType === 'helicopter' && !rateHeli) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Helicopter rating."); }
+    if (droneType === 'vtol' && !rateVtol) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing VTOL rating."); }
+    if (droneType === 'lta' && !rateLta) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Lighter Than Air rating."); }
     
-    // 6. RA Checks
+    // 6. Altitude Check
+    if (altitude === 'above120' && !rateAbove120) {
+        status = "red"; mark('altitude', 'red'); markLabel('rate_above120', 'red');
+        warnings.push("STOP: Pilot lacks 'Above 120m' rating for this altitude.");
+    }
+
+    // 7. RA Checks
     if (energySource === "hydrogen") {
         if (!hasRA) { 
             status = "red"; mark('energySource', 'red'); mark('riskAssessment', 'red'); 
@@ -239,7 +252,6 @@ function calculateRisk() {
             title = "APPROVAL REQUIRED (HIGH RISK)";
             desc = "High risk profile. Explicit approval required.";
             
-            // Build summary string
             let factors = riskFactors.slice(0, 3).join(", ") + (riskFactors.length > 3 ? "..." : "");
             warnings.push("NOTICE: High Risk System/Profile (" + factors + ")");
         }
@@ -312,8 +324,10 @@ function calculateRisk() {
 }
 
 function loadScenario(type) {
-    // Reset
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    // Reset Checkboxes (only non-disabled ones!)
+    document.querySelectorAll('input[type="checkbox"]:not(:disabled)').forEach(cb => cb.checked = false);
+    
+    // Reset Selects
     document.querySelectorAll('select').forEach(s => s.value = "0");
 
     document.getElementById('ffiCourse').checked = true;
@@ -349,13 +363,12 @@ function loadScenario(type) {
         document.getElementById('otherUsers').value = 'none';
         document.getElementById('autopilot').value = 'manual';
         document.getElementById('riskAssessment').value = 'no'; 
-        // Case: User tries MÅK with weapons -> Should trigger Red Flag
         document.getElementById('competence').value = 'maak'; 
         document.getElementById('rate_multi').checked = true;
     }
     else if (type === 'standard') {
         document.getElementById('droneType').value = 'multirotor';
-        document.getElementById('weight').value = 'sub25'; // Class 1A
+        document.getElementById('weight').value = 'sub25';
         document.getElementById('classStatus').value = 'c_class';
         document.getElementById('energySource').value = 'battery';
         document.getElementById('dangerousGoods').value = 'no';
