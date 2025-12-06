@@ -262,9 +262,9 @@
 
     <div id="submissionForm">
         <h3 style="color:#28a745; border-bottom:1px solid #e0e0e0; padding-bottom:10px; margin-top:0;">
-            <i class="fa-solid fa-clipboard-list"></i> Flight Logging
+            <i class="fa-solid fa-clipboard-list"></i> Flight Information
         </h3>
-        <p style="font-size:0.9rem; color:#555;">Standard operation. Submit to Ops Log.</p>
+        <p style="font-size:0.9rem; color:#555;">Please provide information of your flight using the form below.</p>
         
         <div class="grid-row" style="margin-top:15px;">
             <div class="form-group" style="border:none; padding:0;">
@@ -275,7 +275,7 @@
                 <label>Date & Time</label>
                 <div style="display:flex; gap:10px;">
                     <input type="date" id="flightDate" onchange="calculateRisk()">
-                    <input type="time">
+                    <input type="time" id="flightTime" onclick="this.showPicker()">
                 </div>
             </div>
         </div>
@@ -293,7 +293,7 @@
                 </div>
             </div>
         </div>
-        <button id="submitBtn" class="btn" style="width:100%; margin-top:15px; background-color:#28a745;" onclick="alert('Submitted successfully.')">Log Flight Details</button>
+        <button id="submitBtn" class="btn" style="width:100%; margin-top:15px; background-color:#28a745;" onclick="alert('Information submitted successfully.')">Submit Flight Information</button>
     </div>
 
 </div>

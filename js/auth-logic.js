@@ -2,9 +2,9 @@
 
 const infoData = {
     "droneType": "Select platform. Helicopter/Jet requires specific ratings.",
-    "weight": "MÅK limit is 25kg. Above requires Specific category.",
+    "weight": "Open/MÅK limited to 25kg. Heavier requires Specific category.",
     "class": "Experimental applies to homebuilt or modified drones (Case Jørgen).",
-    "competence": "MÅK is military minimum (<25kg). A1/A3 is civil open category.",
+    "competence": "A1/A3 & A2 (Civil). MÅK (Military Open). Specific (Complex).",
     "area": "Firing Range requires range control clearance."
 };
 
@@ -57,16 +57,21 @@ function calculateRisk() {
     const elDangerous = document.getElementById('dangerousGoods');
     const elPurpose = document.getElementById('purpose');
     const elArea = document.getElementById('area');
+    const elAirspace = document.getElementById('airspace');
+    const elAltitude = document.getElementById('altitude');
+    const elOtherUsers = document.getElementById('otherUsers');
     const elAutopilot = document.getElementById('autopilot');
     const elCompetence = document.getElementById('competence');
     const elRecency = document.getElementById('recency');
     const elRA = document.getElementById('riskAssessment');
-    const elLocation = document.getElementById('locationInput');
 
     // --- CHECK FOR MISSING INPUTS (LYSEGULT) ---
-    // Sjekker om value er "0" (default i HTML) eller tom streng
     let missingInput = false;
-    const requiredFields = [elDroneType, elWeight, elClassStatus, elEnergy, elDangerous, elPurpose, elArea, elAutopilot, elCompetence, elRecency, elRA];
+    const requiredFields = [
+        elDroneType, elWeight, elClassStatus, elEnergy, elDangerous, 
+        elPurpose, elArea, elAirspace, elAltitude, elOtherUsers, 
+        elAutopilot, elCompetence, elRecency, elRA
+    ];
     
     requiredFields.forEach(field => {
         if (field.value === "0" || field.value === "") {
@@ -75,7 +80,6 @@ function calculateRisk() {
         }
     });
 
-    // Oppdater Result Box hvis data mangler
     const resultBox = document.getElementById('result-box');
     const gaugeNeedle = document.getElementById('gaugeNeedle');
     const gaugeText = document.getElementById('gaugeText');
@@ -83,7 +87,6 @@ function calculateRisk() {
     const formTitle = submissionForm.querySelector('h3');
     const formDesc = submissionForm.querySelector('p');
 
-    // Init Map hvis det ikke er gjort (for å vise kartet i skjemaet)
     if (window.initMap) window.initMap(); 
 
     if (missingInput) {
@@ -91,12 +94,8 @@ function calculateRisk() {
         resultBox.querySelector('.result-title').innerText = "AWAITING INPUT";
         resultBox.querySelector('.result-desc').innerText = "Please fill out highlighted yellow fields.";
         document.getElementById('warningList').style.display = 'none';
-        gaugeNeedle.style.transform = `rotate(-90deg)`; // 0 posisjon
+        gaugeNeedle.style.transform = `rotate(-90deg)`; 
         gaugeText.innerText = "Risk Score: -";
-        
-        // Skjul skjemaet inntil data er fylt ut? Eller vise det men disablet? 
-        // For clean UI, la oss vise skjemaet men med en grå overlay eller bare la det være.
-        // Brukeren ba om "Bør operativ leder alltid informeres". Så vi lar skjemaet stå.
         return; 
     }
 
@@ -108,6 +107,9 @@ function calculateRisk() {
     const dangerousGoods = elDangerous.value;
     const purpose = elPurpose.value;
     const area = elArea.value;
+    const airspace = elAirspace.value;
+    const altitude = elAltitude.value;
+    const otherUsers = elOtherUsers.value;
     const autopilot = elAutopilot.value;
     const hasRA = elRA.value === 'yes';
     const competence = elCompetence.value;
@@ -120,48 +122,51 @@ function calculateRisk() {
     const rateMulti = document.getElementById('rate_multi').checked;
     const rateFixed = document.getElementById('rate_fixed').checked;
     const rateHeli = document.getElementById('rate_heli').checked;
-    const rate25 = document.getElementById('rate_25').checked;
-    const rate150 = document.getElementById('rate_150').checked;
-    const rateHeavy = document.getElementById('rate_heavy').checked;
-
-    let status = "green"; 
-    let title = "SELF-AUTHORIZATION PERMITTED";
-    let desc = "Standard operation. Please log flight details below.";
-    let warnings = [];
-    let temNotes = []; 
-    let riskScore = 5; 
-
-    // --- RISK SCORE CALCULATION ---
-    if (weight === 'sub25') riskScore += 10;
-    if (weight === 'sub150') riskScore += 30;
-    if (weight === 'sub600' || weight === 'over600') riskScore += 60;
-    if (classStatus === 'experimental') riskScore += 20;
-    if (energySource === 'hydrogen') riskScore += 25;
-    if (dangerousGoods === 'yes') riskScore += 50; 
-    if (dangerousGoods === 'pyro') riskScore += 15;
-    if (area === 'populated') riskScore += 25;
-    if (autopilot === 'manual') riskScore += 15;
-    if (purpose === 'demo') riskScore += 10;
-    if (recency === 'recent') riskScore -= 5;
-    if (recency === 'expired') riskScore += 15;
     
-    riskScore = Math.max(0, Math.min(100, riskScore));
-
-    // --- HELPERS ---
+    // Helpers
     function mark(id, level) {
         const el = document.getElementById(id);
-        if(el) {
-            // "input-danger" er nå den lyserøde fargen
-            el.classList.add(level === 'red' ? 'input-danger' : 'input-warning');
-        }
+        if(el) el.classList.add(level === 'red' ? 'input-danger' : 'input-warning');
         toggleWarningIcon(id, true, level === 'red' ? 'danger' : 'warning');
     }
     function markLabel(id, level) {
         const el = document.getElementById('lbl_' + id);
-        if(el) {
-            if(level==='red') el.classList.add('checkbox-danger');
-        }
+        if(el && level==='red') el.classList.add('checkbox-danger');
     }
+
+    let status = "green"; 
+    let title = "SELF-AUTHORIZATION PERMITTED";
+    let desc = "Standard operation. Please provide flight information below.";
+    let warnings = [];
+    let riskFactors = []; // For High Risk Summary
+    let temNotes = []; 
+    let riskScore = 5; 
+
+    // --- RISK SCORE CALCULATION ---
+    // System
+    if (weight === 'sub25') { riskScore += 10; riskFactors.push("Weight 4-25kg"); }
+    if (weight === 'sub150') { riskScore += 30; riskFactors.push("Weight >25kg"); }
+    if (weight === 'sub600' || weight === 'over600') { riskScore += 60; riskFactors.push("Heavy UAS"); }
+    if (classStatus === 'experimental') { riskScore += 20; riskFactors.push("Experimental System"); }
+    if (energySource === 'hydrogen') { riskScore += 25; riskFactors.push("Hydrogen Fuel"); }
+    if (dangerousGoods === 'yes') { riskScore += 50; riskFactors.push("Live Weapons"); }
+    if (dangerousGoods === 'pyro') { riskScore += 15; riskFactors.push("Pyrotechnics"); }
+    
+    // Operation
+    if (area === 'populated') { riskScore += 25; riskFactors.push("Populated Area"); }
+    if (area === 'firing_range') { riskScore += 10; riskFactors.push("Firing Range"); }
+    if (airspace === 'danger_area') { riskScore += 10; riskFactors.push("Danger Area"); }
+    if (altitude === 'above120') { riskScore += 20; riskFactors.push("Altitude >120m"); }
+    if (otherUsers === 'medium') { riskScore += 15; riskFactors.push("Med. Air Traffic"); }
+    if (otherUsers === 'high') { riskScore += 30; riskFactors.push("High Air Traffic"); }
+    
+    // Automation / Pilot
+    if (autopilot === 'manual') { riskScore += 15; riskFactors.push("Manual Flight"); }
+    if (purpose === 'demo') { riskScore += 10; riskFactors.push("Demo Flight"); }
+    if (recency === 'recent') riskScore -= 5;
+    if (recency === 'expired') { riskScore += 15; riskFactors.push("Pilot Not Recent"); }
+    
+    riskScore = Math.max(0, Math.min(100, riskScore));
 
     // --- STOPPER LOGIC (RED FLAGS) ---
 
@@ -169,28 +174,40 @@ function calculateRisk() {
     if (!ffiCourse) { status = "red"; markLabel('ffiCourse', 'red'); warnings.push("STOP: Missing FFI UAS Ground Course."); }
     if (competence === "none") { status = "red"; mark('competence', 'red'); warnings.push("STOP: Invalid competence certificate."); }
 
-    // 2. MÅK RULES
-    if (competence === 'maak') {
-        if (weight === 'sub150' || weight === 'sub600' || weight === 'over600') {
-            status = "red"; mark('weight', 'red'); mark('competence', 'red');
-            warnings.push("STOP: MÅK limit is 25kg. Heavy UAS requires Specific/Certified.");
-        }
-        if (dangerousGoods === 'yes' || dangerousGoods === 'pyro') {
-            status = "red"; mark('dangerousGoods', 'red'); mark('competence', 'red');
-            warnings.push("STOP: MÅK forbids armament/dangerous goods.");
-        }
+    // 2. Military vs Civil Competence Rules
+    // A1/A3 & A2 (Civil) cannot carry Dangerous Goods (Military Ops)
+    if ((competence === 'a1a3' || competence === 'a2') && (dangerousGoods === 'yes' || dangerousGoods === 'pyro')) {
+        status = "red"; mark('competence', 'red'); mark('dangerousGoods', 'red');
+        warnings.push("STOP: Civil Open Category (A1/A3/A2) prohibits Dangerous Goods / Munitions.");
     }
 
-    // 3. Ratings
+    // 3. MÅK Rules
+    // MÅK builds on A2 but is still "Open Category" -> Max 25kg
+    if (competence === 'maak' && (weight === 'sub150' || weight === 'sub600' || weight === 'over600')) {
+        status = "red"; mark('competence', 'red'); mark('weight', 'red');
+        warnings.push("STOP: MÅK is limited to 25kg. Heavier UAS requires Specific Category.");
+    }
+    // MÅK prohibits dangerous goods
+    if (competence === 'maak' && (dangerousGoods === 'yes' || dangerousGoods === 'pyro')) {
+        status = "red"; mark('competence', 'red'); mark('dangerousGoods', 'red');
+        warnings.push("STOP: MÅK prohibits armament/dangerous goods. Requires Specific Category.");
+    }
+
+    // 4. Weight vs Category General Check
+    // Open (A1/A3, A2) cannot fly > 25kg
+    if ((competence === 'a1a3' || competence === 'a2') && (weight === 'sub150' || weight === 'sub600' || weight === 'over600')) {
+        status = "red"; mark('competence', 'red'); mark('weight', 'red');
+        warnings.push("STOP: Open Category is limited to 25kg.");
+    }
+
+    // 5. Ratings
     if (droneType === 'multirotor' && !rateMulti) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Multirotor rating."); }
     if (droneType.includes('fixed') && !rateFixed) { status = "red"; mark('droneType', 'red'); warnings.push("STOP: Missing Fixed Wing rating."); }
     
-    // 4. RA Checks (Lyserødt felt hvis mangler)
+    // 6. RA Checks
     if (energySource === "hydrogen") {
         if (!hasRA) { 
-            status = "red"; 
-            mark('energySource', 'red'); 
-            mark('riskAssessment', 'red'); // Denne blir nå lyserød
+            status = "red"; mark('energySource', 'red'); mark('riskAssessment', 'red'); 
             warnings.push("STOP: Hydrogen ops require Approved Risk Assessment."); 
         }
         else if (!qualHydrogen) { status = "red"; markLabel('qual_hydrogen', 'red'); warnings.push("STOP: Not qualified for Hydrogen Ops (RA-003)."); }
@@ -198,9 +215,7 @@ function calculateRisk() {
 
     if (dangerousGoods === "yes") {
         if (!hasRA) { 
-            status = "red"; 
-            mark('dangerousGoods', 'red'); 
-            mark('riskAssessment', 'red'); // Denne blir nå lyserød
+            status = "red"; mark('dangerousGoods', 'red'); mark('riskAssessment', 'red'); 
             warnings.push("STOP: Weapons require Approved Risk Assessment."); 
         }
         else if (!qualAttack) { status = "red"; markLabel('qual_attack', 'red'); warnings.push("STOP: Not qualified for Live Fire (RA-006)."); }
@@ -208,34 +223,34 @@ function calculateRisk() {
 
     if (weight === 'sub600' || weight === 'over600') {
         if (!hasRA) {
-            status = "red";
-            mark('weight', 'red');
-            mark('riskAssessment', 'red');
+            status = "red"; mark('weight', 'red'); mark('riskAssessment', 'red');
             warnings.push("STOP: Class 2/3 always requires Risk Assessment.");
         }
     }
 
     // --- WARNINGS & THRESHOLDS ---
-    let submissionType = "log"; // 'log' or 'approval'
+    let submissionType = "log"; 
 
     if (status !== "red") {
-        // Threshold for Approval
-        if (riskScore > 40) {
-            status = "yellow"; 
-            submissionType = "approval";
-            title = "REQUIRES O.L. APPROVAL";
-            desc = "Elevated risk score (>40). Submit for approval.";
-            warnings.push("NOTICE: Operation risk is elevated. Head of Ops approval required.");
-        } 
-        
         // High Risk / Orange
         if (riskScore > 70 || weight === 'sub150' || dangerousGoods === 'yes') {
             status = "orange";
             submissionType = "approval";
             title = "APPROVAL REQUIRED (HIGH RISK)";
             desc = "High risk profile. Explicit approval required.";
-            warnings.push("NOTICE: High Risk System/Profile.");
+            
+            // Build summary string
+            let factors = riskFactors.slice(0, 3).join(", ") + (riskFactors.length > 3 ? "..." : "");
+            warnings.push("NOTICE: High Risk System/Profile (" + factors + ")");
         }
+        // Medium Risk / Yellow
+        else if (riskScore > 40) {
+            status = "yellow"; 
+            submissionType = "approval";
+            title = "REQUIRES O.L. APPROVAL";
+            desc = "Elevated risk score (>40). Submit for approval.";
+            warnings.push("NOTICE: Operation risk is elevated. Head of Ops approval required.");
+        } 
     } else {
         title = "AUTHORIZATION DENIED";
         desc = "Critical safety requirements missing.";
@@ -245,8 +260,9 @@ function calculateRisk() {
     // TEM Notes
     if (recency === 'expired' && status !== 'red') temNotes.push("TEM: Pilot recency low. Fly practice battery.");
     if (autopilot === 'manual') temNotes.push("TEM: Manual mode. Check RTH failsafe.");
+    if (altitude === 'above120' && !hasRA) temNotes.push("TEM: Flight >120m requires specific clearance/RA in most cases.");
     
-    // Date check for cold (Nov-Mar)
+    // Date check for cold
     const d = document.getElementById('flightDate').valueAsDate;
     if (d && energySource === 'battery') {
         const m = d.getMonth(); 
@@ -277,31 +293,28 @@ function calculateRisk() {
     warningDiv.style.display = (warnings.length > 0 || temNotes.length > 0) ? 'block' : 'none';
 
     // Submission Form Logic
-    // Alltid synlig (så lenge ikke denied/red kanskje? User sa "alltid", men hvis det er STOP, gir det mening å ikke sende inn).
-    // La oss si at man kan sende inn en "Deviation Request" selv på rødt, eller vi skjuler den på rødt for simplicity.
     if (status === "red") {
         submissionForm.style.display = 'none';
     } else {
         submissionForm.style.display = 'block';
         if (submissionType === "approval") {
             formTitle.innerHTML = `<i class="fa-solid fa-file-signature"></i> Request Flight Approval`;
-            formDesc.innerText = "Risk score exceeds threshold. Approval from Head of Ops is mandatory.";
+            formDesc.innerText = "Risk score exceeds threshold. Approval from Head of Operations is mandatory.";
             document.getElementById('submitBtn').innerText = "Submit Request for Approval";
-            document.getElementById('submitBtn').style.backgroundColor = "#d35400"; // Orange/Red button
+            document.getElementById('submitBtn').style.backgroundColor = "#d35400"; 
         } else {
             formTitle.innerHTML = `<i class="fa-solid fa-clipboard-list"></i> Flight Logging`;
             formDesc.innerText = "Standard operation. Submit to Ops Log.";
             document.getElementById('submitBtn').innerText = "Log Flight Details";
-            document.getElementById('submitBtn').style.backgroundColor = "#28a745"; // Green button
+            document.getElementById('submitBtn').style.backgroundColor = "#28a745"; 
         }
     }
 }
 
 function loadScenario(type) {
-    // Reset inputs
+    // Reset
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-    const selects = document.querySelectorAll('select');
-    selects.forEach(s => s.value = "0"); // Reset to "Select..." (Yellow state)
+    document.querySelectorAll('select').forEach(s => s.value = "0");
 
     document.getElementById('ffiCourse').checked = true;
     document.getElementById('recency').value = 'recent';
@@ -316,12 +329,11 @@ function loadScenario(type) {
         document.getElementById('area').value = 'populated';
         document.getElementById('airspace').value = 'uncontrolled';
         document.getElementById('altitude').value = 'below120';
+        document.getElementById('otherUsers').value = 'low';
         document.getElementById('autopilot').value = 'stabilized';
         document.getElementById('riskAssessment').value = 'no'; 
         document.getElementById('competence').value = 'none';
         document.getElementById('ffiCourse').checked = false;
-        
-        // Ratings
         document.getElementById('rate_multi').checked = true;
     } 
     else if (type === 'attack_drone') {
@@ -334,15 +346,16 @@ function loadScenario(type) {
         document.getElementById('area').value = 'firing_range';
         document.getElementById('airspace').value = 'danger_area';
         document.getElementById('altitude').value = 'below120';
+        document.getElementById('otherUsers').value = 'none';
         document.getElementById('autopilot').value = 'manual';
-        document.getElementById('riskAssessment').value = 'no'; // Trigger RED
+        document.getElementById('riskAssessment').value = 'no'; 
+        // Case: User tries MÅK with weapons -> Should trigger Red Flag
         document.getElementById('competence').value = 'maak'; 
-        
         document.getElementById('rate_multi').checked = true;
     }
     else if (type === 'standard') {
         document.getElementById('droneType').value = 'multirotor';
-        document.getElementById('weight').value = 'sub4'; // Class 1A
+        document.getElementById('weight').value = 'sub25'; // Class 1A
         document.getElementById('classStatus').value = 'c_class';
         document.getElementById('energySource').value = 'battery';
         document.getElementById('dangerousGoods').value = 'no';
@@ -350,10 +363,10 @@ function loadScenario(type) {
         document.getElementById('area').value = 'sparsely';
         document.getElementById('airspace').value = 'uncontrolled';
         document.getElementById('altitude').value = 'below120';
+        document.getElementById('otherUsers').value = 'low';
         document.getElementById('autopilot').value = 'stabilized';
         document.getElementById('riskAssessment').value = 'no';
         document.getElementById('competence').value = 'maak';
-        
         document.getElementById('rate_multi').checked = true;
         document.getElementById('rate_25').checked = true;
     }
