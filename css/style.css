@@ -331,3 +331,19 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .risk-L { background:#d4edda; color:#155724; }
 .risk-M { background:#fff3cd; color:#856404; }
 .risk-H { background:#f8d7da; color:#721c24; }
+
+/* --- LEGEND TABLE & MATRIX --- */
+.legend-header { font-size:1.1rem; border-bottom:3px solid var(--ffi-blue); padding-bottom:5px; margin-bottom:10px; margin-top:0; }
+.legend-table { width: 100%; border-collapse: collapse; margin-bottom: 0; font-size: 0.85rem; }
+.legend-table th, .legend-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+.legend-table th { background-color: #f1f3f5; color: #333; font-weight: 700; border-bottom: 2px solid #ddd; }
+.legend-table tr:nth-child(even) { background-color: #f9f9f9; }
+.legend-table tr:hover { background-color: #f1f1f1; }
+
+.matrix-grid { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; margin-top: 10px; text-align: center; font-size: 0.85rem;}
+.mtx-h { font-weight: bold; background: #eee; padding: 8px; border: 1px solid #ccc; display:flex; align-items:center; justify-content:center;}
+.mtx-cell { padding: 8px; border: 1px solid #ccc; font-weight: bold; display:flex; align-items:center; justify-content:center;}
+
+.bg-r { background: #f8d7da; color: #721c24; } 
+.bg-y { background: #fff3cd; color: #856404; } 
+.bg-g { background: #d4edda; color: #155724; }

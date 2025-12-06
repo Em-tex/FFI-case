@@ -7,25 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/menu.js"></script>
     <script src="js/ra-logic.js"></script>
-    <style>
-        /* Samme stiler som i create-ra.html for konsistens */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
-        .modal-content { background-color: #fefefe; padding: 30px; border: 1px solid #888; width: 90%; max-width: 900px; border-radius: 8px; position: relative; }
-        .close-modal { position: absolute; top: 10px; right: 20px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-        
-        .legend-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.85rem; }
-        .legend-table th, .legend-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .legend-table th { background-color: #f1f3f5; color: #333; font-weight: 700; border-bottom: 2px solid #ddd; }
-        .legend-table tr:nth-child(even) { background-color: #f9f9f9; }
-        
-        .matrix-grid { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; margin-top: 10px; text-align: center; font-size: 0.85rem;}
-        .mtx-h { font-weight: bold; background: #eee; padding: 8px; border: 1px solid #ccc; display:flex; align-items:center; justify-content:center;}
-        .mtx-cell { padding: 8px; border: 1px solid #ccc; font-weight: bold; display:flex; align-items:center; justify-content:center;}
-        
-        .bg-r { background: #f8d7da; color: #721c24; } 
-        .bg-y { background: #fff3cd; color: #856404; } 
-        .bg-g { background: #d4edda; color: #155724; } 
-    </style>
 </head>
 <body>
 
@@ -96,77 +77,6 @@
             </tr>
         </tbody>
     </table>
-</div>
-
-<div id="legendModal" class="modal">
-    <div class="modal-content" style="max-width:900px;">
-        <span class="close-modal" onclick="closeLegend()">&times;</span>
-        <h2 style="color:var(--ffi-blue); margin-bottom: 20px;">Risk Classification (Ref. CAP 1059)</h2>
-        
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
-            
-            <div>
-                <h3 style="font-size:1.1rem; border-bottom:3px solid var(--ffi-blue); padding-bottom:5px; margin-bottom:10px;">Severity of Consequences</h3>
-                <table class="legend-table">
-                    <thead>
-                        <tr>
-                            <th style="width:25%">Definition</th>
-                            <th>Meaning</th>
-                            <th style="width:10%">Val</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Catastrophic</strong></td><td>Results in an accident, death or equipment destroyed</td><td><strong>5</strong></td></tr>
-                        <tr><td><strong>Hazardous</strong></td><td>Serious injury or major equipment damage</td><td><strong>4</strong></td></tr>
-                        <tr><td><strong>Major</strong></td><td>Serious incident or injury</td><td><strong>3</strong></td></tr>
-                        <tr><td><strong>Minor</strong></td><td>Results in a minor incident</td><td><strong>2</strong></td></tr>
-                        <tr><td><strong>Negligible</strong></td><td>Nuisance of little consequence</td><td><strong>1</strong></td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div>
-                <h3 style="font-size:1.1rem; border-bottom:3px solid var(--ffi-blue); padding-bottom:5px; margin-bottom:10px;">Likelihood of Occurrence</h3>
-                <table class="legend-table">
-                    <thead>
-                        <tr>
-                            <th style="width:25%">Definition</th>
-                            <th>Meaning</th>
-                            <th style="width:10%">Val</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Frequent</strong></td><td>Likely to occur many times (has occurred frequently)</td><td><strong>5</strong></td></tr>
-                        <tr><td><strong>Occasional</strong></td><td>Likely to occur sometimes (has occurred infrequently)</td><td><strong>4</strong></td></tr>
-                        <tr><td><strong>Remote</strong></td><td>Unlikely to occur but possible (has occurred rarely)</td><td><strong>3</strong></td></tr>
-                        <tr><td><strong>Improbable</strong></td><td>Very unlikely to occur (not known to have occurred)</td><td><strong>2</strong></td></tr>
-                        <tr><td><strong>Ex. Improbable</strong></td><td>Almost inconceivable that the event will occur</td><td><strong>1</strong></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <h3 style="font-size:1.1rem; border-bottom:3px solid var(--ffi-blue); padding-bottom:5px; margin-top:20px; margin-bottom:10px;">Risk Tolerability Matrix</h3>
-        <div class="matrix-grid">
-            <div class="mtx-h" style="background:#fff; border:none;"></div> 
-            <div class="mtx-h">Catastrophic (5)</div> <div class="mtx-h">Hazardous (4)</div> <div class="mtx-h">Major (3)</div> <div class="mtx-h">Minor (2)</div> <div class="mtx-h">Negligible (1)</div>
-            
-            <div class="mtx-h">Frequent (5)</div> 
-            <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div>
-
-            <div class="mtx-h">Occasional (4)</div> 
-            <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div>
-
-            <div class="mtx-h">Remote (3)</div> 
-            <div class="mtx-cell bg-r">Unacceptable</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Acceptable</div>
-
-            <div class="mtx-h">Improbable (2)</div> 
-            <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Acceptable</div> <div class="mtx-cell bg-g">Acceptable</div>
-
-            <div class="mtx-h">Ex. Improbable (1)</div> 
-            <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Acceptable</div> <div class="mtx-cell bg-g">Acceptable</div> <div class="mtx-cell bg-g">Acceptable</div> <div class="mtx-cell bg-g">Acceptable</div>
-        </div>
-    </div>
 </div>
 
 </body>

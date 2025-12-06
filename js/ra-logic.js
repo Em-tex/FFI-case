@@ -3,32 +3,42 @@
 let rowCount = 0;
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Sjekk om vi er på 'Create RA'-siden ved å se etter tabellkroppen
+    // Last inn Legend Modal
+    loadLegendModal();
+
+    // Start med én rad hvis vi er på create-siden
     if (document.getElementById('raTableBody')) {
-        addRow(); // Legg til første rad automatisk for å komme i gang
+        addRow(); 
     }
 });
 
-/* --- GENERISK MODAL LOGIKK --- */
-// Lukker alle modaler hvis man klikker på den mørke bakgrunnen (utenfor innholdet)
-window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-        event.target.style.display = "none";
-    }
+/* --- LOAD EXTERNAL HTML --- */
+function loadLegendModal() {
+    fetch('legend.html')
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load legend.html");
+            return response.text();
+        })
+        .then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
+        })
+        .catch(err => console.warn(err));
 }
 
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) event.target.style.display = "none";
+}
 function openLegend() {
     const m = document.getElementById('legendModal');
     if(m) m.style.display = 'flex';
 }
-
 function closeLegend() {
     const m = document.getElementById('legendModal');
     if(m) m.style.display = 'none';
 }
 
 
-/* --- CREATE RA FUNCTIONS --- */
+/* --- TABLE LOGIC --- */
 
 function addRow() {
     rowCount++;
@@ -37,96 +47,142 @@ function addRow() {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-        <td>H-0${rowCount}</td>
+        <td class="row-id">H-0${rowCount}</td>
         <td>
-            <input type="text" class="ra-input" placeholder="Hazard (e.g. Battery Fire)" style="font-weight:bold; margin-bottom:5px;">
-            <textarea class="ra-input" placeholder="Cause (e.g. Short circuit, puncture)"></textarea>
+            <input type="text" class="ra-input" placeholder="Hazard" style="font-weight:bold; margin-bottom:5px;">
+            <textarea class="ra-input" placeholder="Cause"></textarea>
+        </td>
+        
+        <td class="risk-cell" data-type="initial">
+            <select class="ra-input prob-select" onchange="updateRow(this)">
+                <option value="5">Prob: 5 (Freq)</option>
+                <option value="4">Prob: 4 (Occas)</option>
+                <option value="3" selected>Prob: 3 (Rem)</option>
+                <option value="2">Prob: 2 (Impr)</option>
+                <option value="1">Prob: 1 (Ex.Imp)</option>
+            </select>
+            <select class="ra-input sev-select" onchange="updateRow(this)">
+                <option value="5">Sev: 5 (Cat)</option>
+                <option value="4">Sev: 4 (Haz)</option>
+                <option value="3" selected>Sev: 3 (Maj)</option>
+                <option value="2">Sev: 2 (Min)</option>
+                <option value="1">Sev: 1 (Neg)</option>
+            </select>
+            <div class="risk-badge">...</div>
+        </td>
+
+        <td>
+            <textarea class="ra-input" placeholder="Barriers..."></textarea>
         </td>
         <td>
-            <textarea class="ra-input" placeholder="Preventative Barriers (e.g. Pre-flight check, proper storage)"></textarea>
+            <textarea class="ra-input" placeholder="Measures..."></textarea>
         </td>
-        <td>
-            <textarea class="ra-input" placeholder="Recovery Measures (e.g. Fire bag, PPE, safe distance)"></textarea>
+
+        <td class="risk-cell" data-type="residual">
+            <select class="ra-input prob-select" onchange="updateRow(this)">
+                <option value="5">Prob: 5 (Freq)</option>
+                <option value="4">Prob: 4 (Occas)</option>
+                <option value="3">Prob: 3 (Rem)</option>
+                <option value="2" selected>Prob: 2 (Impr)</option>
+                <option value="1">Prob: 1 (Ex.Imp)</option>
+            </select>
+            <select class="ra-input sev-select" onchange="updateRow(this)">
+                <option value="5">Sev: 5 (Cat)</option>
+                <option value="4">Sev: 4 (Haz)</option>
+                <option value="3" selected>Sev: 3 (Maj)</option>
+                <option value="2">Sev: 2 (Min)</option>
+                <option value="1">Sev: 1 (Neg)</option>
+            </select>
+            <div class="risk-badge">...</div>
         </td>
-        <td>
-            <div style="display:flex; gap:5px; margin-bottom:5px;">
-                <select class="ra-input" onchange="updateRowColor(this)">
-                    <option value="1">Prob: 1 (Ex. Impr.)</option>
-                    <option value="2">Prob: 2 (Improb.)</option>
-                    <option value="3" selected>Prob: 3 (Remote)</option>
-                    <option value="4">Prob: 4 (Occas.)</option>
-                    <option value="5">Prob: 5 (Freq.)</option>
-                </select>
-                <select class="ra-input" onchange="updateRowColor(this)">
-                    <option value="1">Sev: 1 (Negl.)</option>
-                    <option value="2">Sev: 2 (Minor)</option>
-                    <option value="3" selected>Sev: 3 (Major)</option>
-                    <option value="4">Sev: 4 (Haz.)</option>
-                    <option value="5">Sev: 5 (Cat.)</option>
-                </select>
-            </div>
-            <div class="risk-badge" style="text-align:center; padding:5px; border-radius:4px; font-weight:bold; background:#eee;">3C</div>
-        </td>
-        <td><button class="btn-sm" style="background:#dc3545; color:white;" onclick="removeRow(this)">X</button></td>
+
+        <td><button class="btn-sm" style="background:#dc3545; color:white;" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>
     `;
     tbody.appendChild(tr);
-    updateComplexity();
     
-    // Init farge for den nye raden
-    const selects = tr.querySelectorAll('select');
-    updateRowColor(selects[0]);
+    // Oppdater farger for begge risikokolonnene i den nye raden
+    const cells = tr.querySelectorAll('.risk-cell');
+    updateCellColor(cells[0]); // Initial
+    updateCellColor(cells[1]); // Residual
+    updateComplexity();
 }
 
 function removeRow(btn) {
-    btn.closest('tr').remove();
+    if (confirm("Are you sure you want to delete this hazard?")) {
+        btn.closest('tr').remove();
+        renumberRows();
+        updateComplexity();
+    }
+}
+
+function renumberRows() {
+    const rows = document.querySelectorAll('#raTableBody tr');
+    rowCount = 0;
+    rows.forEach(row => {
+        rowCount++;
+        const idCell = row.querySelector('.row-id');
+        if (idCell) idCell.innerText = `H-0${rowCount}`;
+    });
+}
+
+function updateRow(selectElement) {
+    // Finn cellen (Initial eller Residual) som ble endret
+    const cell = selectElement.closest('.risk-cell');
+    updateCellColor(cell);
     updateComplexity();
 }
 
-function updateRowColor(selectElement) {
-    const row = selectElement.closest('tr');
-    const selects = row.querySelectorAll('select');
-    const prob = parseInt(selects[0].value);
-    const sev = parseInt(selects[1].value);
-    const badge = row.querySelector('.risk-badge');
+function updateCellColor(cell) {
+    const prob = parseInt(cell.querySelector('.prob-select').value);
+    const sev = parseInt(cell.querySelector('.sev-select').value);
+    const badge = cell.querySelector('.risk-badge');
     
-    // CAP 1059 bruker tall, men ofte brukes bokstaver for severity i matriser for å skille dem.
-    // Her mapper jeg 1-5 til E-A for visning (5=A=Catastrophic).
     const sevLetter = ['E','D','C','B','A'][sev-1]; 
     badge.innerText = `${prob}${sevLetter}`; 
 
-    // Risk Logic (Basert på CAP 1059 Matrix)
-    // Red (Unacceptable): 5A, 5B, 5C, 4A, 4B, 3A
-    // Yellow (Review): 5D, 5E, 4C, 4D, 3B, 3C, 3D, 2A, 2B, 2C, 1A
-    // Green (Acceptable): 4E, 3E, 2D, 2E, 1B, 1C, 1D, 1E
-    
-    let color = '#d4edda'; // Green default
-    let text = '#155724';
+    // Risk Logic (CAP 1059)
+    let color = '#d4edda'; let text = '#155724'; let score = 1; // Green / Acceptable
 
-    // Rød sone (Unacceptable)
-    // Sev 5 (A): Prob 3,4,5
-    // Sev 4 (B): Prob 4,5
-    // Sev 3 (C): Prob 5
+    // Rød (Unacceptable)
     if ((sev === 5 && prob >= 3) || (sev === 4 && prob >= 4) || (sev === 3 && prob === 5)) {
-        color = '#f8d7da'; text = '#721c24';
+        color = '#f8d7da'; text = '#721c24'; score = 3;
     } 
-    // Gul sone (Review)
+    // Gul (Review)
     else if ((sev >= 3 && prob >= 2) || (sev === 2 && prob >= 4) || (sev === 5 && prob <= 2) || (sev === 1 && prob === 5)) {
-        color = '#fff3cd'; text = '#856404';
+        color = '#fff3cd'; text = '#856404'; score = 2;
     }
-    // Resten er grønn (Acceptable)
 
     badge.style.backgroundColor = color;
     badge.style.color = text;
+    
+    // Lagre score i dataset for complexity-beregning
+    cell.dataset.riskScore = score;
 }
 
 function updateComplexity() {
-    const tableBody = document.getElementById('raTableBody');
-    if (!tableBody) return;
+    const rows = document.querySelectorAll('#raTableBody tr');
+    let totalComplexity = 0;
     
-    const tableRows = tableBody.rows.length;
-    let score = tableRows * 10; // Base score per hazard
-    
-    // Visual logic
+    rows.forEach(row => {
+        // Hent initial og residual celler
+        const initCell = row.querySelector('.risk-cell[data-type="initial"]');
+        const resCell = row.querySelector('.risk-cell[data-type="residual"]');
+        
+        const initScore = parseInt(initCell.dataset.riskScore || 1);
+        const resScore = parseInt(resCell.dataset.riskScore || 1);
+        
+        // Beregn "Gap". 
+        // 3 (Rød) -> 1 (Grønn) = Gap på 2. (Stor reduksjon = Mye tiltak = Høy kompleksitet)
+        // 2 (Gul) -> 1 (Grønn) = Gap på 1.
+        // 3 (Rød) -> 3 (Rød) = Gap på 0 (Men fortsatt høy risiko, så vi legger til grunnscore)
+        
+        let gap = Math.max(0, initScore - resScore);
+        
+        // Formel: Base (5 poeng per fare) + (Gap * 15 poeng)
+        // Hvis du har redusert fra Rød til Grønn, får du 5 + 30 = 35 poeng for den linjen.
+        totalComplexity += 5 + (gap * 15);
+    });
+
     const fill = document.getElementById('compFill');
     const label = document.getElementById('compLabel');
     const scoreText = document.getElementById('compScore');
@@ -134,21 +190,22 @@ function updateComplexity() {
 
     if(!fill) return;
 
-    let width = Math.min(100, score);
+    // Skaler til 100% (si maks er 150 poeng for demo)
+    let width = Math.min(100, (totalComplexity / 1.5)); 
     fill.style.width = width + "%";
-    scoreText.innerText = score + " pts";
+    scoreText.innerText = totalComplexity + " pts";
 
-    if (score < 30) {
+    if (totalComplexity < 40) {
         fill.style.backgroundColor = "#28a745";
         label.innerText = "Low Complexity";
-        advice.innerText = "Standard operation. Routine monitoring sufficient.";
-    } else if (score < 60) {
+        advice.innerText = "Operation relies on standard procedures. Low management burden.";
+    } else if (totalComplexity < 80) {
         fill.style.backgroundColor = "#ffc107";
         label.innerText = "Medium Complexity";
-        advice.innerText = "Complex operation. Requires active management and briefing.";
+        advice.innerText = "Multiple barriers active. Requires briefing and monitoring of mitigations.";
     } else {
         fill.style.backgroundColor = "#dc3545";
         label.innerText = "High Complexity";
-        advice.innerText = "Highly complex. Consider splitting operation or reducing scope.";
+        advice.innerText = "Heavy reliance on complex barriers. Consider reducing scope or splitting operation.";
     }
 }

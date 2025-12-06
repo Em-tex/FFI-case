@@ -1,0 +1,76 @@
+<div id="legendModal" class="modal">
+    <div class="modal-content" style="max-width:900px;">
+        <span class="close-modal" onclick="closeLegend()">&times;</span>
+        
+        <div style="border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px;">
+            <h2 style="color:var(--ffi-blue); margin: 0;">Risk Classification Legend</h2>
+            <p style="color:#666; margin: 5px 0 0 0; font-size: 0.9rem;">Reference: CAP 1059 / CAP 795 Safety Management Systems</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+            
+            <div class="legend-box">
+                <h3 class="legend-header"><i class="fa-solid fa-burst"></i> Severity of Consequences</h3>
+                <table class="legend-table">
+                    <thead>
+                        <tr>
+                            <th style="width:25%">Def</th>
+                            <th>Meaning</th>
+                            <th style="width:10%">Val</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Catastrophic</strong></td><td>Accident, multiple deaths, equipment destroyed</td><td><strong>5</strong></td></tr>
+                        <tr><td><strong>Hazardous</strong></td><td>Serious injury, major equipment damage</td><td><strong>4</strong></td></tr>
+                        <tr><td><strong>Major</strong></td><td>Serious incident, minor injury</td><td><strong>3</strong></td></tr>
+                        <tr><td><strong>Minor</strong></td><td>Minor incident, nuisance, operating limitations</td><td><strong>2</strong></td></tr>
+                        <tr><td><strong>Negligible</strong></td><td>Little consequence</td><td><strong>1</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="legend-box">
+                <h3 class="legend-header"><i class="fa-solid fa-dice"></i> Likelihood of Occurrence</h3>
+                <table class="legend-table">
+                    <thead>
+                        <tr>
+                            <th style="width:25%">Def</th>
+                            <th>Meaning</th>
+                            <th style="width:10%">Val</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Frequent</strong></td><td>Likely to occur many times (frequently)</td><td><strong>5</strong></td></tr>
+                        <tr><td><strong>Occasional</strong></td><td>Likely to occur sometimes (infrequently)</td><td><strong>4</strong></td></tr>
+                        <tr><td><strong>Remote</strong></td><td>Unlikely, but possible (rarely)</td><td><strong>3</strong></td></tr>
+                        <tr><td><strong>Improbable</strong></td><td>Very unlikely (not known to have occurred)</td><td><strong>2</strong></td></tr>
+                        <tr><td><strong>Ex. Improbable</strong></td><td>Almost inconceivable event</td><td><strong>1</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <h3 class="legend-header"><i class="fa-solid fa-table-cells"></i> Risk Tolerability Matrix</h3>
+            <div class="matrix-grid">
+                <div class="mtx-h" style="background:#fff; border:none;"></div> 
+                <div class="mtx-h">Cat (5)</div> <div class="mtx-h">Haz (4)</div> <div class="mtx-h">Maj (3)</div> <div class="mtx-h">Min (2)</div> <div class="mtx-h">Neg (1)</div>
+                
+                <div class="mtx-h">Freq (5)</div> 
+                <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div>
+
+                <div class="mtx-h">Occ (4)</div> 
+                <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div>
+
+                <div class="mtx-h">Rem (3)</div> 
+                <div class="mtx-cell bg-r">Unacc</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Accept</div>
+
+                <div class="mtx-h">Imp (2)</div> 
+                <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Accept</div> <div class="mtx-cell bg-g">Accept</div>
+
+                <div class="mtx-h">Ex.Imp (1)</div> 
+                <div class="mtx-cell bg-y">Review</div> <div class="mtx-cell bg-g">Accept</div> <div class="mtx-cell bg-g">Accept</div> <div class="mtx-cell bg-g">Accept</div> <div class="mtx-cell bg-g">Accept</div>
+            </div>
+        </div>
+    </div>
+</div>
