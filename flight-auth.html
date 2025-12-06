@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Authorization - FFI UAS</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
-    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
     <script src="js/menu.js"></script>
-    <script src="js/map-logic.js"></script> </head>
+    <script src="js/map-logic.js"></script> 
+</head>
 <body>
 
 <div class="container">
@@ -21,10 +19,10 @@
             <span style="font-size: 0.95rem; color: #666;">Pre-flight Risk Assessment & Approval</span>
         </div>
         <div class="preset-container">
-            <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation" style="color:#dc3545"></i> Case Jørgen</button>
-            <button class="preset-btn" onclick="loadScenario('hydrogen_safe')"><i class="fa-solid fa-check" style="color:#28a745"></i> Jørgen (Fixed)</button>
-            <button class="preset-btn" onclick="loadScenario('attack_drone')"><i class="fa-solid fa-jet-fighter" style="color:#2c3e50"></i> Attack Drone</button>
-            <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-paper-plane" style="color:#6c757d"></i> Standard</button>
+            <button class="preset-btn" onclick="loadScenario('jorgen')"><i class="fa-solid fa-triangle-exclamation" style="color:#dc3545"></i> Case 1: Hydrogen</button>
+            <button class="preset-btn" onclick="loadScenario('attack_drone')"><i class="fa-solid fa-jet-fighter" style="color:#2c3e50"></i> Case 2: Attack</button>
+            <button class="preset-btn" onclick="loadScenario('standard')"><i class="fa-solid fa-check" style="color:#28a745"></i> Standard Ops</button>
+            <a href="pilot-overview.html" class="preset-btn" style="text-decoration:none; color:#333;"><i class="fa-solid fa-id-card"></i> Pilot Overview</a>
         </div>
     </div>
 
@@ -45,13 +43,14 @@
                 </select>
             </div>
             <div class="form-group" id="grp_weight">
-                <label>Weight (MTOM) <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('weight')"></i> <i class="fa-solid fa-triangle-exclamation warning-icon-dynamic"></i></label>
+                <label>Weight (MTOM) [BLF Ref] <i class="fa-solid fa-triangle-exclamation warning-icon-dynamic"></i></label>
                 <select id="weight">
-                    <option value="sub250">Sub 250 g</option>
-                    <option value="sub4">250 g - 4 kg</option>
-                    <option value="sub25">4 kg - 25 kg</option>
-                    <option value="sub150">25 kg - 150 kg</option>
-                    <option value="over150">Over 150 kg</option>
+                    <option value="sub250">Class 0 (< 250 g)</option>
+                    <option value="sub4">Class 1A (250 g - 4 kg)</option>
+                    <option value="sub25">Class 1A (4 kg - 25 kg)</option>
+                    <option value="sub150">Class 1B (25 kg - 150 kg)</option>
+                    <option value="sub600">Class 2 (150 kg - 600 kg)</option>
+                    <option value="over600">Class 3 (> 600 kg)</option>
                 </select>
             </div>
         </div>
@@ -61,7 +60,7 @@
                 <select id="classStatus">
                     <option value="c_class">C-Class (C0-C6)</option>
                     <option value="mass_produced">Mass Produced / Standard</option>
-                    <option value="experimental">Prototype / Experimental</option>
+                    <option value="experimental">Prototype / Experimental / Homebuilt</option>
                 </select>
             </div>
             <div class="form-group" id="grp_energySource">
@@ -75,16 +74,18 @@
         </div>
         <div class="grid-row">
             <div class="form-group">
-                <label>Autopilot</label>
+                <label>Autopilot Mode</label>
                 <select id="autopilot">
                     <option value="stabilized">Stabilization Assist / GNSS</option>
-                    <option value="manual">None / Full Manual</option>
+                    <option value="manual">None / Full Manual (ATTI)</option>
+                    <option value="automated">Fully Automated (Waypoints)</option>
                 </select>
             </div>
             <div class="form-group" id="grp_dangerousGoods">
                 <label>Payload / Dangerous Goods <i class="fa-solid fa-triangle-exclamation warning-icon-dynamic"></i></label>
                 <select id="dangerousGoods">
                     <option value="no">None</option>
+                    <option value="sensor">Passive Sensor / Camera</option>
                     <option value="yes">Live weapons or munitions</option>
                     <option value="pyro">Pyrotechnics</option>
                 </select>
@@ -111,8 +112,8 @@
                 <select id="area">
                     <option value="sparsely">Sparsely populated area</option>
                     <option value="populated">Populated area</option>
-                    <option value="controlled_ground">Controlled ground area</option>
-                    <option value="firing_range">Controlled firing range (Danger Area)</option>
+                    <option value="controlled_ground">Controlled ground area (Inngjerdet/Sikret)</option>
+                    <option value="firing_range">Controlled firing range (Skytefelt)</option>
                 </select>
             </div>
         </div>
@@ -135,7 +136,7 @@
         </div>
         <div class="grid-row">
             <div class="form-group" id="grp_riskAssessment">
-                <label>Approved Risk Assessment?</label>
+                <label>Approved Risk Assessment (SORA/PDRA)?</label>
                 <select id="riskAssessment">
                     <option value="no">No</option>
                     <option value="yes">Yes (Approved RA for this mission)</option>
@@ -160,11 +161,12 @@
         
         <div class="grid-row">
             <div class="form-group" id="grp_competence">
-                <label>EASA Competence Level <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('competence')"></i></label>
+                <label>Competence Level <i class="fa-solid fa-circle-info info-icon" onclick="showInfo('competence')"></i></label>
                 <select id="competence">
                     <option value="none">None / Expired</option>
-                    <option value="a1a3">A1 / A3 (Open)</option>
-                    <option value="a2">A2 (Open)</option>
+                    <option value="maak">MÅK (Militær Åpen Kategori)</option>
+                    <option value="a1a3">Open A1 / A3</option>
+                    <option value="a2">Open A2</option>
                     <option value="sts">STS / Specific</option>
                 </select>
             </div>
@@ -190,61 +192,61 @@
 
         <div style="display: flex; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 300px; border-right: 1px solid #eee;">
-                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
-                    <i class="fa-solid fa-gamepad"></i> Drone System Ratings
-                </div>
+                <div class="grp-header"><i class="fa-solid fa-gamepad"></i> Drone System Ratings</div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
                     <label class="checkbox-item" id="lbl_rate_multi"><input type="checkbox" id="rate_multi"> Multirotor</label>
                     <label class="checkbox-item" id="lbl_rate_fixed"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
                     <label class="checkbox-item" id="lbl_rate_heli"><input type="checkbox" id="rate_heli"> Helicopter</label>
-                    <label class="checkbox-item" id="lbl_rate_vtol"><input type="checkbox" id="rate_vtol"> VTOL</label>
-                    <label class="checkbox-item" id="lbl_rate_lta"><input type="checkbox" id="rate_lta"> Lighter than air</label>
                 </div>
             </div>
 
             <div style="flex: 1; min-width: 300px; border-right: 1px solid #eee;">
-                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
-                    <i class="fa-solid fa-weight-hanging"></i> Weight Ratings
-                </div>
+                <div class="grp-header"><i class="fa-solid fa-weight-hanging"></i> Weight Ratings</div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                    <label class="checkbox-item"><input type="checkbox" checked disabled> Sub 250g (All pilots)</label>
-                    <label class="checkbox-item" id="lbl_rate_4"><input type="checkbox" id="rate_4"> 250g - 4 kg</label>
-                    <label class="checkbox-item" id="lbl_rate_25"><input type="checkbox" id="rate_25"> 4 kg - 25 kg</label>
-                    <label class="checkbox-item" id="lbl_rate_150"><input type="checkbox" id="rate_150"> 25 kg - 150 kg</label>
-                    <label class="checkbox-item" id="lbl_rate_heavy"><input type="checkbox" id="rate_heavy"> Heavy (> 150 kg)</label>
+                    <label class="checkbox-item"><input type="checkbox" checked disabled> Sub 250g (All)</label>
+                    <label class="checkbox-item" id="lbl_rate_25"><input type="checkbox" id="rate_25"> < 25 kg (Class 1A)</label>
+                    <label class="checkbox-item" id="lbl_rate_150"><input type="checkbox" id="rate_150"> < 150 kg (Class 1B)</label>
+                    <label class="checkbox-item" id="lbl_rate_heavy"><input type="checkbox" id="rate_heavy"> > 150 kg (Class 2/3)</label>
                 </div>
             </div>
-
+            
             <div style="flex: 1; min-width: 300px;">
-                <div style="padding: 10px 15px; background: #f8f9fa; font-weight: 700; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee;">
-                    <i class="fa-solid fa-id-badge"></i> Operational Authorizations
-                </div>
+                <div class="grp-header"><i class="fa-solid fa-id-badge"></i> Operational Authorizations</div>
                 <div class="checkbox-grid" style="grid-template-columns: 1fr;">
-                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked disabled> VLOS (Standard)</label>
-                    <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS (Beyond Visual Line of Sight)</label>
-                    <label class="checkbox-item" id="lbl_rate_above120"><input type="checkbox" id="rate_above120"> Above 120m AGL</label>
+                    <label class="checkbox-item"><input type="checkbox" id="rate_vlos" checked disabled> VLOS</label>
+                    <label class="checkbox-item" id="lbl_rate_bvlos"><input type="checkbox" id="rate_bvlos"> BVLOS</label>
                     <label class="checkbox-item" id="lbl_rate_instructor"><input type="checkbox" id="rate_instructor"> Instructor</label>
                 </div>
             </div>
         </div>
-
+        
         <div style="padding: 15px; background: #fff; border-top: 1px solid #eee;">
             <label style="margin-bottom: 10px;"><i class="fa-solid fa-file-contract"></i> Qualified for Specific Risk Assessments</label>
             <div style="color:#666; font-size:0.85rem; margin-bottom:10px;">Check only if you have completed the read-in/training for the specific RA.</div>
             <div class="checkbox-grid">
-                <label class="checkbox-item" id="lbl_qual_heavy"><input type="checkbox" id="qual_heavy"> RA-002 (Heavy Lift)</label>
                 <label class="checkbox-item" id="lbl_qual_hydrogen"><input type="checkbox" id="qual_hydrogen"> RA-003 (Hydrogen)</label>
                 <label class="checkbox-item" id="lbl_qual_demo"><input type="checkbox" id="qual_demo"> RA-005 (Display/Demo)</label>
-                <label class="checkbox-item" id="lbl_qual_attack"><input type="checkbox" id="qual_attack"> RA-006 (Attack Drone)</label>
+                <label class="checkbox-item" id="lbl_qual_attack"><input type="checkbox" id="qual_attack"> RA-006 (Live Fire)</label>
             </div>
         </div>
-
     </div>
 
     <div id="result-box" class="res-gray">
-        <span class="result-icon"><i class="fa-solid fa-spinner"></i></span>
-        <span class="result-title">AWAITING INPUT</span>
-        <span class="result-desc">Please fill out all sections.</span>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            
+            <div class="gauge-wrapper">
+                <div class="gauge-body">
+                    <div class="gauge-fill"></div>
+                    <div class="gauge-cover"></div>
+                    <div class="gauge-needle" id="gaugeNeedle"></div>
+                </div>
+                <div class="gauge-label" id="gaugeText">Risk Score: 0</div>
+            </div>
+
+            <span class="result-title" style="margin-top:15px;">AWAITING INPUT</span>
+            <span class="result-desc">Please fill out all sections.</span>
+        </div>
+        
         <div class="warning-list" id="warningList"></div>
     </div>
 
@@ -262,7 +264,7 @@
             <div class="form-group" style="border:none; padding:0;">
                 <label>Date & Time</label>
                 <div style="display:flex; gap:10px;">
-                    <input type="date">
+                    <input type="date" id="flightDate" onchange="calculateRisk()">
                     <input type="time">
                 </div>
             </div>

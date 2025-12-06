@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Overview - FFI UAS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/menu.js"></script>
+    <style>
+        .pilot-card {
+            background: white; border: 1px solid #e0e0e0; border-radius: 8px; 
+            padding: 20px; display: flex; gap: 20px; margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .pilot-img {
+            width: 100px; height: 100px; background: #eee; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; color: #aaa;
+        }
+        .cert-badge {
+            display: inline-block; padding: 4px 8px; border-radius: 4px; 
+            background: #e3f2fd; color: #0d47a1; font-size: 0.8rem; font-weight: bold; margin-right: 5px; margin-bottom: 5px;
+        }
+        .cert-req { background: #f0f0f0; color: #555; border:1px solid #ddd;}
+        .cert-exp { background: #ffebee; color: #c62828; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .stat-box { background: #f9f9f9; padding: 10px; border-radius: 4px; text-align: center; }
+        .stat-val { font-size: 1.2rem; font-weight: bold; color: var(--ffi-blue); }
+        .stat-lbl { font-size: 0.8rem; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fa-solid fa-users-viewfinder"></i> Pilot Overview</h1>
+    <p style="color:#666; margin-bottom: 30px;">Oversikt over godkjente operatører og deres rettigheter i henhold til MÅK (140-11) og sivil lovgivning.</p>
+
+    <div class="pilot-card" style="border-left: 5px solid #28a745;">
+        <div class="pilot-img"><i class="fa-solid fa-user-astronaut"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Ole Normann (Senior Engineer)</h2>
+                <span class="tag tag-active">OPERATIONAL</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> Chief Instructor / System Owner</p>
+            <div style="margin-top:10px;">
+                <span class="cert-badge">A1/A3 (Civil)</span>
+                <span class="cert-badge">A2 (Civil)</span>
+                <span class="cert-badge" style="background:#03477F; color:white;">MÅK Kurs (Mil)</span>
+                <span class="cert-badge" style="background:#fff3cd; color:#856404;">RA-006 (Live Fire)</span>
+                <span class="cert-badge" style="background:#17a2b8; color:white;">Instructor</span>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-val">Recent</div>
+                    <div class="stat-lbl">Recency (< 30d)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Specific</div>
+                    <div class="stat-lbl">Category</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">All Types</div>
+                    <div class="stat-lbl">Ratings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pilot-card" style="border-left: 5px solid #dc3545;">
+        <div class="pilot-img" style="background:#fff5f5; color:#dc3545;"><i class="fa-solid fa-user-graduate"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Jørgen (Gjesteforsker)</h2>
+                <span class="tag" style="background:#dc3545; color:white;">RESTRICTED</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> Researcher (Civilian)</p>
+            
+            <div style="margin-top:10px;">
+                 <span class="cert-badge cert-exp">NO MILITARY CERTS</span>
+            </div>
+            
+            <div class="warning-list" style="display:block; margin-top:15px;">
+                <strong>Missing Requirements for MÅK:</strong>
+                <ul>
+                    <li>Civil A1/A3 Certificate</li>
+                    <li>FFI UAS Introduction Course</li>
+                    <li>Military Extension Course (MÅK)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="pilot-card" style="border-left: 5px solid #28a745;">
+        <div class="pilot-img"><i class="fa-solid fa-user"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Kari Nordmann 1 (Engineer)</h2>
+                <span class="tag tag-active">OPERATIONAL</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> UAS Operator</p>
+            <div style="margin-top:10px;">
+                <span class="cert-badge">A1/A3 (Civil)</span>
+                <span class="cert-badge" style="background:#03477F; color:white;">MÅK Kurs (Mil)</span>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-val">Recent</div>
+                    <div class="stat-lbl">Recency (< 30d)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">MÅK</div>
+                    <div class="stat-lbl">Category</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Multi</div>
+                    <div class="stat-lbl">Ratings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pilot-card" style="border-left: 5px solid #ffc107;">
+        <div class="pilot-img"><i class="fa-solid fa-user-clock"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Per Olsen (Technician)</h2>
+                <span class="tag tag-draft">EXPIRED RECENCY</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> Maintenance / Operator</p>
+            <div style="margin-top:10px;">
+                <span class="cert-badge">A1/A3 (Civil)</span>
+                <span class="cert-badge" style="background:#03477F; color:white;">MÅK Kurs (Mil)</span>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-val" style="color:#dc3545;">> 90 days</div>
+                    <div class="stat-lbl">Last Flight</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">MÅK</div>
+                    <div class="stat-lbl">Category</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Multi</div>
+                    <div class="stat-lbl">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pilot-card" style="border-left: 5px solid #6c757d;">
+        <div class="pilot-img"><i class="fa-solid fa-user"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Ola Nordmann 2 (Scientist)</h2>
+                <span class="tag" style="background:#e9ecef; color:#666;">LIMITED</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> Payload Specialist</p>
+            <div style="margin-top:10px;">
+                <span class="cert-badge">A1/A3 (Civil)</span>
+                <span class="cert-badge cert-req">Missing MÅK</span>
+            </div>
+            
+            <p style="font-size:0.9rem; color:#666; margin-top:10px;">
+                <em>Note: Can only operate commercially under 'Open Category' rules. Not cleared for military specific operations.</em>
+            </p>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-val">Recent</div>
+                    <div class="stat-lbl">Recency</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Open A1</div>
+                    <div class="stat-lbl">Category</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Sub 250g</div>
+                    <div class="stat-lbl">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pilot-card" style="border-left: 5px solid #17a2b8;">
+        <div class="pilot-img"><i class="fa-solid fa-user-pen"></i></div>
+        <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2 style="color:#333; font-size:1.3rem;">Kari Nordmann 3 (Student/Intern)</h2>
+                <span class="tag tag-active" style="background:#e0f7fa; color:#006064;">TRAINING</span>
+            </div>
+            <p style="margin: 5px 0;"><strong>Role:</strong> Master Student</p>
+            <div style="margin-top:10px;">
+                <span class="cert-badge">A1/A3 (Civil)</span>
+                <span class="cert-badge" style="background:#03477F; color:white;">MÅK Kurs (Pending)</span>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-val">N/A</div>
+                    <div class="stat-lbl">Recency</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Open</div>
+                    <div class="stat-lbl">Category</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">Multi</div>
+                    <div class="stat-lbl">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="flight-auth.html" class="btn">&larr; Back to Authorization</a>
+    </div>
+
+</div>
+
+</body>
+</html>
