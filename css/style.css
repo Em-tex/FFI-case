@@ -257,7 +257,7 @@ select:focus, input:focus {
 .gauge-wrapper {
     position: relative;
     width: 200px;
-    height: 140px; /* Økt fra 110px for å vise tekst under */
+    height: 140px; /* Increased to fit text below */
     margin: 0 auto;
     overflow: hidden;
     text-align: center;
@@ -277,7 +277,7 @@ select:focus, input:focus {
     position: absolute; top: 20px; left: 20px; width: 160px; height: 160px;
     background: white; border-radius: 50%; z-index: 2;
 }
-/* Juster gauge cover basert på bakgrunn */
+/* Adjust gauge cover based on background */
 .res-gray .gauge-cover { background: #6c757d; }
 .res-green .gauge-cover { background: #d4edda; }
 .res-yellow .gauge-cover { background: #fff3cd; }

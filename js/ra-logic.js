@@ -34,10 +34,7 @@ const templateSections = [
 ];
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. Load Legend Modal
     loadLegendModal();
-
-    // 2. Initialize template if on Create RA page
     if (document.getElementById('raTableContainer')) {
         initTemplate(); 
     }
@@ -65,14 +62,12 @@ function addSection(title = "", hazards = []) {
 
     const tbody = document.createElement('tbody');
     tbody.id = tbodyId;
-    tbody.dataset.title = displayTitle; // Store title for saving
+    tbody.dataset.title = displayTitle; 
+    
     tbody.innerHTML = `
         <tr class="section-header-row">
-            <td colspan="7">
+            <td colspan="9">
                 <span style="vertical-align:middle;">${displayTitle}</span>
-                <button class="btn-xs" onclick="addRowToSection('${tbodyId}')">
-                    <i class="fa-solid fa-plus"></i> Add Row
-                </button>
             </td>
         </tr>
     `;
@@ -83,8 +78,24 @@ function addSection(title = "", hazards = []) {
             addRowToSection(tbodyId, hazardName);
         });
     } else {
-        addRowToSection(tbodyId); // Add one empty row for new manual sections
+        addRowToSection(tbodyId); 
     }
+
+    addFooterRow(tbodyId);
+}
+
+function addFooterRow(tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    const tr = document.createElement('tr');
+    tr.className = "section-footer"; 
+    tr.innerHTML = `
+        <td colspan="9" style="padding: 10px; background-color: #fff; border-bottom: 2px solid #ddd;">
+            <button class="btn-sm" style="background-color: #f8f9fa; color: #333; border: 1px solid #ccc; width: 100%; text-align:center;" onclick="addRowToSection('${tbodyId}')">
+                <i class="fa-solid fa-plus"></i> Add Hazard to "${tbody.dataset.title}"
+            </button>
+        </td>
+    `;
+    tbody.appendChild(tr);
 }
 
 /* --- ROW LOGIC --- */
@@ -95,15 +106,20 @@ function addRowToSection(tbodyId, hazardText = "") {
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
     
-    // Her settes delete-knappen til en diskret gråfarge som blir rød ved hover
     const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
     const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
 
     tr.innerHTML = `
         <td class="row-id" style="font-size:0.8rem; color:#888;">...</td>
+        
         <td>
-            <input type="text" class="ra-input inp-hazard" placeholder="Hazard" value="${hazardText}" style="font-weight:bold; margin-bottom:5px;">
+            <textarea class="ra-input inp-hazard" placeholder="Hazard">${hazardText}</textarea>
+        </td>
+        <td>
             <textarea class="ra-input inp-cause" placeholder="Cause"></textarea>
+        </td>
+        <td>
+            <textarea class="ra-input inp-effect" placeholder="Effect"></textarea>
         </td>
         
         <td class="risk-cell" data-type="initial">
@@ -118,7 +134,7 @@ function addRowToSection(tbodyId, hazardText = "") {
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
                 <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Hazard)</option>
+                <option value="4" class="opt-sev-4">4 (Haz)</option>
                 <option value="3" class="opt-sev-3">3 (Major)</option>
                 <option value="2" class="opt-sev-2">2 (Minor)</option>
                 <option value="1" class="opt-sev-1">1 (Negl)</option>
@@ -141,7 +157,7 @@ function addRowToSection(tbodyId, hazardText = "") {
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
                 <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Hazard)</option>
+                <option value="4" class="opt-sev-4">4 (Haz)</option>
                 <option value="3" class="opt-sev-3">3 (Major)</option>
                 <option value="2" class="opt-sev-2">2 (Minor)</option>
                 <option value="1" class="opt-sev-1">1 (Negl)</option>
@@ -149,13 +165,20 @@ function addRowToSection(tbodyId, hazardText = "") {
             <div class="risk-badge">...</div>
         </td>
 
-        <td style="text-align:center;">
+        <td style="text-align:center; vertical-align:middle;">
             <button style="${deleteBtnStyle}" onclick="removeRow(this)" title="Delete Row">
                 ${deleteIcon}
             </button>
         </td>
     `;
-    tbody.appendChild(tr);
+
+    const footer = tbody.querySelector('.section-footer');
+    if (footer) {
+        tbody.insertBefore(tr, footer);
+    } else {
+        tbody.appendChild(tr);
+    }
+    
     renumberRows();
 }
 
@@ -189,9 +212,9 @@ function updateSelectStyle(select) {
     select.className = 'ra-input ' + (select.classList.contains('prob-select') ? 'prob-select' : 'sev-select');
     
     if (val === 0) select.classList.add('bg-white');
-    else if (val >= 4) select.classList.add('opt-sev-5'); // Red-ish
-    else if (val === 3) select.classList.add('opt-sev-3'); // Yellow-ish
-    else select.classList.add('opt-sev-2'); // Green-ish
+    else if (val >= 4) select.classList.add('opt-sev-5'); 
+    else if (val === 3) select.classList.add('opt-sev-3'); 
+    else select.classList.add('opt-sev-2'); 
 }
 
 function updateCellColor(cell) {
@@ -210,16 +233,13 @@ function updateCellColor(cell) {
     const sevLetter = ['E','D','C','B','A'][sev-1]; 
     badge.innerText = `${prob}${sevLetter}`; 
 
-    // Risk Logic (CAP 1059)
     let color = '#d4edda'; let text = '#155724'; let score = 1;
 
-    // Red (Unacceptable)
     if ((sev === 5 && prob >= 3) || (sev === 4 && prob >= 4) || (sev === 3 && prob === 5)) {
-        color = '#f8d7da'; text = '#721c24'; score = 3;
+        color = '#f8d7da'; text = '#721c24'; score = 3; // Red
     } 
-    // Yellow (Review)
     else if ((sev >= 3 && prob >= 2) || (sev === 2 && prob >= 4) || (sev === 5 && prob <= 2) || (sev === 1 && prob === 5)) {
-        color = '#fff3cd'; text = '#856404'; score = 2;
+        color = '#fff3cd'; text = '#856404'; score = 2; // Yellow
     }
 
     badge.style.backgroundColor = color;
@@ -248,6 +268,7 @@ function updateComplexity() {
     const fill = document.getElementById('compFill');
     const scoreText = document.getElementById('compScore');
     const label = document.getElementById('compLabel');
+    const advice = document.getElementById('compAdvice');
     
     if(!fill) return;
 
@@ -257,10 +278,13 @@ function updateComplexity() {
 
     if (totalComplexity < 80) {
         fill.style.backgroundColor = "#28a745"; label.innerText = "Low Complexity";
+        advice.innerText = "Standard operation. Routine monitoring sufficient.";
     } else if (totalComplexity < 160) {
         fill.style.backgroundColor = "#ffc107"; label.innerText = "Medium Complexity";
+        advice.innerText = "Operation relies on barriers. Briefing on mitigations required.";
     } else {
         fill.style.backgroundColor = "#dc3545"; label.innerText = "High Complexity";
+        advice.innerText = "High reliance on barriers or high residual risk. Consider reducing scope.";
     }
 }
 
@@ -273,16 +297,15 @@ function downloadRiskAssessment() {
     
     const sections = [];
     
-    // Iterate through sections (tbodies)
     const tbodies = document.querySelectorAll('#raTableContainer tbody');
     tbodies.forEach(tbody => {
         const sectionTitle = tbody.dataset.title || "Unknown Section";
         const rows = [];
         
-        // Iterate through rows
         tbody.querySelectorAll('.hazard-row').forEach(tr => {
             const hazard = tr.querySelector('.inp-hazard').value;
             const cause = tr.querySelector('.inp-cause').value;
+            const effect = tr.querySelector('.inp-effect').value;
             
             // Initial Risk
             const initCell = tr.querySelector('.risk-cell[data-type="initial"]');
@@ -299,7 +322,7 @@ function downloadRiskAssessment() {
             const resSev = resCell.querySelector('.sev-select').value;
             
             rows.push({
-                hazard, cause, 
+                hazard, cause, effect,
                 initial: { prob: initProb, sev: initSev },
                 barriers, measures,
                 residual: { prob: resProb, sev: resSev }
@@ -314,7 +337,6 @@ function downloadRiskAssessment() {
         sections: sections
     };
 
-    // Create Download Link
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
