@@ -9,11 +9,11 @@ function initMap() {
         return;
     }
 
-    // Startposisjon: Sentrert over Norge, zoomet ut
-    // Ca. Brønnøysund for å dekke hele landet
+    // Startposisjon: Sentrert over Norge (Justert vestover fra Sverige)
+    // 65.0, 10.0 treffer bedre midt på landet visuelt ved zoom 4
     const startLat = 65.0000; 
-    const startLon = 13.0000;
-    const zoomLevel = 4; // Zoomet ut for å se hele landet
+    const startLon = 10.0000;
+    const zoomLevel = 4; 
 
     map = L.map('map').setView([startLat, startLon], zoomLevel);
 
@@ -35,9 +35,12 @@ function placeMarker(latlng) {
     const locationInput = document.getElementById('locationInput');
     if (locationInput) {
         locationInput.value = `${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`;
-        locationInput.classList.remove('input-missing'); // Fjern gul markering når valgt
+        locationInput.classList.remove('input-missing'); 
     }
-    calculateRisk(); // Oppdater skjemaet (fjerner "Awaiting" status hvis dette var siste felt)
+    // Oppdater risikoskjemaet hvis funksjonen er tilgjengelig
+    if (typeof calculateRisk === "function") {
+        calculateRisk(); 
+    }
 }
 
 function clearMap() {
@@ -48,9 +51,13 @@ function clearMap() {
     const locationInput = document.getElementById('locationInput');
     if (locationInput) {
         locationInput.value = '';
-        // Trigge re-kalkulering for å sette feltet til gult igjen hvis nødvendig
-        calculateRisk(); 
+        if (typeof calculateRisk === "function") {
+            calculateRisk(); 
+        }
     }
+    
+    // Reset view til Norge
+    if(map) map.setView([65.0000, 10.0000], 4);
 }
 
 window.initMap = initMap;
