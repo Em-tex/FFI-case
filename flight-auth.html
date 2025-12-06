@@ -6,6 +6,7 @@
     <title>Flight Authorization - FFI UAS</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/menu.js"></script>
     <script src="js/map-logic.js"></script> 
@@ -271,14 +272,20 @@
                 <label>Pilot in Command</label>
                 <input type="text" placeholder="Enter full name">
             </div>
+            
             <div class="form-group" style="border:none; padding:0;">
                 <label>Date & Time</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="date" id="flightDate" onchange="calculateRisk()">
-                    <input type="time" id="flightTime" onclick="try{this.showPicker()}catch(e){}">
+                <div style="display:flex; gap:10px; align-items: center;">
+                    <input type="date" id="flightDate" onchange="calculateRisk()" style="cursor:pointer;">
+                    
+                    <div style="position:relative; flex:1;">
+                        <input type="time" id="flightTime" onclick="try{this.showPicker()}catch(e){}" style="width:100%; cursor:pointer; padding-right:30px;">
+                        <i class="fa-solid fa-clock" onclick="document.getElementById('flightTime').showPicker()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#666; cursor:pointer;"></i>
+                    </div>
                 </div>
             </div>
         </div>
+        
         <div class="grid-row">
             <div class="form-group" style="border:none; padding:0;">
                 <label>Location (Coordinates/Name)</label>
