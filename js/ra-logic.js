@@ -1,6 +1,7 @@
 /* js/ra-logic.js */
 
 let sectionCount = 0;
+const STORAGE_KEY = 'ffi_uas_ra_draft';
 
 // Template Data from Word Document (MUAS Risk Assessment)
 const templateSections = [
@@ -35,13 +36,139 @@ const templateSections = [
 
 document.addEventListener("DOMContentLoaded", function() {
     loadLegendModal();
+    
+    // Only run if on Create RA page
     if (document.getElementById('raTableContainer')) {
-        initTemplate(); 
+        if (hasSavedData()) {
+            loadFromStorage();
+        } else {
+            initTemplate(); 
+        }
+        
+        // Add global event listener for auto-save
+        document.getElementById('raTableContainer').addEventListener('input', saveDataToStorage);
+        document.getElementById('raTableContainer').addEventListener('change', saveDataToStorage);
+        
+        // Header fields
+        document.getElementById('raName').addEventListener('input', saveDataToStorage);
+        document.getElementById('raDate').addEventListener('input', saveDataToStorage);
+        document.getElementById('raAssessor').addEventListener('input', saveDataToStorage);
     }
 });
 
+/* --- STORAGE LOGIC --- */
+function hasSavedData() {
+    return localStorage.getItem(STORAGE_KEY) !== null;
+}
+
+function saveDataToStorage() {
+    const data = gatherFormData();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadFromStorage() {
+    try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        
+        // Restore Meta
+        document.getElementById('raName').value = data.meta.name || "";
+        document.getElementById('raDate').value = data.meta.date || "";
+        document.getElementById('raAssessor').value = data.meta.assessor || "";
+
+        // Restore Sections & Rows
+        const container = document.getElementById('raTableContainer');
+        container.innerHTML = `
+        <colgroup>
+            <col style="width: 3%;"> <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 12%;"> 
+            <col style="width: 8%;"> <col style="width: 15%;"> <col style="width: 15%;"> <col style="width: 8%;"> <col style="width: 3%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>ID</th> <th>Hazard</th> <th>Cause</th> <th>Effect</th> <th>Initial Risk</th> 
+                <th>Preventative Barriers<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Probability)</span></th> 
+                <th>Recovery Measures<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Severity)</span></th> 
+                <th>Residual Risk</th> <th></th>
+            </tr>
+        </thead>`; // Reset table
+
+        sectionCount = 0; // Reset counter
+
+        if (data.sections && data.sections.length > 0) {
+            data.sections.forEach(sec => {
+                addSection(sec.title, [], true); // Create section wrapper without rows
+                const tbodyId = `tbody-sec-${sectionCount}`;
+                
+                sec.rows.forEach(row => {
+                    addRowToSection(tbodyId, row); // Pass row data object
+                });
+            });
+        } else {
+            initTemplate(); // Fallback if empty sections
+        }
+        
+        updateComplexity();
+
+    } catch (e) {
+        console.error("Failed to load save:", e);
+        initTemplate(); // Fallback on error
+    }
+}
+
+function clearForm() {
+    if (confirm("Are you sure you want to clear the form? All unsaved data will be lost.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload(); // Reload to reset to template
+    }
+}
+
+/* --- DATA GATHERING (Shared for Save & Download) --- */
+function gatherFormData() {
+    const raName = document.getElementById('raName').value;
+    const date = document.getElementById('raDate').value;
+    const assessor = document.getElementById('raAssessor').value;
+    const complexityScore = document.getElementById('compScore').innerText;
+    
+    const sections = [];
+    
+    const tbodies = document.querySelectorAll('#raTableContainer tbody');
+    tbodies.forEach(tbody => {
+        const sectionTitle = tbody.dataset.title || "Unknown Section";
+        const rows = [];
+        
+        tbody.querySelectorAll('.hazard-row').forEach(tr => {
+            rows.push({
+                hazard: tr.querySelector('.inp-hazard').value,
+                cause: tr.querySelector('.inp-cause').value,
+                effect: tr.querySelector('.inp-effect').value,
+                initial: { 
+                    prob: tr.querySelector('.risk-cell[data-type="initial"] .prob-select').value, 
+                    sev: tr.querySelector('.risk-cell[data-type="initial"] .sev-select').value 
+                },
+                barriers: tr.querySelector('.inp-barriers').value,
+                measures: tr.querySelector('.inp-measures').value,
+                residual: { 
+                    prob: tr.querySelector('.risk-cell[data-type="residual"] .prob-select').value, 
+                    sev: tr.querySelector('.risk-cell[data-type="residual"] .sev-select').value 
+                }
+            });
+        });
+        sections.push({ title: sectionTitle, rows: rows });
+    });
+
+    return {
+        meta: { name: raName, date, assessor, complexity: complexityScore },
+        sections: sections
+    };
+}
+
 /* --- TEMPLATE INITIALIZATION --- */
 function initTemplate() {
+    const container = document.getElementById('raTableContainer');
+    // Ensure header exists (if re-initializing)
+    if (!container.querySelector('thead')) {
+         // (Header is in HTML, so usually fine, but safe to keep logic simple)
+    }
+
     templateSections.forEach(section => {
         addSection(section.title, section.hazards);
     });
@@ -49,7 +176,7 @@ function initTemplate() {
 }
 
 /* --- SECTION LOGIC --- */
-function addSection(title = "", hazards = []) {
+function addSection(title = "", hazards = [], skipRows = false) {
     sectionCount++;
     const container = document.getElementById('raTableContainer');
     const tbodyId = `tbody-sec-${sectionCount}`;
@@ -64,7 +191,6 @@ function addSection(title = "", hazards = []) {
     tbody.id = tbodyId;
     tbody.dataset.title = displayTitle; 
     
-    // Header row
     tbody.innerHTML = `
         <tr class="section-header-row">
             <td colspan="9">
@@ -74,17 +200,18 @@ function addSection(title = "", hazards = []) {
     `;
     container.appendChild(tbody);
 
-    // Add hazards or empty row
-    if (hazards.length > 0) {
-        hazards.forEach(hazardName => {
-            addRowToSection(tbodyId, hazardName);
-        });
-    } else {
-        addRowToSection(tbodyId); 
+    if (!skipRows) {
+        if (hazards.length > 0) {
+            hazards.forEach(hazardName => {
+                addRowToSection(tbodyId, { hazard: hazardName });
+            });
+        } else {
+            addRowToSection(tbodyId); 
+        }
     }
 
-    // Add footer row with "Add Hazard" button
     addFooterRow(tbodyId);
+    saveDataToStorage(); // Save on new section
 }
 
 function addFooterRow(tbodyId) {
@@ -102,69 +229,73 @@ function addFooterRow(tbodyId) {
 }
 
 /* --- ROW LOGIC --- */
-function addRowToSection(tbodyId, hazardText = "") {
+function addRowToSection(tbodyId, rowData = {}) {
     const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
+
+    // Default values
+    const d = {
+        hazard: rowData.hazard || "",
+        cause: rowData.cause || "",
+        effect: rowData.effect || "",
+        initial: rowData.initial || { prob: 0, sev: 0 },
+        barriers: rowData.barriers || "",
+        measures: rowData.measures || "",
+        residual: rowData.residual || { prob: 0, sev: 0 }
+    };
 
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
     
-    // Grey delete button
     const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
     const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
 
     tr.innerHTML = `
         <td class="row-id" style="font-size:0.8rem; color:#888;">...</td>
         
-        <td>
-            <textarea class="ra-input inp-hazard" placeholder="Hazard">${hazardText}</textarea>
-        </td>
-        <td>
-            <textarea class="ra-input inp-cause" placeholder="Cause"></textarea>
-        </td>
-        <td>
-            <textarea class="ra-input inp-effect" placeholder="Effect"></textarea>
-        </td>
+        <td><textarea class="ra-input inp-hazard" placeholder="Hazard">${d.hazard}</textarea></td>
+        <td><textarea class="ra-input inp-cause" placeholder="Cause">${d.cause}</textarea></td>
+        <td><textarea class="ra-input inp-effect" placeholder="Effect">${d.effect}</textarea></td>
         
         <td class="risk-cell" data-type="initial">
             <select class="ra-input prob-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Prob -</option>
-                <option value="5" class="opt-prob-5">5 (Freq)</option>
-                <option value="4" class="opt-prob-4">4 (Occas)</option>
-                <option value="3" class="opt-prob-3">3 (Remote)</option>
-                <option value="2" class="opt-prob-2">2 (Impr)</option>
-                <option value="1" class="opt-prob-1">1 (Ex.Imp)</option>
+                <option value="5" ${d.initial.prob==5?'selected':''} class="opt-prob-5">5 (Freq)</option>
+                <option value="4" ${d.initial.prob==4?'selected':''} class="opt-prob-4">4 (Occas)</option>
+                <option value="3" ${d.initial.prob==3?'selected':''} class="opt-prob-3">3 (Remote)</option>
+                <option value="2" ${d.initial.prob==2?'selected':''} class="opt-prob-2">2 (Impr)</option>
+                <option value="1" ${d.initial.prob==1?'selected':''} class="opt-prob-1">1 (Ex.Imp)</option>
             </select>
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
-                <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Haz)</option>
-                <option value="3" class="opt-sev-3">3 (Major)</option>
-                <option value="2" class="opt-sev-2">2 (Minor)</option>
-                <option value="1" class="opt-sev-1">1 (Negl)</option>
+                <option value="5" ${d.initial.sev==5?'selected':''} class="opt-sev-5">5 (Cat)</option>
+                <option value="4" ${d.initial.sev==4?'selected':''} class="opt-sev-4">4 (Haz)</option>
+                <option value="3" ${d.initial.sev==3?'selected':''} class="opt-sev-3">3 (Major)</option>
+                <option value="2" ${d.initial.sev==2?'selected':''} class="opt-sev-2">2 (Minor)</option>
+                <option value="1" ${d.initial.sev==1?'selected':''} class="opt-sev-1">1 (Negl)</option>
             </select>
             <div class="risk-badge">...</div>
         </td>
 
-        <td><textarea class="ra-input inp-barriers" placeholder=""></textarea></td>
-        <td><textarea class="ra-input inp-measures" placeholder=""></textarea></td>
+        <td><textarea class="ra-input inp-barriers" placeholder="">${d.barriers}</textarea></td>
+        <td><textarea class="ra-input inp-measures" placeholder="">${d.measures}</textarea></td>
 
         <td class="risk-cell" data-type="residual">
             <select class="ra-input prob-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Prob -</option>
-                <option value="5" class="opt-prob-5">5 (Freq)</option>
-                <option value="4" class="opt-prob-4">4 (Occas)</option>
-                <option value="3" class="opt-prob-3">3 (Remote)</option>
-                <option value="2" class="opt-prob-2">2 (Impr)</option>
-                <option value="1" class="opt-prob-1">1 (Ex.Imp)</option>
+                <option value="5" ${d.residual.prob==5?'selected':''} class="opt-prob-5">5 (Freq)</option>
+                <option value="4" ${d.residual.prob==4?'selected':''} class="opt-prob-4">4 (Occas)</option>
+                <option value="3" ${d.residual.prob==3?'selected':''} class="opt-prob-3">3 (Remote)</option>
+                <option value="2" ${d.residual.prob==2?'selected':''} class="opt-prob-2">2 (Impr)</option>
+                <option value="1" ${d.residual.prob==1?'selected':''} class="opt-prob-1">1 (Ex.Imp)</option>
             </select>
             <select class="ra-input sev-select" onchange="updateRow(this)">
                 <option value="0" class="bg-white">- Sev -</option>
-                <option value="5" class="opt-sev-5">5 (Cat)</option>
-                <option value="4" class="opt-sev-4">4 (Haz)</option>
-                <option value="3" class="opt-sev-3">3 (Major)</option>
-                <option value="2" class="opt-sev-2">2 (Minor)</option>
-                <option value="1" class="opt-sev-1">1 (Negl)</option>
+                <option value="5" ${d.residual.sev==5?'selected':''} class="opt-sev-5">5 (Cat)</option>
+                <option value="4" ${d.residual.sev==4?'selected':''} class="opt-sev-4">4 (Haz)</option>
+                <option value="3" ${d.residual.sev==3?'selected':''} class="opt-sev-3">3 (Major)</option>
+                <option value="2" ${d.residual.sev==2?'selected':''} class="opt-sev-2">2 (Minor)</option>
+                <option value="1" ${d.residual.sev==1?'selected':''} class="opt-sev-1">1 (Negl)</option>
             </select>
             <div class="risk-badge">...</div>
         </td>
@@ -176,7 +307,6 @@ function addRowToSection(tbodyId, hazardText = "") {
         </td>
     `;
 
-    // Insert before footer
     const footer = tbody.querySelector('.section-footer');
     if (footer) {
         tbody.insertBefore(tr, footer);
@@ -184,7 +314,15 @@ function addRowToSection(tbodyId, hazardText = "") {
         tbody.appendChild(tr);
     }
     
+    // Initial color update
+    updateCellColor(tr.querySelector('.risk-cell[data-type="initial"]'));
+    updateCellColor(tr.querySelector('.risk-cell[data-type="residual"]'));
+    
+    // Update dropdown colors
+    tr.querySelectorAll('select').forEach(s => updateSelectStyle(s));
+
     renumberRows();
+    saveDataToStorage(); // Auto-save on add
 }
 
 function removeRow(btn) {
@@ -192,6 +330,7 @@ function removeRow(btn) {
         btn.closest('tr').remove();
         renumberRows();
         updateComplexity();
+        saveDataToStorage(); // Auto-save on remove
     }
 }
 
@@ -210,6 +349,7 @@ function updateRow(selectElement) {
     updateCellColor(cell);
     updateSelectStyle(selectElement); 
     updateComplexity();
+    saveDataToStorage(); // Auto-save on change
 }
 
 function updateSelectStyle(select) {
@@ -293,59 +433,14 @@ function updateComplexity() {
     }
 }
 
-/* --- DOWNLOAD / SAVE FUNCTION --- */
 function downloadRiskAssessment() {
-    const raName = document.getElementById('raName').value || "Risk_Assessment";
-    const date = document.getElementById('raDate').value;
-    const assessor = document.getElementById('raAssessor').value;
-    const complexityScore = document.getElementById('compScore').innerText;
-    
-    const sections = [];
-    
-    const tbodies = document.querySelectorAll('#raTableContainer tbody');
-    tbodies.forEach(tbody => {
-        const sectionTitle = tbody.dataset.title || "Unknown Section";
-        const rows = [];
-        
-        tbody.querySelectorAll('.hazard-row').forEach(tr => {
-            const hazard = tr.querySelector('.inp-hazard').value;
-            const cause = tr.querySelector('.inp-cause').value;
-            const effect = tr.querySelector('.inp-effect').value;
-            
-            // Initial Risk
-            const initCell = tr.querySelector('.risk-cell[data-type="initial"]');
-            const initProb = initCell.querySelector('.prob-select').value;
-            const initSev = initCell.querySelector('.sev-select').value;
-            
-            // Mitigations
-            const barriers = tr.querySelector('.inp-barriers').value;
-            const measures = tr.querySelector('.inp-measures').value;
-            
-            // Residual Risk
-            const resCell = tr.querySelector('.risk-cell[data-type="residual"]');
-            const resProb = resCell.querySelector('.prob-select').value;
-            const resSev = resCell.querySelector('.sev-select').value;
-            
-            rows.push({
-                hazard, cause, effect,
-                initial: { prob: initProb, sev: initSev },
-                barriers, measures,
-                residual: { prob: resProb, sev: resSev }
-            });
-        });
-        
-        sections.push({ title: sectionTitle, rows: rows });
-    });
-
-    const data = {
-        meta: { name: raName, date, assessor, complexity: complexityScore },
-        sections: sections
-    };
-
+    const data = gatherFormData();
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
     const downloadAnchorNode = document.createElement('a');
+    const filename = (data.meta.name || "Risk_Assessment").replace(/\s+/g, '_') + ".json";
+    
     downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", raName.replace(/\s+/g, '_') + ".json");
+    downloadAnchorNode.setAttribute("download", filename);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
