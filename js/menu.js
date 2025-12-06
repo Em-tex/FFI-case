@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
         { name: "Home", link: "index.html", icon: "fa-house" },
         { name: "Flight Authorization", link: "flight-auth.html", icon: "fa-check-to-slot" },
         { name: "Risk Assessments", link: "risk-assessments.html", icon: "fa-folder-open" },
+        { name: "Create RA", link: "create-ra.html", icon: "fa-pen-to-square" }, // NY SIDE
         { name: "Map", link: "https://www.dronesoner.no", icon: "fa-map", target: "_blank" }
     ];
 
@@ -24,9 +25,14 @@ document.addEventListener("DOMContentLoaded", function() {
         menuHtml += `<li><a href="${item.link}" ${isActive} ${target}><i class="fa-solid ${item.icon}"></i> ${item.name}</a></li>`;
     });
 
+    // Pilot Overview flyttet hit (Management section til høyre)
     menuHtml += `
         </ul>
-        <div style="flex:1; text-align:right;">
+        <div style="flex:1; text-align:right; display:flex; justify-content:flex-end; gap:15px; align-items:center;">
+            <a href="pilot-overview.html" style="font-size: 0.9rem; color: rgba(255,255,255,0.8); text-decoration:none; padding:0; border:none;">
+                <i class="fa-solid fa-users-viewfinder"></i> Pilot Overview
+            </a>
+            <span style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">|</span>
             <span style="font-size: 0.9rem; color: rgba(255,255,255,0.8);"><i class="fa-solid fa-user-astronaut"></i> Pilot Mode</span>
         </div>
     </nav>`;

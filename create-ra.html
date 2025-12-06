@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Risk Assessment - FFI UAS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/menu.js"></script>
+    <style>
+        .ra-table th { font-size: 0.85rem; vertical-align: top; }
+        .ra-table td { vertical-align: top; padding: 8px; }
+        .ra-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 8px; font-family: inherit; }
+        textarea.ra-input { height: 80px; resize: vertical; }
+        
+        /* Complexity Bar */
+        .complexity-bar {
+            height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px;
+        }
+        .complexity-fill {
+            height: 100%; width: 0%; background: #28a745; transition: width 0.3s, background 0.3s;
+        }
+        
+        /* Matrix Legend Modal */
+        .matrix-grid { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; margin-top: 10px; text-align: center; font-size: 0.8rem;}
+        .matrix-cell { padding: 5px; border: 1px solid #ccc; }
+        .mtx-h { font-weight: bold; background: #eee; }
+        .mtx-g { background: #d4edda; } /* Green */
+        .mtx-y { background: #fff3cd; } /* Yellow */
+        .mtx-r { background: #f8d7da; } /* Red */
+    </style>
+</head>
+<body>
+
+<div class="container" style="max-width: 1200px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1><i class="fa-solid fa-file-shield"></i> Create New Risk Assessment</h1>
+        <button class="btn-sm" onclick="document.getElementById('legendModal').style.display='flex'">
+            <i class="fa-solid fa-table-cells"></i> Matrix Legend
+        </button>
+    </div>
+
+    <div class="section" style="padding: 20px;">
+        <div class="grid-row" style="border:none;">
+            <div class="form-group" style="border:none;">
+                <label>Operation / Scenario Name</label>
+                <input type="text" placeholder="e.g. Winter Test Hydrogen Drone" id="raName">
+            </div>
+            <div class="form-group" style="border:none;">
+                <label>Date & Lead Assessor</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="date">
+                    <input type="text" placeholder="Assessor Name">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="ra-table">
+        <thead>
+            <tr>
+                <th style="width: 5%">ID</th>
+                <th style="width: 20%">Hazard & Cause<br><span style="font-weight:normal; color:#ddd;">(Bow-Tie Center/Left)</span></th>
+                <th style="width: 25%">Preventative Barriers<br><span style="font-weight:normal; color:#ddd;">(Reduce Probability)</span></th>
+                <th style="width: 25%">Recovery Measures<br><span style="font-weight:normal; color:#ddd;">(Reduce Severity)</span></th>
+                <th style="width: 15%">Residual Risk<br><span style="font-weight:normal; color:#ddd;">(Prob x Sev)</span></th>
+                <th style="width: 5%"></th>
+            </tr>
+        </thead>
+        <tbody id="raTableBody">
+            </tbody>
+    </table>
+
+    <button class="btn" onclick="addRow()" style="margin-top: 15px; background:#6c757d;">
+        <i class="fa-solid fa-plus"></i> Add Hazard
+    </button>
+
+    <div class="section" style="margin-top: 30px; padding: 20px; background: #fff;">
+        <h3><i class="fa-solid fa-layer-group"></i> Operational Complexity Assessment</h3>
+        <p style="font-size: 0.9rem; color: #666;">
+            Automated assessment based on quantity of hazards and mitigations managed (Management of Change).
+        </p>
+        
+        <div style="display:flex; align-items:center; gap: 20px; margin-top:15px;">
+            <div style="flex: 1;">
+                <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.9rem;">
+                    <span id="compLabel">Low Complexity</span>
+                    <span id="compScore">0 pts</span>
+                </div>
+                <div class="complexity-bar">
+                    <div class="complexity-fill" id="compFill"></div>
+                </div>
+            </div>
+            <div id="compAdvice" style="flex: 1; font-size: 0.9rem; font-style: italic; color: #555;">
+                Add hazards to assess complexity.
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: right; margin-top: 20px;">
+        <button class="btn" style="background-color: #28a745;" onclick="alert('Risk Assessment Saved as Draft (RA-007)')">
+            <i class="fa-solid fa-floppy-disk"></i> Save Assessment
+        </button>
+    </div>
+</div>
+
+<div id="legendModal" class="modal">
+    <div class="modal-content" style="max-width:600px;">
+        <span class="close-modal" onclick="document.getElementById('legendModal').style.display='none'">&times;</span>
+        <h2 style="color:var(--ffi-blue);">Risk Matrix Legend</h2>
+        <p>Based on CAP 795 / 1059 standard.</p>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
+            <div>
+                <strong>Severity (Konsekvens)</strong>
+                <ul style="font-size:0.85rem; padding-left:20px;">
+                    <li><strong>A (5) Catastrophic:</strong> Multiple loss of life.</li>
+                    <li><strong>B (4) Hazardous:</strong> Serious injury / Major damage.</li>
+                    <li><strong>C (3) Major:</strong> Minor injury.</li>
+                    <li><strong>D (2) Minor:</strong> Nuisance / Procedure use.</li>
+                    <li><strong>E (1) Negligible:</strong> Little consequence.</li>
+                </ul>
+            </div>
+            <div>
+                <strong>Probability (Sannsynlighet)</strong>
+                <ul style="font-size:0.85rem; padding-left:20px;">
+                    <li><strong>5 Frequent:</strong> Likely to occur often.</li>
+                    <li><strong>4 Occasional:</strong> Likely to occur sometimes.</li>
+                    <li><strong>3 Remote:</strong> Unlikely, but possible.</li>
+                    <li><strong>2 Improbable:</strong> Very unlikely.</li>
+                    <li><strong>1 Extremely Improbable:</strong> Almost inconceivable.</li>
+                </ul>
+            </div>
+        </div>
+
+        <strong>Tolerability Matrix</strong>
+        <div class="matrix-grid">
+            <div class="mtx-cell"></div> <div class="mtx-h">E (1)</div> <div class="mtx-h">D (2)</div> <div class="mtx-h">C (3)</div> <div class="mtx-h">B (4)</div> <div class="mtx-h">A (5)</div>
+            
+            <div class="mtx-h">5</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-r">Stop</div> <div class="mtx-r">Stop</div> <div class="mtx-r">Stop</div>
+            <div class="mtx-h">4</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-r">Stop</div> <div class="mtx-r">Stop</div>
+            <div class="mtx-h">3</div> <div class="mtx-g">OK</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-r">Stop</div>
+            <div class="mtx-h">2</div> <div class="mtx-g">OK</div> <div class="mtx-g">OK</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div> <div class="mtx-y">Review</div>
+            <div class="mtx-h">1</div> <div class="mtx-g">OK</div> <div class="mtx-g">OK</div> <div class="mtx-g">OK</div> <div class="mtx-g">OK</div> <div class="mtx-y">Review</div>
+        </div>
+    </div>
+</div>
+
+<script>
+let rowCount = 0;
+
+function addRow() {
+    rowCount++;
+    const tbody = document.getElementById('raTableBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>H-0${rowCount}</td>
+        <td>
+            <input type="text" class="ra-input" placeholder="Hazard (e.g. Battery Fire)" style="font-weight:bold; margin-bottom:5px;">
+            <textarea class="ra-input" placeholder="Cause (e.g. Short circuit, puncture)"></textarea>
+        </td>
+        <td>
+            <textarea class="ra-input" placeholder="Preventative Barriers (e.g. Pre-flight check, proper storage)"></textarea>
+        </td>
+        <td>
+            <textarea class="ra-input" placeholder="Recovery Measures (e.g. Fire bag, PPE, safe distance)"></textarea>
+        </td>
+        <td>
+            <div style="display:flex; gap:5px; margin-bottom:5px;">
+                <select class="ra-input" onchange="updateRowColor(this)">
+                    <option value="1">Prob: 1 (Rare)</option>
+                    <option value="2">Prob: 2</option>
+                    <option value="3" selected>Prob: 3</option>
+                    <option value="4">Prob: 4</option>
+                    <option value="5">Prob: 5 (Freq)</option>
+                </select>
+                <select class="ra-input" onchange="updateRowColor(this)">
+                    <option value="1">Sev: E (Negl)</option>
+                    <option value="2">Sev: D</option>
+                    <option value="3" selected>Sev: C</option>
+                    <option value="4">Sev: B</option>
+                    <option value="5">Sev: A (Cat)</option>
+                </select>
+            </div>
+            <div class="risk-badge" style="text-align:center; padding:5px; border-radius:4px; font-weight:bold; background:#eee;">3C</div>
+        </td>
+        <td><button class="btn-sm" style="background:#dc3545; color:white;" onclick="removeRow(this)">X</button></td>
+    `;
+    tbody.appendChild(tr);
+    updateComplexity();
+    // Init color for new row
+    const selects = tr.querySelectorAll('select');
+    updateRowColor(selects[0]);
+}
+
+function removeRow(btn) {
+    btn.closest('tr').remove();
+    updateComplexity();
+}
+
+function updateRowColor(selectElement) {
+    const row = selectElement.closest('tr');
+    const selects = row.querySelectorAll('select');
+    const prob = parseInt(selects[0].value);
+    const sev = parseInt(selects[1].value);
+    const badge = row.querySelector('.risk-badge');
+    
+    // Convert Sev number back to Letter for display
+    const sevLetter = ['E','D','C','B','A'][sev-1];
+    badge.innerText = `${prob}${sevLetter}`; // e.g. 3C
+
+    // Simple Risk Matrix Logic (Sum based)
+    // 5A (10) -> Red, 1E (2) -> Green
+    // This is a simplified calculation for the prototype visualization
+    // Red condition: Sev >= 4 OR (Sev 3 AND Prob >=4) OR (Prob 5)
+    let color = '#d4edda'; // Green default
+    let text = '#155724';
+
+    if (sev >= 4 || (sev === 3 && prob >= 4) || (prob === 5 && sev >= 2)) {
+        // Red / Unacceptable
+        color = '#f8d7da'; text = '#721c24';
+    } else if (sev >= 3 || prob >= 3) {
+        // Yellow / Review
+        color = '#fff3cd'; text = '#856404';
+    }
+
+    badge.style.backgroundColor = color;
+    badge.style.color = text;
+}
+
+function updateComplexity() {
+    const tableRows = document.getElementById('raTableBody').rows.length;
+    let score = tableRows * 10; // Base score per hazard
+    
+    // Visual logic
+    const fill = document.getElementById('compFill');
+    const label = document.getElementById('compLabel');
+    const scoreText = document.getElementById('compScore');
+    const advice = document.getElementById('compAdvice');
+
+    let width = Math.min(100, score);
+    fill.style.width = width + "%";
+    scoreText.innerText = score + " pts";
+
+    if (score < 30) {
+        fill.style.backgroundColor = "#28a745";
+        label.innerText = "Low Complexity";
+        advice.innerText = "Standard operation. Routine monitoring sufficient.";
+    } else if (score < 60) {
+        fill.style.backgroundColor = "#ffc107";
+        label.innerText = "Medium Complexity";
+        advice.innerText = "Complex operation. Requires active management and briefing.";
+    } else {
+        fill.style.backgroundColor = "#dc3545";
+        label.innerText = "High Complexity";
+        advice.innerText = "Highly complex. Consider splitting operation or reducing scope.";
+    }
+}
+
+// Add one row by default
+document.addEventListener("DOMContentLoaded", addRow);
+
+</script>
+
+</body>
+</html>
