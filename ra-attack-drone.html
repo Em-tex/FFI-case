@@ -11,6 +11,23 @@
     <script src="js/menu.js"></script>
     <script src="js/ra-logic.js"></script>
     <style>
+        /* Samme stil som hydrogen/create-ra for konsistens */
+        .ra-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px; table-layout: fixed; }
+        .ra-table th { position: sticky; top: 0; background-color: #f8f9fa; color: #333; padding: 10px; border-bottom: 2px solid #ddd; text-align: left; font-size: 0.85rem; z-index: 10;}
+        .ra-table td { vertical-align: top; padding: 10px; border-bottom: 1px solid #eee; background: white; font-size: 0.9rem; }
+        
+        .section-header-row td { background-color: var(--ffi-blue); color: white; padding: 8px 15px; font-weight: 600; }
+        
+        /* Risk Badges (MAA-NOR colors) */
+        .risk-badge { display:inline-block; padding:4px 8px; border-radius:4px; font-weight:bold; font-size: 0.85rem; }
+        .risk-H { background: var(--risk-high); color: white; }
+        .risk-S { background: var(--risk-serious); color: black; }
+        .risk-M { background: var(--risk-medium); color: black; }
+        .risk-L { background: var(--risk-low); color: white; }
+
+        ul { margin: 0; padding-left: 20px; }
+        li { margin-bottom: 4px; }
+        
         .meta-header { background-color: #fff3cd; padding: 15px; border-left: 5px solid var(--status-orange); margin-bottom: 20px; border-radius: 4px; }
     </style>
 </head>
@@ -18,7 +35,10 @@
 
 <div class="container" style="max-width: 1400px;">
     <div style="display:flex; justify-content: space-between; align-items: flex-start;">
-        <h1>RA-006: Attack Drone Live Fire</h1>
+        <div>
+            <h1>RA-006: Attack Drone Live Fire</h1>
+            <span style="color:#666; font-size:0.9rem;">Ref: RA-006 | Date: 2025-10-15 | Assessor: Ole Normann</span>
+        </div>
         <div>
             <button class="btn-sm" style="background:#6c757d; margin-right:10px;" onclick="openLegend()">Matrix Legend</button>
             <span class="tag tag-active" style="background:var(--status-orange); color:var(--text-orange);">Restricted / Active</span>
@@ -27,36 +47,40 @@
     
     <div class="meta-header">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div><strong>Assessment ID:</strong> FFI-RA-006</div>
             <div><strong>Operation Type:</strong> Military Test (Specific)</div>
             <div><strong>Payload:</strong> NAMMO Warhead (Live)</div>
             <div><strong>Location:</strong> Active Firing Range (Skytefelt)</div>
+            <div><strong>Conditions:</strong> Clear Day / Closed Range</div>
         </div>
     </div>
 
-    <h2>1. Concept of Operations</h2>
-    <p>Live fire testing of a Norwegian-supplied attack drone against armored targets.</p>
-
-    <h2>2. Risk Matrix (Extract)</h2>
+    <h2>Risk Matrix</h2>
     
-    <table class="hazard-table" style="width:100%; border-collapse: collapse;">
+    <table class="ra-table">
+        <colgroup>
+            <col style="width: 4%;">  <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 7%;">  <col style="width: 18%;"> <col style="width: 18%;"> <col style="width: 7%;">  
+        </colgroup>
         <thead>
             <tr>
-                <th style="width: 5%">ID</th>
-                <th style="width: 20%">Hazard</th>
-                <th style="width: 10%">Initial</th>
-                <th style="width: 25%">Preventative Barriers</th>
-                <th style="width: 25%">Recovery Measures</th>
-                <th style="width: 10%">Residual</th>
+                <th>ID</th>
+                <th>Hazard</th>
+                <th>Cause</th>
+                <th>Effect</th>
+                <th>Initial</th>
+                <th>Preventative Barriers</th>
+                <th>Recovery Measures</th>
+                <th>Residual</th>
             </tr>
         </thead>
         
         <tbody>
-            <tr class="section-header-row"><td colspan="6" class="section-header-cell">GENERAL / PAYLOAD RISKS</td></tr>
+            <tr class="section-header-row"><td colspan="8">GENERAL / PAYLOAD RISKS</td></tr>
             <tr>
                 <td>H-01</td>
-                <td><strong>Unintended Detonation</strong><br><span style="font-size:0.8rem; color:#666;">Safe & Arm failure</span></td>
-                <td><span class="risk-mtx risk-H">1-C</span></td>
+                <td><strong>Unintended Detonation</strong></td>
+                <td>Safe & Arm mechanism failure, short circuit, or mechanical shock during handling.</td>
+                <td>Detonation on launchpad or near friendly forces. Fatal injuries.</td>
+                <td><span class="risk-badge risk-H">1-C</span></td>
                 <td>
                     <ul>
                         <li><strong>Safe Zone:</strong> Personnel in bunker.</li>
@@ -70,16 +94,17 @@
                         <li>Minimum Safe Distance (MSD) enforcement.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-M">1-E</span></td>
-            </tr>
+                <td><span class="risk-badge risk-S">1-E</span></td> </tr>
         </tbody>
 
         <tbody>
-            <tr class="section-header-row"><td colspan="6" class="section-header-cell">CONTAINMENT & COLLISION RISKS</td></tr>
+            <tr class="section-header-row"><td colspan="8">CONTAINMENT & COLLISION RISKS</td></tr>
             <tr>
                 <td>H-02</td>
-                <td><strong>Fly-away (Armed)</strong><br><span style="font-size:0.8rem; color:#666;">Nav failure</span></td>
-                <td><span class="risk-mtx risk-H">1-C</span></td>
+                <td><strong>Fly-away (Armed)</strong></td>
+                <td>GNSS jamming, compass error, or flight controller freeze.</td>
+                <td>Drone leaves range boundary with live warhead. Crash in civilian/safe area.</td>
+                <td><span class="risk-badge risk-H">1-C</span></td>
                 <td>
                     <ul>
                         <li><strong>Geofence:</strong> Hard limit within range.</li>
@@ -92,10 +117,34 @@
                         <li>Radar tracking.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-M">1-E</span></td>
+                <td><span class="risk-badge risk-S">1-E</span></td>
             </tr>
         </tbody>
     </table>
+
+    <div class="section" style="margin-top: 30px; padding: 25px; background: #fff; border: 1px solid #e0e0e0;">
+        <div style="display:flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex:2; padding-right: 40px;">
+                <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                    Assessment based on residual risk profile and number of active mitigations.
+                </p>
+                <div style="font-size: 0.95rem; font-style: italic; color: #555; background: #f8f9fa; padding: 10px; border-radius: 4px;">
+                    <strong>High Complexity:</strong> Operation involves live munitions and critical safety systems (FTS, ESA). Requires strict military chain of command and range control.
+                </div>
+            </div>
+            
+            <div style="flex: 1;">
+                <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1rem; margin-bottom: 5px;">
+                    <span>High Complexity</span>
+                    <span>180 pts</span>
+                </div>
+                <div style="height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px;">
+                    <div style="height: 100%; width: 85%; background: #dc3545;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
         <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
