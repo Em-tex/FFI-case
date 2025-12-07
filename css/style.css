@@ -8,17 +8,18 @@
     --ffi-light-bg: #f4f6f9;
     --section-header-bg: #34495e;
     
-    /* MAA-NOR Risk Colors (Standard) */
+    /* MAA-NOR Risk Colors (Strong - Used for the Risk Badge/Result) */
     --risk-high: #FF0000;    
     --risk-serious: #FFC000; 
     --risk-medium: #FFFF00;  
     --risk-low: #00B050;     
     
-    /* Dropdown Backgrounds (Pastel but Visible) */
-    --bg-red: #ffb3b3;
-    --bg-orange: #ffcc99;
-    --bg-yellow: #ffffcc;
-    --bg-green: #b3ffb3;
+    /* Ultra-Light Pastel (Used for Dropdowns/Inputs) */
+    /* Svake farger som ikke konkurrerer med teksten */
+    --pale-red: #ffdbdb;
+    --pale-orange: #ffeebb;
+    --pale-yellow: #ffffcc;
+    --pale-green: #d1f2d1;
     
     --border-color: #e0e0e0;
 }
@@ -226,7 +227,7 @@ select:focus, input:focus {
     border-bottom: 1px solid #eee;
 }
 
-/* --- Resultatboks (Colored Backgrounds) --- */
+/* --- Resultatboks --- */
 #result-box {
     position: relative;
     margin: 30px auto 0 auto;
@@ -284,12 +285,14 @@ select:focus, input:focus {
     position: absolute; top: 20px; left: 20px; width: 160px; height: 160px;
     background: white; border-radius: 50%; z-index: 2;
 }
-/* IMPORTANT: Gauge cover must match Result Box background to create arc */
+
+/* Gauge Cover Match */
 .res-gray .gauge-cover { background: #6c757d; }
 .res-green .gauge-cover { background: #d4edda; }
 .res-yellow .gauge-cover { background: #fff3cd; }
 .res-orange .gauge-cover { background: #ffebd3; }
 .res-red .gauge-cover { background: #f8d7da; }
+
 
 .gauge-needle {
     position: absolute; bottom: 0; left: 50%; width: 4px; height: 90px;
@@ -334,10 +337,9 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 
 /* Hazard Table */
 .hazard-table td { vertical-align: top; }
+.risk-mtx { font-weight:bold; padding:2px 6px; border-radius:4px; font-size:0.85em; display:inline-block; min-width:30px; text-align:center;}
 
-/* --- RISK BADGES (Solid High Contrast) --- */
-.risk-badge { display:inline-block; padding:4px 8px; border-radius:4px; font-weight:bold; font-size: 0.85rem; }
-
+/* Risk Levels (Result Badges) */
 .risk-H { background: var(--risk-high); color: white; }
 .risk-S { background: var(--risk-serious); color: black; }
 .risk-M { background: var(--risk-medium); color: black; }
@@ -361,21 +363,9 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .bg-y { background: var(--risk-medium); color: black; } 
 .bg-g { background: var(--risk-low); color: white; } 
 
-/* --- VISIBLE PASTEL DROPDOWNS (Options) --- */
-.opt-sev-1 { background-color: var(--bg-red); }
-.opt-sev-2 { background-color: var(--bg-orange); }
-.opt-sev-3 { background-color: var(--bg-yellow); }
-.opt-sev-4 { background-color: var(--bg-green); }
-
-.opt-prob-a { background-color: var(--bg-red); }
-.opt-prob-b { background-color: var(--bg-orange); }
-.opt-prob-c { background-color: var(--bg-yellow); }
-.opt-prob-d { background-color: var(--bg-green); } 
-.opt-prob-e { background-color: #f0f0f0; } 
-
-/* Active Select (Backgrounds) */
-.ra-input.bg-red { background-color: var(--bg-red); }
-.ra-input.bg-orange { background-color: var(--bg-orange); }
-.ra-input.bg-yellow { background-color: var(--bg-yellow); }
-.ra-input.bg-green { background-color: var(--bg-green); }
-.ra-input.bg-white { background-color: #fff; }
+/* --- PALE DROPDOWN CLASSES (Backgrounds for Select & Options) --- */
+.bg-pale-red { background-color: var(--pale-red) !important; color: #721c24; }
+.bg-pale-orange { background-color: var(--pale-orange) !important; color: #856404; }
+.bg-pale-yellow { background-color: var(--pale-yellow) !important; color: #856404; }
+.bg-pale-green { background-color: var(--pale-green) !important; color: #155724; }
+.bg-pale-white { background-color: #fff !important; }
