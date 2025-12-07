@@ -30,17 +30,37 @@
     </div>
 
     <div class="slide-container" id="slide-2">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Min Tilnærming</h1>
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
         
+        <div style="display:flex; gap: 40px; margin-top: 30px; align-items:center;">
+            <div style="flex: 1;">
+                <img src="https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden/_/image/79c8de0a-daab-4147-b89c-0593af3193be:b32b93e8bb47dbe6478cd2098c145c36b1563dd1/width-2048-/HydrogendroneUtenKort.jpg?quality=50" 
+                     alt="Hydrogendrone" 
+                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            </div>
+            
+            <div style="flex: 1;">
+                <h3 style="color: var(--ffi-blue);">Scenariobeskrivelse</h3>
+                <ul class="bullet-list">
+                    <li><strong>Hydrogen:</strong> Eksperimentell teknologi.</li>
+                    <li><strong>Testflyging:</strong> Må gjennomføres under forskjellige værforhold.</li>
+                    <li><strong>Vintertest:</strong> Ukjent ytelse i minusgrader (batteri vs. brenselcelle).</li>
+                    <li><strong>Demonstrasjon:</strong> Skal vises frem (høyere risiko ved publikum).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide-3">
         <div class="venn-wrapper">
-            <div class="venn-circle venn-left">Compliance<br><span style="font-size:0.7rem; font-weight:normal;">(Regelverk)</span></div>
-            <div class="venn-circle venn-right">Safety<br><span style="font-size:0.7rem; font-weight:normal;">(Sikkerhet)</span></div>
+            <div class="venn-circle venn-left">Compliance<br><span style="font-size:0.9rem; font-weight:normal;">(Regelverk)</span></div>
+            <div class="venn-circle venn-right">Safety<br><span style="font-size:0.9rem; font-weight:normal;">(Sikkerhet)</span></div>
             <div class="venn-center-text">Operativ Ledelse</div>
         </div>
         
     </div>
 
-    <div class="slide-container" id="slide-3">
+    <div class="slide-container" id="slide-4">
         <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Rammeverk & Forutsetninger</h1>
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top:30px;">
@@ -65,28 +85,6 @@
         
         <div class="highlight-box">
             <strong>Strategi:</strong> Bruke portalen (som vi skal se på nå) for å tvinge frem struktur i vurderingene.
-        </div>
-    </div>
-
-    <div class="slide-container" id="slide-4">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
-        
-        <div style="display:flex; gap: 40px; margin-top: 30px; align-items:center;">
-            <div style="flex: 1;">
-                <img src="https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden/_/image/79c8de0a-daab-4147-b89c-0593af3193be:b32b93e8bb47dbe6478cd2098c145c36b1563dd1/width-2048-/HydrogendroneUtenKort.jpg?quality=50" 
-                     alt="Hydrogendrone" 
-                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-            </div>
-            
-            <div style="flex: 1;">
-                <h3 style="color: var(--ffi-blue);">Scenariobeskrivelse</h3>
-                <ul class="bullet-list">
-                    <li><strong>Hydrogen:</strong> Eksperimentell teknologi.</li>
-                    <li><strong>Testflyging:</strong> Må gjennomføres under forskjellige værforhold.</li>
-                    <li><strong>Vintertest:</strong> Ukjent ytelse i minusgrader (batteri vs. brenselcelle).</li>
-                    <li><strong>Demonstrasjon:</strong> Skal vises frem (høyere risiko ved publikum).</li>
-                </ul>
-            </div>
         </div>
     </div>
 
@@ -157,7 +155,7 @@
 
 <script>
     let currentSlide = 1;
-    const totalSlides = 6; // Oppdatert antall slides
+    const totalSlides = 6;
 
     function changeSlide(direction) {
         // Hide current

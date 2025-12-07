@@ -46,70 +46,66 @@
     background: #e2e6ea; 
 }
 
-/* --- VENN DIAGRAM --- */
+/* --- VENN DIAGRAM (OVALER) --- */
 .venn-wrapper { 
     position: relative; 
-    width: 500px; /* Økt bredde litt for bedre plass */
-    height: 300px; 
-    margin: 60px auto; 
+    width: 650px; /* Økt totalbredde */
+    height: 350px; 
+    margin: 40px auto; 
 }
 
 .venn-circle {
     position: absolute; 
-    width: 240px; /* Større sirkler */
-    height: 240px; 
+    width: 380px; /* Brede ovaler */
+    height: 280px; 
     border-radius: 50%;
     display: flex; 
     align-items: center; 
     justify-content: center;
     font-weight: bold; 
-    font-size: 1.1rem; 
+    font-size: 1.3rem; /* Større tekst */
     text-transform: uppercase;
     transition: all 0.3s;
     text-align: center;
     box-sizing: border-box;
 }
 
-/* Overlapping circles & Text positioning to avoid overlap */
+/* Overlapping circles */
 .venn-left { 
     left: 0; 
     top: 20px; 
-    border: 4px solid var(--ffi-blue); 
+    border: 5px solid var(--ffi-blue); 
     color: var(--ffi-blue);
     background-color: rgba(3, 71, 127, 0.05);
-    padding-right: 40px; /* Skyv tekst mot venstre */
+    padding-right: 60px; /* Skyver teksten mot venstre unna overlappet */
+    z-index: 1;
 }
 
 .venn-right { 
     right: 0; 
     top: 20px; 
-    border: 4px solid var(--risk-high); 
+    border: 5px solid var(--risk-high); 
     color: var(--risk-high);
     background-color: rgba(220, 53, 69, 0.05);
-    padding-left: 40px; /* Skyv tekst mot høyre */
+    padding-left: 60px; /* Skyver teksten mot høyre unna overlappet */
+    z-index: 2;
 }
 
 .venn-center-text {
     position: absolute; 
-    top: 50%; 
+    top: 45%; 
     left: 50%; 
     transform: translate(-50%, -50%);
     background: white; 
-    padding: 8px 20px; 
-    border-radius: 20px;
+    padding: 10px 25px; 
+    border-radius: 30px;
     font-weight: 800; 
     color: #333; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    font-size: 1rem; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 1.1rem; 
     z-index: 10;
-    border: 1px solid #eee;
-}
-
-.venn-desc { 
-    text-align: center; 
-    margin-top: 10px; 
-    font-style: italic; 
-    color: #666; 
+    border: 1px solid #ccc;
+    white-space: nowrap;
 }
 
 /* Content Elements */
