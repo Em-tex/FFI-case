@@ -12,6 +12,13 @@
 </head>
 <body>
 
+<div id="popupOverlay" class="info-overlay" onclick="closePopup()"></div>
+<div id="infoPopup" class="info-popup">
+    <h3 style="margin-top:0; color:var(--ffi-blue);">Godkjent Organisasjon</h3>
+    <p>Disse kan selv godkjenne egne utviklede droner innenfor visse rammer. De må ha et kvalitetssystem med blant annet risikostyring, kompetansekrav, prosedyrer for utvikling, og internrevisjon.</p>
+    <button class="btn-sm" onclick="closePopup()" style="float:right;">Lukk</button>
+</div>
+
 <div class="container" style="max-width: 1100px; margin-top: 20px;">
     
     <div style="text-align:right; font-size:0.8rem; color:#888; margin-bottom:10px;">
@@ -57,9 +64,12 @@
 
     <div class="slide-container" id="slide-3">
         <div class="venn-wrapper">
-            <div class="venn-circle venn-left">Compliance<br><span style="font-size:0.9rem; font-weight:normal;">(Regelverk)</span></div>
-            <div class="venn-circle venn-right">Safety<br><span style="font-size:0.9rem; font-weight:normal;">(Sikkerhet)</span></div>
-            </div>
+            <div class="venn-label label-left">Compliance<br><span style="font-size:0.9rem; font-weight:normal;">(Regelverk)</span></div>
+            <div class="venn-label label-right">Safety<br><span style="font-size:0.9rem; font-weight:normal;">(Sikkerhet)</span></div>
+            
+            <div class="venn-circle venn-left"></div>
+            <div class="venn-circle venn-right"></div>
+        </div>
     </div>
 
     <div class="slide-container" id="slide-4">
@@ -67,47 +77,60 @@
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top:30px;">
             <div>
-                <h3 style="color:var(--ffi-blue);"><i class="fa-solid fa-book"></i> Regelverk</h3>
-                <ul class="bullet-list" style="font-size:1rem;">
-                    <li><strong>MAA-NOR:</strong> FFI er godkjent organisasjon.</li>
-                    <li><strong>BLF (Bestemmelser for Luftdyktighet):</strong> Styrende dokument.</li>
-                    <li><strong>Militær Åpen Kategori (MÅK):</strong> Foretrukket der det er mulig (enklest).</li>
-                    <li><strong>Spesifikk Kategori:</strong> Kreves for høyere risiko (Eks: Hydrogen, Våpen).</li>
+                <h3 style="color:var(--ffi-blue); border-bottom-color:var(--ffi-blue);"><i class="fa-solid fa-book"></i> Regelverk</h3>
+                <ul class="bullet-list" style="font-size:0.95rem;">
+                    <li><strong>Teknisk:</strong> 
+                        <ul>
+                            <li><a href="https://www.fma.no/maanor/regulations" target="_blank" class="slide-link">MAA-NOR</a> må godkjenne - Military UAS Technical Approval (<a href="https://www.fma.no/maanor/applications/military-uas-technical-approval-application" target="_blank" class="slide-link">Form MUASTA</a>)</li>
+                            <li>Forskjellige tekniske kategorier i <a href="https://www.fma.no/maanor/downloads/regulations/blf/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf/_/attachment/inline/31cc7c40-840a-4e11-bb20-cae250bc0a9c:6567ee71ec9d53f1b3a5fadca96197c40588793f/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf" target="_blank" class="slide-link">BLF Appendix 6</a></li>
+                            <li>Eller ha en <span class="slide-link" onclick="openPopup()">godkjent organisasjon</span> <i class="fa-solid fa-circle-question" style="color:#17a2b8; font-size:0.8em;"></i></li>
+                        </ul>
+                    </li>
+                    <li><strong>Operativt:</strong>
+                        <ul>
+                            <li>Militær åpen kategori (MÅK) (140-11)</li>
+                            <li>Reglement for operasjoner med UAS (140-10)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pilotkvalifikasjoner:</strong>
+                        <ul>
+                            <li>Reglement for klassifisering, trening og utdanning av UAS operatører (140-20)</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
+            
             <div>
-                <h3 style="color:var(--risk-serious);"><i class="fa-solid fa-triangle-exclamation"></i> Kritiske Faktorer i Casene</h3>
+                <h3 style="color:#d35400; border-bottom-color:#d35400;"><i class="fa-solid fa-triangle-exclamation"></i> Risikomomenter</h3>
                 <ul class="bullet-list" style="font-size:1rem;">
-                    <li><strong>Manglende Dokumentasjon:</strong> Øker usikkerheten betraktelig.</li>
-                    <li><strong>Kompetansegap:</strong> Sivile vs. Militære krav.</li>
-                    <li><strong>Ukjent Teknologi:</strong> Hydrogen & Eksplosiver krever "crawl-walk-run" tilnærming.</li>
+                    <li>Hydrogenbrenselceller med ukjente spesifikasjoner</li>
+                    <li>Testing i forskjellige værforhold og minusgrader</li>
+                    <li>Uviss pilotkompetanse</li>
+                    <li>Ukjent dronesystem</li>
+                    <li>Kan være lurt med en krype - gå - løpe tilnærming</li>
                 </ul>
             </div>
-        </div>
-        
-        <div class="highlight-box">
-            <strong>Strategi:</strong> Bruke portalen (som vi skal se på nå) for å tvinge frem struktur i vurderingene.
         </div>
     </div>
 
     <div class="slide-container" id="slide-5">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Løsning: Case 1 (Jørgen)</h1>
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Løsningsforslag case 1</h1>
         
         <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
             <div style="font-size:3rem; color:#dc3545; width:80px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
             <div>
-                <h3 style="margin:0;">Utfordring</h3>
-                <p>Sivil gjesteforsker, ukjent pilotkompetanse, eksperimentell drivstoffteknologi (Hydrogen).</p>
+                <h3 style="margin:0;">Jørgen (Gjesteforsker)</h3>
+                <p>Mål: Teste hydrogendrone under vinterforhold.</p>
             </div>
         </div>
 
         <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
-            <h3 style="color:var(--ffi-blue);">Løsning & Tiltak</h3>
-            <ul class="bullet-list" style="font-size:1rem;">
-                <li><strong>1. Kompetansesjekk:</strong> Jørgen mangler MÅK og A1/A3. Må på kurs.</li>
-                <li><strong>2. Kategorisering:</strong> Hydrogen = Høy energi = <em>Spesifikk kategori</em> (RA-003).</li>
-                <li><strong>3. Risikoanalyse:</strong> Fokus på lekkasje, brann og "fail-safe".</li>
-            </ul>
+            <h3 style="color:var(--ffi-blue);">Tiltaksplan</h3>
+            <ol class="bullet-list" style="font-size:1.2rem;">
+                <li><strong>Snakke med Jørgen.</strong> Kartlegge kompetanse, teknisk dokumentasjon og behov. Avklare forventninger.</li>
+                <li><strong>Risikovurdering.</strong> Inkludere Jørgen i brainstorming for å avdekke farer (HAZID).</li>
+                <li><strong>Implementere operasjonen</strong> i FFI sitt system (Autorisasjon, SJA).</li>
+            </ol>
         </div>
 
         <div style="margin-top:30px; text-align:center;">
@@ -115,7 +138,6 @@
             <a href="flight-auth.html" class="btn" style="font-size:1.2rem; padding: 15px 30px;">
                 <i class="fa-solid fa-play"></i> Start Demo: Flight Auth (Jørgen)
             </a>
-            <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Tip: Velg "Case 1: Hydrogen" i verktøyet)</p>
         </div>
     </div>
 

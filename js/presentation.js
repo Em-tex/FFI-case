@@ -4,21 +4,17 @@ let currentSlide = 1;
 const totalSlides = 6; 
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Sørg for at telleren er korrekt ved start
     updateCounter();
 });
 
 function changeSlide(direction) {
-    // Skjul nåværende slide
     const currentEl = document.getElementById(`slide-${currentSlide}`);
     if (currentEl) currentEl.classList.remove('slide-active');
     
-    // Beregn ny slide
     currentSlide += direction;
     if (currentSlide < 1) currentSlide = 1;
     if (currentSlide > totalSlides) currentSlide = totalSlides;
     
-    // Vis ny slide
     const nextEl = document.getElementById(`slide-${currentSlide}`);
     if (nextEl) nextEl.classList.add('slide-active');
     
@@ -32,11 +28,24 @@ function updateCounter() {
     }
 }
 
+// Popup funksjoner
+function openPopup() {
+    document.getElementById('infoPopup').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('infoPopup').style.display = 'none';
+    document.getElementById('popupOverlay').style.display = 'none';
+}
+
 // Tastaturnavigasjon
 document.addEventListener('keydown', function(event) {
     if (event.key === "ArrowLeft") {
         changeSlide(-1);
     } else if (event.key === "ArrowRight") {
         changeSlide(1);
+    } else if (event.key === "Escape") {
+        closePopup();
     }
 });

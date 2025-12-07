@@ -1,5 +1,4 @@
 /* css/presentation.css */
-/* Styles specific for presentation.html */
 
 /* Animation */
 @keyframes fadeInSlide { 
@@ -46,63 +45,75 @@
     background: #e2e6ea; 
 }
 
-/* --- VENN DIAGRAM (OVALER) --- */
+/* --- VENN DIAGRAM (OPPDATERT) --- */
 .venn-wrapper { 
     position: relative; 
-    width: 600px; /* Smalere wrapper for å tvinge sirklene sammen */
+    width: 600px; 
     height: 350px; 
-    margin: 40px auto; 
+    margin: 60px auto 20px auto; /* Mer margin topp for tekst over */
 }
 
 .venn-circle {
     position: absolute; 
-    width: 420px; /* Enda bredere ovaler */
+    width: 400px; 
     height: 280px; 
     border-radius: 50%;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    font-weight: bold; 
-    font-size: 1.3rem; 
-    text-transform: uppercase;
+    /* Fjernet flex-tekst inni sirklene siden den skal over */
+    top: 40px; /* Flyttet litt ned for å gi plass til tekst over */
     transition: all 0.3s;
-    text-align: center;
-    box-sizing: border-box;
 }
 
-/* Overlapping circles */
+/* Labels positioned above circles */
+.venn-label {
+    position: absolute;
+    top: 0;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    width: 400px;
+    text-align: center;
+    z-index: 10;
+}
+
+/* Left Circle (Compliance) */
 .venn-left { 
     left: 0; 
-    top: 20px; 
     border: 5px solid var(--ffi-blue); 
-    color: var(--ffi-blue);
-    background-color: rgba(3, 71, 127, 0.05);
-    /* Skyver teksten langt til venstre for å unngå kollisjon med strekene */
-    padding-right: 160px; 
+    background-color: rgba(3, 71, 127, 0.1); /* Litt tydeligere fyll */
     z-index: 1;
 }
+.label-left {
+    left: 0;
+    color: var(--ffi-blue);
+}
 
+/* Right Circle (Safety) - Mørkeoransje */
 .venn-right { 
     right: 0; 
-    top: 20px; 
-    border: 5px solid var(--risk-high); 
-    color: var(--risk-high);
-    background-color: rgba(220, 53, 69, 0.05);
-    /* Skyver teksten langt til høyre for å unngå kollisjon med strekene */
-    padding-left: 160px; 
+    /* Mørkeoransje hex (#d35400 er pumpkin/dark orange) */
+    border: 5px solid #d35400; 
+    background-color: rgba(211, 84, 0, 0.1);
     z-index: 2;
+    /* Mix-blend-mode kan gi kul overlapp-effekt, men support varierer. 
+       Bruker transparency for enkel 'blend'. */
+}
+.label-right {
+    right: 0;
+    color: #d35400;
 }
 
 /* Content Elements */
 .bullet-list { 
-    font-size: 1.2rem; 
-    line-height: 1.8; 
-    margin: 20px 0; 
+    font-size: 1.1rem; 
+    line-height: 1.6; 
+    margin: 10px 0; 
+    padding-left: 20px;
 }
 .bullet-list li { 
-    margin-bottom: 15px; 
+    margin-bottom: 10px; 
 }
 
+/* Highlight Box */
 .highlight-box { 
     background: #e3f2fd; 
     border-left: 5px solid var(--ffi-blue); 
@@ -110,4 +121,37 @@
     border-radius: 4px; 
     margin: 20px 0; 
     font-size: 1.1rem;
+}
+
+/* Link Styles for Slide 4 */
+.slide-link {
+    color: var(--ffi-blue);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.slide-link:hover {
+    color: #002a4d;
+}
+
+/* Popup / Tooltip styling */
+.info-popup {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid var(--ffi-blue);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 9999;
+    width: 80%;
+    max-width: 500px;
+}
+.info-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 9998;
 }
