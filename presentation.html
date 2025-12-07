@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFI Case - Presentasjon</title>
+    <!-- Base Styles (Variables etc) -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Presentation Specific Styles -->
+    <link rel="stylesheet" href="css/presentation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/menu.js"></script>
+</head>
+<body>
+
+<div class="container" style="max-width: 1100px; margin-top: 20px;">
+    
+    <!-- CONTROLS INFO -->
+    <div style="text-align:right; font-size:0.8rem; color:#888; margin-bottom:10px;">
+        <i class="fa-solid fa-keyboard"></i> Bruk piltastene (V/H) for å navigere
+    </div>
+
+    <!-- SLIDE 1: TITTEL -->
+    <div class="slide-container slide-active" id="slide-1">
+        <div style="height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <i class="fa-solid fa-plane-up" style="font-size: 5rem; color:var(--ffi-blue); margin-bottom:20px;"></i>
+            <h1 style="font-size: 3rem; margin-bottom: 10px;">Operativ Leder UAS</h1>
+            <h2 style="color:#666; font-size: 1.5rem; font-weight:400;">Løsningsforslag Caseoppgave</h2>
+            <div style="margin-top: 40px; font-size: 1.1rem; color: #444;">
+                <strong>Kandidat:</strong> Hans Petter Heimro<br>
+                <strong>Dato:</strong> 08.12.2025
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: FILOSOFI (VENN) -->
+    <div class="slide-container" id="slide-2">
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Min Tilnærming</h1>
+        
+        <div class="venn-wrapper">
+            <div class="venn-circle venn-left">Compliance<br><span style="font-size:0.7rem; font-weight:normal;">(Regelverk)</span></div>
+            <div class="venn-circle venn-right">Safety<br><span style="font-size:0.7rem; font-weight:normal;">(Sikkerhet)</span></div>
+            <div class="venn-center-text">Operativ Ledelse</div>
+        </div>
+
+        <div class="highlight-box" style="text-align:center;">
+            "En Operativ Leder må balansere formelle krav med praktisk sikkerhet i felt."
+        </div>
+        
+        <ul class="bullet-list">
+            <li><strong>Compliance:</strong> Sikrer at vi følger lover, MAA-NOR krav og interne instrukser.</li>
+            <li><strong>Safety:</strong> Fokus på reell risikoreduksjon og sikkerhetskultur i organisasjonen.</li>
+            <li><strong>Mål:</strong> Etablere systemer som gjør det <em>enkelt</em> å gjøre rett.</li>
+        </ul>
+    </div>
+
+    <!-- SLIDE 3: FORUTSETNINGER -->
+    <div class="slide-container" id="slide-3">
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Rammeverk & Forutsetninger</h1>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top:30px;">
+            <div>
+                <h3 style="color:var(--ffi-blue);"><i class="fa-solid fa-book"></i> Regelverk</h3>
+                <ul class="bullet-list" style="font-size:1rem;">
+                    <li><strong>MAA-NOR:</strong> FFI er godkjent organisasjon.</li>
+                    <li><strong>BLF (Bestemmelser for Luftdyktighet):</strong> Styrende dokument.</li>
+                    <li><strong>Militær Åpen Kategori (MÅK):</strong> Foretrukket der det er mulig (enklest).</li>
+                    <li><strong>Spesifikk Kategori:</strong> Kreves for høyere risiko (Eks: Hydrogen, Våpen).</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color:var(--risk-serious);"><i class="fa-solid fa-triangle-exclamation"></i> Kritiske Faktorer i Casene</h3>
+                <ul class="bullet-list" style="font-size:1rem;">
+                    <li><strong>Manglende Dokumentasjon:</strong> Øker usikkerheten betraktelig.</li>
+                    <li><strong>Kompetansegap:</strong> Sivile vs. Militære krav.</li>
+                    <li><strong>Ukjent Teknologi:</strong> Hydrogen & Eksplosiver krever "crawl-walk-run" tilnærming.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="highlight-box">
+            <strong>Strategi:</strong> Bruke portalen (som vi skal se på nå) for å tvinge frem struktur i vurderingene.
+        </div>
+    </div>
+
+    <!-- SLIDE 4: CASE 1 - HYDROGEN -->
+    <div class="slide-container" id="slide-4">
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Case 1: Hydrogendrone (Jørgen)</h1>
+        
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
+            <div style="font-size:3rem; color:#dc3545; width:80px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
+            <div>
+                <h3 style="margin:0;">Utfordring</h3>
+                <p>Sivil gjesteforsker, ukjent pilotkompetanse, eksperimentell drivstoffteknologi (Hydrogen).</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
+            <h3 style="color:var(--ffi-blue);">Løsning & Tiltak</h3>
+            <ul class="bullet-list" style="font-size:1rem;">
+                <li><strong>1. Kompetansesjekk:</strong> Jørgen mangler MÅK og A1/A3. Må på kurs.</li>
+                <li><strong>2. Kategorisering:</strong> Hydrogen = Høy energi = <em>Spesifikk kategori</em> (RA-003).</li>
+                <li><strong>3. Risikoanalyse:</strong> Fokus på lekkasje, brann og "fail-safe".</li>
+            </ul>
+        </div>
+
+        <div style="margin-top:30px; text-align:center;">
+            <p style="margin-bottom:10px; font-style:italic;">Klikk under for å demonstrere saksgangen i portalen:</p>
+            <a href="flight-auth.html" class="btn" style="font-size:1.2rem; padding: 15px 30px;">
+                <i class="fa-solid fa-play"></i> Start Demo: Flight Auth (Jørgen)
+            </a>
+            <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Tip: Velg "Case 1: Hydrogen" i verktøyet)</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: CASE 2 - ANGREPSDRONE -->
+    <div class="slide-container" id="slide-5">
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Case 2: Angrepsdrone</h1>
+        
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
+            <div style="font-size:3rem; color:#333; width:80px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
+            <div>
+                <h3 style="margin:0;">Utfordring</h3>
+                <p>Militær bestilling, skarp ammunisjon, "Black Box" drone (ukjent IP/opphav).</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
+            <h3 style="color:var(--ffi-blue);">Løsning & Tiltak</h3>
+            <ul class="bullet-list" style="font-size:1rem;">
+                <li><strong>1. "Showstopper":</strong> Ingen skarp testing før dokumentasjon foreligger.</li>
+                <li><strong>2. Gradvis tilnærming:</strong> Dummy-load -> Tethered flight -> Skarp i skytefelt.</li>
+                <li><strong>3. Kritisk Barriere:</strong> Uavhengig FTS (Flight Termination System) kreves pga usikker software.</li>
+            </ul>
+        </div>
+
+        <div style="margin-top:30px; text-align:center;">
+            <p style="margin-bottom:10px; font-style:italic;">Klikk under for å vise risikovurderingen:</p>
+            <a href="ra-attack-drone.html" class="btn" style="font-size:1.2rem; padding: 15px 30px; background-color:#dc3545;">
+                <i class="fa-solid fa-file-shield"></i> Vis Risikoanalyse (RA-006)
+            </a>
+        </div>
+    </div>
+
+    <!-- NAVIGASJON -->
+    <div class="slide-nav">
+        <button onclick="changeSlide(-1)"><i class="fa-solid fa-arrow-left"></i> Forrige</button>
+        <span id="slide-counter" style="align-self:center; color:#888;">1 / 5</span>
+        <button onclick="changeSlide(1)">Neste <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 5;
+
+    function changeSlide(direction) {
+        // Hide current
+        document.getElementById(`slide-${currentSlide}`).classList.remove('slide-active');
+        
+        // Calculate new
+        currentSlide += direction;
+        if (currentSlide < 1) currentSlide = 1;
+        if (currentSlide > totalSlides) currentSlide = totalSlides;
+        
+        // Show new
+        document.getElementById(`slide-${currentSlide}`).classList.add('slide-active');
+        document.getElementById('slide-counter').innerText = `${currentSlide} / ${totalSlides}`;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        if(event.key === "ArrowLeft") {
+            changeSlide(-1);
+        } else if(event.key === "ArrowRight") {
+            changeSlide(1);
+        }
+    });
+</script>
+
+</body>
+</html>
