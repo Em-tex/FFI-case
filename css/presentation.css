@@ -10,7 +10,7 @@
 .slide-container { 
     display: none; /* SKAL VÆRE SKJULT SOM STANDARD */
     animation: fadeInSlide 0.4s ease-in-out; 
-    height: 600px; /* Fast høyde */
+    height: 600px; 
     padding: 20px 40px; 
     box-sizing: border-box;
 }
