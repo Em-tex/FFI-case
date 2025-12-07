@@ -45,22 +45,34 @@ document.addEventListener("DOMContentLoaded", function() {
         
         document.getElementById('raTableContainer').addEventListener('input', saveDataToStorage);
         document.getElementById('raTableContainer').addEventListener('change', saveDataToStorage);
-        
         document.getElementById('raName').addEventListener('input', saveDataToStorage);
         document.getElementById('raDate').addEventListener('input', saveDataToStorage);
         document.getElementById('raAssessor').addEventListener('input', saveDataToStorage);
+        document.getElementById('compSlider').addEventListener('change', saveDataToStorage);
+        document.getElementById('manualComplexity').addEventListener('change', saveDataToStorage);
     }
 });
 
 /* --- STORAGE LOGIC --- */
 function hasSavedData() { return localStorage.getItem(STORAGE_KEY) !== null; }
 function saveDataToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify(gatherFormData())); }
+
 function loadFromStorage() {
     try {
         const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
         document.getElementById('raName').value = data.meta.name || "";
         document.getElementById('raDate').value = data.meta.date || "";
         document.getElementById('raAssessor').value = data.meta.assessor || "";
+        
+        // Restore manual override state
+        const manual = data.meta.manualComplexity === true;
+        document.getElementById('manualComplexity').checked = manual;
+        
+        if(manual) {
+            document.getElementById('compSlider').disabled = false;
+            document.getElementById('compSlider').value = parseInt(data.meta.complexity) || 0;
+            updateVisualsFromSlider();
+        }
 
         const container = document.getElementById('raTableContainer');
         container.innerHTML = `
@@ -87,12 +99,15 @@ function loadFromStorage() {
         } else {
             initTemplate(); 
         }
-        updateComplexity();
+        
+        if(!manual) updateComplexity();
+
     } catch (e) {
         console.error("Failed to load save:", e);
         initTemplate(); 
     }
 }
+
 function clearForm() {
     if (confirm("Are you sure you want to clear the form?")) {
         localStorage.removeItem(STORAGE_KEY);
@@ -100,12 +115,14 @@ function clearForm() {
     }
 }
 
-/* --- DATA GATHERING --- */
 function gatherFormData() {
     const raName = document.getElementById('raName').value;
     const date = document.getElementById('raDate').value;
     const assessor = document.getElementById('raAssessor').value;
-    const complexityScore = document.getElementById('compScore').innerText;
+    // Get actual displayed score
+    const complexityScore = document.getElementById('compScore').innerText.replace(' pts', '');
+    const manualComplexity = document.getElementById('manualComplexity').checked;
+
     const sections = [];
     const tbodies = document.querySelectorAll('#raTableContainer tbody');
     
@@ -130,10 +147,10 @@ function gatherFormData() {
         });
         sections.push({ title: tbody.dataset.title, rows: rows });
     });
-    return { meta: { name: raName, date, assessor, complexity: complexityScore }, sections: sections };
+    return { meta: { name: raName, date, assessor, complexity: complexityScore, manualComplexity }, sections: sections };
 }
 
-/* --- TEMPLATE & UI LOGIC --- */
+/* --- LOGIC --- */
 function initTemplate() {
     templateSections.forEach(section => addSection(section.title, section.hazards));
     updateComplexity();
@@ -194,7 +211,7 @@ function addRowToSection(tbodyId, rowData = {}) {
     const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
     const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
 
-    // Dropdown HTML med svake bakgrunnsfarger på options
+    // Dropdown HTML
     const sevOptions = `
         <option value="0" class="bg-pale-white">- Sev -</option>
         <option value="1" class="bg-pale-red">1 (Catastrophic)</option>
@@ -239,19 +256,19 @@ function addRowToSection(tbodyId, rowData = {}) {
     const footer = tbody.querySelector('.section-footer');
     if (footer) tbody.insertBefore(tr, footer); else tbody.appendChild(tr);
     
-    // Set selected values
+    // Set values
     tr.querySelector('.risk-cell[data-type="initial"] .sev-select').value = d.initial.sev;
     tr.querySelector('.risk-cell[data-type="initial"] .prob-select').value = d.initial.prob;
     tr.querySelector('.risk-cell[data-type="residual"] .sev-select').value = d.residual.sev;
     tr.querySelector('.risk-cell[data-type="residual"] .prob-select').value = d.residual.prob;
 
-    // Apply colors and updates
+    // Apply logic
     updateCellColor(tr.querySelector('.risk-cell[data-type="initial"]'));
     updateCellColor(tr.querySelector('.risk-cell[data-type="residual"]'));
     tr.querySelectorAll('select').forEach(s => updateSelectStyle(s));
 
     renumberRows();
-    saveDataToStorage(); 
+    if(!hasSavedData()) saveDataToStorage(); // Only auto-save initial row if fresh start
 }
 
 function removeRow(btn) {
@@ -279,27 +296,23 @@ function updateRow(select) {
     saveDataToStorage(); 
 }
 
-// Sets the background color of the SELECT box itself based on value (Weak pastel)
 function updateSelectStyle(select) {
     const val = select.value;
     select.className = 'ra-input ' + (select.classList.contains('prob-select') ? 'prob-select' : 'sev-select');
     
     if (val === '0') { select.classList.add('bg-pale-white'); return; }
 
-    // Severity Logic
     if (select.classList.contains('sev-select')) {
         if (val === '1') select.classList.add('bg-pale-red');
         else if (val === '2') select.classList.add('bg-pale-orange');
         else if (val === '3') select.classList.add('bg-pale-yellow');
         else if (val === '4') select.classList.add('bg-pale-green');
-    }
-    // Probability Logic
-    else {
+    } else {
         if (val === 'A') select.classList.add('bg-pale-red');
         else if (val === 'B') select.classList.add('bg-pale-orange');
         else if (val === 'C') select.classList.add('bg-pale-yellow');
-        else if (val === 'D') select.classList.add('bg-pale-green');
-        else if (val === 'E') select.classList.add('bg-pale-green');
+        else if (val === 'D') select.classList.add('bg-pale-green'); 
+        else if (val === 'E') select.classList.add('bg-pale-green'); 
     }
 }
 
@@ -318,18 +331,17 @@ function updateCellColor(cell) {
     const code = sev + prob;
     let color = '#eee', text = '#000', score = 0;
 
-    // LOGIC FROM MAA-NOR MATRIX
     if (['1A','2A','1B','2B','1C'].includes(code)) {
-        color = 'var(--risk-high)'; text = 'white'; score = 4; // High Risk
+        color = 'var(--risk-high)'; text = 'white'; score = 4;
     }
     else if (['3A','3B','2C','1D'].includes(code)) {
-        color = 'var(--risk-serious)'; text = 'black'; score = 3; // Serious Risk
+        color = 'var(--risk-serious)'; text = 'black'; score = 3;
     }
     else if (['4A','4B','3C','2D','3D','1E','2E','3E'].includes(code)) {
-        color = 'var(--risk-medium)'; text = 'black'; score = 2; // Medium Risk
+        color = 'var(--risk-medium)'; text = 'black'; score = 2;
     }
     else if (['4C','4D','4E'].includes(code)) {
-        color = 'var(--risk-low)'; text = 'white'; score = 1; // Low Risk
+        color = 'var(--risk-low)'; text = 'white'; score = 1;
     }
 
     badge.style.backgroundColor = color;
@@ -337,7 +349,25 @@ function updateCellColor(cell) {
     cell.dataset.score = score;
 }
 
+function toggleManualComplexity() {
+    const manual = document.getElementById('manualComplexity').checked;
+    const slider = document.getElementById('compSlider');
+    const calc = document.getElementById('calcScore').innerText;
+    
+    slider.disabled = !manual;
+    
+    if (!manual) {
+        // Revert to auto calculation
+        updateComplexity();
+    } else {
+        // Unlock slider
+    }
+    saveDataToStorage();
+}
+
 function updateComplexity() {
+    if (document.getElementById('manualComplexity').checked) return;
+
     let totalComplexity = 0;
     document.querySelectorAll('.hazard-row').forEach(row => {
         const initScore = parseInt(row.querySelector('.risk-cell[data-type="initial"]').dataset.score || 0);
@@ -348,23 +378,39 @@ function updateComplexity() {
             totalComplexity += 5 + (gap * 15) + (resScore * 10);
         }
     });
+    
+    // Store calc score
+    document.getElementById('calcScore').innerText = totalComplexity;
+    
+    // Update slider visually
+    const slider = document.getElementById('compSlider');
+    slider.value = totalComplexity;
+    updateVisualsFromSlider();
+}
 
-    const fill = document.getElementById('compFill');
+function updateVisualsFromSlider() {
+    const slider = document.getElementById('compSlider');
     const scoreText = document.getElementById('compScore');
     const label = document.getElementById('compLabel');
+    const advice = document.getElementById('compAdvice');
     
-    if(!fill) return;
-
-    let width = Math.min(100, totalComplexity / 3); 
-    fill.style.width = width + "%";
-    scoreText.innerText = totalComplexity + " pts";
-
-    if (totalComplexity < 80) {
-        fill.style.backgroundColor = "var(--risk-low)"; label.innerText = "Low Complexity";
-    } else if (totalComplexity < 160) {
-        fill.style.backgroundColor = "var(--risk-serious)"; label.innerText = "Medium Complexity";
+    const val = parseInt(slider.value);
+    scoreText.innerText = val + " pts";
+    
+    slider.className = "complexity-slider"; // reset
+    
+    if (val < 80) {
+        slider.classList.add("slider-low");
+        label.innerText = "Low Complexity";
+        advice.innerText = "Standard operation. Routine monitoring sufficient.";
+    } else if (val < 160) {
+        slider.classList.add("slider-med");
+        label.innerText = "Medium Complexity";
+        advice.innerText = "Operation relies on barriers. Briefing on mitigations required.";
     } else {
-        fill.style.backgroundColor = "var(--risk-high)"; label.innerText = "High Complexity";
+        slider.classList.add("slider-high");
+        label.innerText = "High Complexity";
+        advice.innerText = "High reliance on barriers or high residual risk. Consider reducing scope.";
     }
 }
 

@@ -12,46 +12,16 @@
     <script src="js/ra-logic.js"></script>
     <style>
         .container { max-width: 95% !important; }
-
         .ra-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px; table-layout: fixed; }
-        
-        .ra-table th { 
-            position: sticky; top: 0; 
-            background-color: #f8f9fa; color: #333; 
-            padding: 10px; border-bottom: 2px solid #ddd; 
-            text-align: left; font-size: 0.85rem; z-index: 10;
-        }
-        
-        .ra-table td { 
-            vertical-align: top; 
-            padding: 5px; 
-            border-bottom: 1px solid #eee; 
-            background: white; 
-            height: 1px; 
-        }
-        
-        .ra-input { 
-            width: 100%; 
-            border: 1px solid #ced4da; border-radius: 4px; 
-            padding: 6px; 
-            font-family: inherit; font-size: 0.85rem; 
-            box-sizing: border-box;
-            background-color: #fff;
-        }
-
+        .ra-table th { position: sticky; top: 0; background-color: #f8f9fa; color: #333; padding: 10px; border-bottom: 2px solid #ddd; text-align: left; font-size: 0.85rem; z-index: 10;}
+        .ra-table td { vertical-align: top; padding: 5px; border-bottom: 1px solid #eee; background: white; height: 1px; }
+        .ra-input { width: 100%; border: 1px solid #ced4da; border-radius: 4px; padding: 6px; font-family: inherit; font-size: 0.85rem; box-sizing: border-box; background-color: #fff; }
         textarea.ra-input { height: 100%; min-height: 80px; resize: vertical; display: block; }
-        
         select.ra-input { cursor: pointer; margin-bottom: 4px; }
-
-        .complexity-bar { height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px; }
-        .complexity-fill { height: 100%; width: 0%; background: #28a745; transition: width 0.5s, background 0.5s; }
         .risk-badge { text-align:center; padding:4px; border-radius:4px; font-weight:bold; background:#e9ecef; color: #666; font-size: 0.85rem; margin-top: 2px; }
-        
         .section-header-row td { background-color: var(--ffi-blue); color: white; padding: 8px 15px; font-weight: 600; height: auto; }
         .section-footer td { padding: 10px; background-color: #fff; border-bottom: 2px solid #ddd; height: auto; }
-        
         .btn-xs { padding: 2px 6px; font-size: 0.75rem; margin-left: 10px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); color: white; border-radius: 3px; cursor: pointer; }
-        .btn-xs:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
@@ -85,15 +55,10 @@
             <col style="width: 3%;">  <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 8%;">  <col style="width: 15%;"> <col style="width: 15%;"> <col style="width: 8%;">  <col style="width: 3%;">  </colgroup>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Hazard</th>
-                <th>Cause</th>
-                <th>Effect</th>
-                <th>Initial Risk</th>
-                <th>Preventative Barriers<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Probability)</span></th>
-                <th>Recovery Measures<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Severity)</span></th>
-                <th>Residual Risk</th>
-                <th></th>
+                <th>ID</th> <th>Hazard</th> <th>Cause</th> <th>Effect</th> <th>Initial Risk</th> 
+                <th>Preventative Barriers<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Probability)</span></th> 
+                <th>Recovery Measures<br><span style="font-weight:normal; color:#666; font-size:0.8em;">(Reduce Severity)</span></th> 
+                <th>Residual Risk</th> <th></th>
             </tr>
         </thead>
     </table>
@@ -108,8 +73,16 @@
                 <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity Assessment</h3>
                 <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
                     Calculated based on the <strong>gap</strong> between Initial and Residual risk. 
-                    Large reductions in risk imply a heavy reliance on barriers functioning correctly, which increases operational complexity.
+                    Large reductions in risk imply a heavy reliance on barriers functioning correctly.
                 </p>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:inline-flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer;">
+                        <input type="checkbox" id="manualComplexity" onchange="toggleManualComplexity()"> 
+                        <strong>Manual Override</strong> (Adjust score manually)
+                    </label>
+                </div>
+
                 <div id="compAdvice" style="font-size: 0.95rem; font-style: italic; color: #555; background: #f8f9fa; padding: 10px; border-radius: 4px;">
                     Add hazards to assess complexity.
                 </div>
@@ -119,9 +92,12 @@
                 <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1rem; margin-bottom: 5px;">
                     <span id="compLabel">Low</span>
                     <span id="compScore">0 pts</span>
+                    <span id="calcScore" style="display:none;">0</span>
                 </div>
-                <div class="complexity-bar">
-                    <div class="complexity-fill" id="compFill"></div>
+                
+                <input type="range" id="compSlider" class="complexity-slider" min="0" max="300" value="0" disabled oninput="updateVisualsFromSlider()">
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#888; margin-top:5px;">
+                    <span>Low (0-80)</span><span>Medium (81-160)</span><span>High (160+)</span>
                 </div>
             </div>
         </div>
