@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/presentation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/menu.js"></script>
+    <script src="js/presentation.js"></script>
 </head>
 <body>
 
@@ -32,20 +33,23 @@
     <div class="slide-container" id="slide-2">
         <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
         
-        <div style="display:flex; gap: 40px; margin-top: 30px; align-items:center;">
+        <div style="display:flex; gap: 40px; margin-top: 30px; align-items: flex-start;">
             <div style="flex: 1;">
                 <img src="https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden/_/image/79c8de0a-daab-4147-b89c-0593af3193be:b32b93e8bb47dbe6478cd2098c145c36b1563dd1/width-2048-/HydrogendroneUtenKort.jpg?quality=50" 
                      alt="Hydrogendrone" 
                      style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <div style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+                    Foto: https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden
+                </div>
             </div>
             
             <div style="flex: 1;">
                 <h3 style="color: var(--ffi-blue);">Scenariobeskrivelse</h3>
                 <ul class="bullet-list">
-                    <li><strong>Hydrogen:</strong> Eksperimentell teknologi.</li>
-                    <li><strong>Testflyging:</strong> Må gjennomføres under forskjellige værforhold.</li>
-                    <li><strong>Vintertest:</strong> Ukjent ytelse i minusgrader (batteri vs. brenselcelle).</li>
-                    <li><strong>Demonstrasjon:</strong> Skal vises frem (høyere risiko ved publikum).</li>
+                    <li>Hydrogenbrenselcelle uten dokumentasjon.</li>
+                    <li>Testflyging under forskjellige værforhold.</li>
+                    <li>Ukjent ytelse i minusgrader.</li>
+                    <li>Demonstrasjon for publikum.</li>
                 </ul>
             </div>
         </div>
@@ -57,7 +61,6 @@
             <div class="venn-circle venn-right">Safety<br><span style="font-size:0.9rem; font-weight:normal;">(Sikkerhet)</span></div>
             <div class="venn-center-text">Operativ Ledelse</div>
         </div>
-        
     </div>
 
     <div class="slide-container" id="slide-4">
@@ -152,34 +155,6 @@
     </div>
 
 </div>
-
-<script>
-    let currentSlide = 1;
-    const totalSlides = 6;
-
-    function changeSlide(direction) {
-        // Hide current
-        document.getElementById(`slide-${currentSlide}`).classList.remove('slide-active');
-        
-        // Calculate new
-        currentSlide += direction;
-        if (currentSlide < 1) currentSlide = 1;
-        if (currentSlide > totalSlides) currentSlide = totalSlides;
-        
-        // Show new
-        document.getElementById(`slide-${currentSlide}`).classList.add('slide-active');
-        document.getElementById('slide-counter').innerText = `${currentSlide} / ${totalSlides}`;
-    }
-
-    // Keyboard navigation
-    document.addEventListener('keydown', function(event) {
-        if(event.key === "ArrowLeft") {
-            changeSlide(-1);
-        } else if(event.key === "ArrowRight") {
-            changeSlide(1);
-        }
-    });
-</script>
 
 </body>
 </html>
