@@ -8,10 +8,10 @@
 
 /* Slide Containers */
 .slide-container { 
-    display: none; /* SKAL VÆRE SKJULT SOM STANDARD */
+    display: none; 
     animation: fadeInSlide 0.4s ease-in-out; 
-    height: 600px; 
-    padding: 20px 40px; 
+    height: 650px; /* Økt litt for å gi plass */
+    padding: 50px 60px; /* Mer luft i toppen (fikser "høy overskrift") og sidene */
     box-sizing: border-box;
 }
 
@@ -19,14 +19,14 @@
 .slide-active { 
     display: flex !important; 
     flex-direction: column;
-    justify-content: center; 
+    justify-content: flex-start; /* Endret fra center til flex-start for å ha kontroll på toppen */
 }
 
 /* Navigation Controls */
 .slide-nav { 
     display: flex; 
     justify-content: space-between; 
-    margin-top: 20px; 
+    margin-top: auto; /* Dytter navigasjonen helt til bunnen */
     border-top: 1px solid #eee; 
     padding-top: 20px; 
 }
@@ -56,7 +56,7 @@
     position: relative; 
     width: 600px; 
     height: 350px; 
-    margin: 50px auto 0 auto; 
+    margin: 80px auto 0 auto; 
 }
 
 .venn-circle {
@@ -68,7 +68,6 @@
     transition: all 0.3s;
 }
 
-/* Labels positioned HIGHER above circles */
 .venn-label {
     position: absolute;
     top: -40px; 
@@ -80,42 +79,41 @@
     z-index: 10;
 }
 
-/* Left Circle (Compliance) */
 .venn-left { 
     left: 0; 
     border: 5px solid var(--ffi-blue); 
     background-color: rgba(3, 71, 127, 0.1); 
     z-index: 1;
 }
-.label-left {
-    left: 0;
-    color: var(--ffi-blue);
-}
+.label-left { left: 0; color: var(--ffi-blue); }
 
-/* Right Circle (Safety) */
 .venn-right { 
     right: 0; 
     border: 5px solid #d35400; 
     background-color: rgba(211, 84, 0, 0.1);
     z-index: 2;
 }
-.label-right {
-    right: 0;
-    color: #d35400;
-}
+.label-right { right: 0; color: #d35400; }
 
 /* Content Elements */
 .bullet-list { 
-    font-size: 1.4rem; 
-    line-height: 1.6; 
+    font-size: 1.3rem; 
+    line-height: 1.5; 
     margin: 20px 0; 
     padding-left: 30px;
 }
 .bullet-list li { 
-    margin-bottom: 15px; 
+    margin-bottom: 12px; /* Litt luft mellom punktene */
 }
 
-/* Highlight Box */
+/* Sub-lists (for nøstede punkter) */
+.bullet-list ul {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #555;
+}
+
 .highlight-box { 
     background: #e3f2fd; 
     border-left: 6px solid var(--ffi-blue); 
@@ -125,21 +123,13 @@
     font-size: 1.3rem; 
 }
 
-/* Link Styles */
-.slide-link {
-    color: var(--ffi-blue);
-    text-decoration: underline;
-    cursor: pointer;
-}
-.slide-link:hover {
-    color: #002a4d;
-}
+.slide-link { color: var(--ffi-blue); text-decoration: underline; cursor: pointer; }
+.slide-link:hover { color: #002a4d; }
 
-/* Headers override for slides */
-.slide-container h1 { font-size: 2.2rem; }
+.slide-container h1 { font-size: 2.4rem; margin-top: 0; }
 .slide-container h3 { font-size: 1.5rem; margin-bottom: 15px; }
 
-/* Popup / Tooltip styling */
+/* Popup */
 .info-popup {
     display: none;
     position: fixed;
