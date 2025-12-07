@@ -8,17 +8,17 @@
     --ffi-light-bg: #f4f6f9;
     --section-header-bg: #34495e;
     
-    /* MAA-NOR Risk Colors (Strong for Badge) */
+    /* MAA-NOR Risk Colors (Standard) */
     --risk-high: #FF0000;    
     --risk-serious: #FFC000; 
     --risk-medium: #FFFF00;  
     --risk-low: #00B050;     
     
-    /* Ultra-Light Pastel for Dropdowns (Backgrounds) */
-    --pale-red: #fff5f5;
-    --pale-orange: #fffaf0;
-    --pale-yellow: #fffff0;
-    --pale-green: #f0fff4;
+    /* Dropdown Backgrounds (Pastel but Visible) */
+    --bg-red: #ffb3b3;
+    --bg-orange: #ffcc99;
+    --bg-yellow: #ffffcc;
+    --bg-green: #b3ffb3;
     
     --border-color: #e0e0e0;
 }
@@ -226,7 +226,7 @@ select:focus, input:focus {
     border-bottom: 1px solid #eee;
 }
 
-/* --- Resultatboks --- */
+/* --- Resultatboks (Colored Backgrounds) --- */
 #result-box {
     position: relative;
     margin: 30px auto 0 auto;
@@ -241,10 +241,10 @@ select:focus, input:focus {
 }
 
 .res-gray { background: #6c757d; color: white; border-color: #5a6268; }
-.res-green { background: var(--status-green); color: var(--text-green); border-color: var(--border-green); }
-.res-yellow { background: var(--status-yellow); color: var(--text-yellow); border-color: var(--border-yellow); }
-.res-orange { background: var(--status-orange); color: var(--text-orange); border-color: var(--border-orange); }
-.res-red { background: var(--status-red); color: var(--text-red); border-color: var(--border-red); }
+.res-green { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+.res-yellow { background: #fff3cd; color: #856404; border-color: #ffeeba; }
+.res-orange { background: #ffebd3; color: #a35200; border-color: #ffe0b2; }
+.res-red { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
 .result-title { font-size: 1.5rem; font-weight: 800; display: block; text-transform: uppercase; margin-bottom: 5px; }
 .result-desc { font-size: 1.1rem; }
@@ -260,7 +260,7 @@ select:focus, input:focus {
 .warning-icon-dynamic { margin-left: 8px; display: none; animation: fadeIn 0.3s; }
 @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-/* --- GAUGE STYLES (Fixed Height) --- */
+/* --- GAUGE STYLES --- */
 .gauge-wrapper {
     position: relative;
     width: 200px;
@@ -284,7 +284,7 @@ select:focus, input:focus {
     position: absolute; top: 20px; left: 20px; width: 160px; height: 160px;
     background: white; border-radius: 50%; z-index: 2;
 }
-/* Adjust gauge cover based on background */
+/* IMPORTANT: Gauge cover must match Result Box background to create arc */
 .res-gray .gauge-cover { background: #6c757d; }
 .res-green .gauge-cover { background: #d4edda; }
 .res-yellow .gauge-cover { background: #fff3cd; }
@@ -334,9 +334,10 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 
 /* Hazard Table */
 .hazard-table td { vertical-align: top; }
-.risk-mtx { font-weight:bold; padding:2px 6px; border-radius:4px; font-size:0.85em; display:inline-block; min-width:30px; text-align:center;}
 
-/* Risk Levels (Badge Colors) */
+/* --- RISK BADGES (Solid High Contrast) --- */
+.risk-badge { display:inline-block; padding:4px 8px; border-radius:4px; font-weight:bold; font-size: 0.85rem; }
+
 .risk-H { background: var(--risk-high); color: white; }
 .risk-S { background: var(--risk-serious); color: black; }
 .risk-M { background: var(--risk-medium); color: black; }
@@ -360,17 +361,21 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .bg-y { background: var(--risk-medium); color: black; } 
 .bg-g { background: var(--risk-low); color: white; } 
 
-/* --- PALE DROPDOWN COLORS (Ultra Light) --- */
-.opt-sev-1 { background-color: var(--pale-red); color: #721c24; }
-.opt-sev-2 { background-color: var(--pale-orange); color: #856404; }
-.opt-sev-3 { background-color: var(--pale-yellow); color: #856404; }
-.opt-sev-4 { background-color: var(--pale-green); color: #155724; }
+/* --- VISIBLE PASTEL DROPDOWNS (Options) --- */
+.opt-sev-1 { background-color: var(--bg-red); }
+.opt-sev-2 { background-color: var(--bg-orange); }
+.opt-sev-3 { background-color: var(--bg-yellow); }
+.opt-sev-4 { background-color: var(--bg-green); }
 
-.opt-prob-a { background-color: var(--pale-red); color: #721c24; }
-.opt-prob-b { background-color: var(--pale-orange); color: #856404; }
-.opt-prob-c { background-color: var(--pale-yellow); color: #856404; }
-.opt-prob-d { background-color: #f0f7ff; color: #003366; } /* Light Blue for Remote */
-.opt-prob-e { background-color: #fcfcfc; color: #555; } /* Grey for Improbable */
+.opt-prob-a { background-color: var(--bg-red); }
+.opt-prob-b { background-color: var(--bg-orange); }
+.opt-prob-c { background-color: var(--bg-yellow); }
+.opt-prob-d { background-color: var(--bg-green); } 
+.opt-prob-e { background-color: #f0f0f0; } 
 
-/* Select box stays WHITE (Fix) */
-.ra-input { background-color: #fff !important; }
+/* Active Select (Backgrounds) */
+.ra-input.bg-red { background-color: var(--bg-red); }
+.ra-input.bg-orange { background-color: var(--bg-orange); }
+.ra-input.bg-yellow { background-color: var(--bg-yellow); }
+.ra-input.bg-green { background-color: var(--bg-green); }
+.ra-input.bg-white { background-color: #fff; }
