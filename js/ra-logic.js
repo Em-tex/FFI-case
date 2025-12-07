@@ -3,7 +3,7 @@
 let sectionCount = 0;
 const STORAGE_KEY = 'ffi_uas_ra_draft';
 
-// Template Data from Word Document (MUAS Risk Assessment)
+// Template Data
 const templateSections = [
     {
         title: "GENERAL",
@@ -53,15 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /* --- STORAGE LOGIC --- */
-function hasSavedData() {
-    return localStorage.getItem(STORAGE_KEY) !== null;
-}
-
-function saveDataToStorage() {
-    const data = gatherFormData();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
+function hasSavedData() { return localStorage.getItem(STORAGE_KEY) !== null; }
+function saveDataToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify(gatherFormData())); }
 function loadFromStorage() {
     try {
         const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -89,9 +82,7 @@ function loadFromStorage() {
             data.sections.forEach(sec => {
                 addSection(sec.title, [], true); 
                 const tbodyId = `tbody-sec-${sectionCount}`;
-                sec.rows.forEach(row => {
-                    addRowToSection(tbodyId, row); 
-                });
+                sec.rows.forEach(row => addRowToSection(tbodyId, row));
             });
         } else {
             initTemplate(); 
@@ -102,14 +93,14 @@ function loadFromStorage() {
         initTemplate(); 
     }
 }
-
 function clearForm() {
-    if (confirm("Are you sure you want to clear the form? All unsaved data will be lost.")) {
+    if (confirm("Are you sure you want to clear the form?")) {
         localStorage.removeItem(STORAGE_KEY);
         location.reload(); 
     }
 }
 
+/* --- DATA GATHERING --- */
 function gatherFormData() {
     const raName = document.getElementById('raName').value;
     const date = document.getElementById('raDate').value;
@@ -119,7 +110,6 @@ function gatherFormData() {
     const tbodies = document.querySelectorAll('#raTableContainer tbody');
     
     tbodies.forEach(tbody => {
-        const sectionTitle = tbody.dataset.title || "Unknown Section";
         const rows = [];
         tbody.querySelectorAll('.hazard-row').forEach(tr => {
             rows.push({
@@ -138,16 +128,14 @@ function gatherFormData() {
                 }
             });
         });
-        sections.push({ title: sectionTitle, rows: rows });
+        sections.push({ title: tbody.dataset.title, rows: rows });
     });
     return { meta: { name: raName, date, assessor, complexity: complexityScore }, sections: sections };
 }
 
-/* --- TEMPLATE INITIALIZATION --- */
+/* --- TEMPLATE & UI LOGIC --- */
 function initTemplate() {
-    templateSections.forEach(section => {
-        addSection(section.title, section.hazards);
-    });
+    templateSections.forEach(section => addSection(section.title, section.hazards));
     updateComplexity();
 }
 
@@ -155,30 +143,18 @@ function addSection(title = "", hazards = [], skipRows = false) {
     sectionCount++;
     const container = document.getElementById('raTableContainer');
     const tbodyId = `tbody-sec-${sectionCount}`;
-    
-    let displayTitle = title;
-    if (title === "") {
-        displayTitle = prompt("Enter Section Title (e.g., PAYLOAD RISKS):", "NEW SECTION");
-        if (!displayTitle) return;
-    }
+    let displayTitle = title || prompt("Enter Section Title:", "NEW SECTION");
+    if (!displayTitle) return;
 
     const tbody = document.createElement('tbody');
     tbody.id = tbodyId;
     tbody.dataset.title = displayTitle; 
-    
-    tbody.innerHTML = `
-        <tr class="section-header-row">
-            <td colspan="9"><span style="vertical-align:middle;">${displayTitle}</span></td>
-        </tr>
-    `;
+    tbody.innerHTML = `<tr class="section-header-row"><td colspan="9"><span>${displayTitle}</span></td></tr>`;
     container.appendChild(tbody);
 
     if (!skipRows) {
-        if (hazards.length > 0) {
-            hazards.forEach(hazardName => addRowToSection(tbodyId, { hazard: hazardName }));
-        } else {
-            addRowToSection(tbodyId); 
-        }
+        if (hazards.length > 0) hazards.forEach(h => addRowToSection(tbodyId, { hazard: h }));
+        else addRowToSection(tbodyId); 
     }
     addFooterRow(tbodyId);
     if (!skipRows) saveDataToStorage(); 
@@ -214,13 +190,8 @@ function addRowToSection(tbodyId, rowData = {}) {
 
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
-    
-    const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
-    const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
-
     tr.innerHTML = `
         <td class="row-id" style="font-size:0.8rem; color:#888;">...</td>
-        
         <td><textarea class="ra-input inp-hazard" placeholder="Hazard">${d.hazard}</textarea></td>
         <td><textarea class="ra-input inp-cause" placeholder="Cause">${d.cause}</textarea></td>
         <td><textarea class="ra-input inp-effect" placeholder="Effect">${d.effect}</textarea></td>
@@ -267,26 +238,22 @@ function addRowToSection(tbodyId, rowData = {}) {
         </td>
 
         <td style="text-align:center; vertical-align:middle;">
-            <button style="${deleteBtnStyle}" onclick="removeRow(this)" title="Delete Row">
-                ${deleteIcon}
-            </button>
+            <button style="background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer;" onclick="removeRow(this)" title="Delete"><i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i></button>
         </td>
     `;
 
     const footer = tbody.querySelector('.section-footer');
-    if (footer) tbody.insertBefore(tr, footer);
-    else tbody.appendChild(tr);
+    if (footer) tbody.insertBefore(tr, footer); else tbody.appendChild(tr);
     
     updateCellColor(tr.querySelector('.risk-cell[data-type="initial"]'));
     updateCellColor(tr.querySelector('.risk-cell[data-type="residual"]'));
     tr.querySelectorAll('select').forEach(s => updateSelectStyle(s));
 
     renumberRows();
-    saveDataToStorage(); 
 }
 
 function removeRow(btn) {
-    if (confirm("Are you sure you want to delete this hazard line?")) {
+    if (confirm("Are you sure?")) {
         btn.closest('tr').remove();
         renumberRows();
         updateComplexity();
@@ -303,10 +270,9 @@ function renumberRows() {
     });
 }
 
-function updateRow(selectElement) {
-    const cell = selectElement.closest('.risk-cell');
-    updateCellColor(cell);
-    updateSelectStyle(selectElement); 
+function updateRow(select) {
+    updateCellColor(select.closest('.risk-cell'));
+    updateSelectStyle(select); 
     updateComplexity();
     saveDataToStorage(); 
 }
@@ -316,7 +282,10 @@ function updateSelectStyle(select) {
     select.className = 'ra-input ' + (select.classList.contains('prob-select') ? 'prob-select' : 'sev-select');
     
     if (val === '0') select.classList.add('bg-white');
-    // Basic tint logic for UX (optional, kept simple here)
+    // Basic tint logic for UX
+    else if (['1','2','A','B'].includes(val)) select.classList.add('bg-red'); // Highish
+    else if (['3','C'].includes(val)) select.classList.add('bg-yellow'); // Medish
+    else select.classList.add('bg-green'); // Lowish
 }
 
 function updateCellColor(cell) {
@@ -326,38 +295,30 @@ function updateCellColor(cell) {
     
     if (prob === '0' || sev === '0') {
         badge.innerText = "...";
-        badge.style.background = "#eee";
-        badge.style.color = "#666";
-        cell.dataset.score = 0; 
-        return;
+        badge.style.background = "#eee"; badge.style.color = "#666";
+        cell.dataset.score = 0; return;
     }
 
     badge.innerText = `${sev}-${prob}`; 
-
-    // Risk Logic (MAA-NOR / BLF Table 1)
-    // Red: 1A, 1B, 1C, 2A, 2B
-    // Orange: 1D, 2C, 2D, 3A, 3B
-    // Yellow: 1E, 2E, 3C, 3D, 3E, 4A, 4B
-    // Green: 4C, 4D, 4E
-    
-    let color = '#eee'; let text = '#000'; let score = 0;
     const code = sev + prob;
+    let color = '#eee', text = '#000', score = 0;
 
-    // HIGH RISK (Red)
-    if (['1A','1B','1C','2A','2B'].includes(code)) {
-        color = '#FF0000'; text = '#FFF'; score = 4;
+    // LOGIC FROM IMAGE (Corrected)
+    // RED (HIGH): 1A, 2A, 1B, 2B, 1C
+    if (['1A','2A','1B','2B','1C'].includes(code)) {
+        color = 'var(--risk-high)'; text = 'var(--risk-high-text)'; score = 4;
     }
-    // SERIOUS RISK (Orange)
-    else if (['1D','2C','2D','3A','3B'].includes(code)) {
-        color = '#FFC000'; text = '#000'; score = 3;
+    // ORANGE (SERIOUS): 3A, 3B, 2C, 1D
+    else if (['3A','3B','2C','1D'].includes(code)) {
+        color = 'var(--risk-serious)'; text = 'var(--risk-serious-text)'; score = 3;
     }
-    // MEDIUM RISK (Yellow)
-    else if (['1E','2E','3C','3D','3E','4A','4B'].includes(code)) {
-        color = '#FFFF00'; text = '#000'; score = 2;
+    // YELLOW (MEDIUM): 4A, 4B, 3C, 2D, 3D, 1E, 2E, 3E
+    else if (['4A','4B','3C','2D','3D','1E','2E','3E'].includes(code)) {
+        color = 'var(--risk-medium)'; text = 'var(--risk-medium-text)'; score = 2;
     }
-    // LOW RISK (Green)
+    // GREEN (LOW): 4C, 4D, 4E
     else if (['4C','4D','4E'].includes(code)) {
-        color = '#00B050'; text = '#FFF'; score = 1;
+        color = 'var(--risk-low)'; text = 'var(--risk-low-text)'; score = 1;
     }
 
     badge.style.backgroundColor = color;
@@ -366,23 +327,15 @@ function updateCellColor(cell) {
 }
 
 function updateComplexity() {
-    const rows = document.querySelectorAll('.hazard-row');
     let totalComplexity = 0;
-    
-    rows.forEach(row => {
-        const initCell = row.querySelector('.risk-cell[data-type="initial"]');
-        const resCell = row.querySelector('.risk-cell[data-type="residual"]');
-        
-        const initScore = parseInt(initCell.dataset.score || 0);
-        const resScore = parseInt(resCell.dataset.score || 0);
+    document.querySelectorAll('.hazard-row').forEach(row => {
+        const initScore = parseInt(row.querySelector('.risk-cell[data-type="initial"]').dataset.score || 0);
+        const resScore = parseInt(row.querySelector('.risk-cell[data-type="residual"]').dataset.score || 0);
         
         if (initScore > 0) {
-            // Gap logic: Red(4) -> Green(1) = Gap 3. 
-            // Base cost 5 per hazard.
-            // Gap cost = Gap * 15.
             let gap = Math.max(0, initScore - resScore);
-            let residualPenalty = resScore * 10; 
-            totalComplexity += 5 + (gap * 15) + residualPenalty;
+            // Example scoring: High Gap = 15pts. Residual Risk penalty = Score * 10.
+            totalComplexity += 5 + (gap * 15) + (resScore * 10);
         }
     });
 
@@ -397,32 +350,25 @@ function updateComplexity() {
     scoreText.innerText = totalComplexity + " pts";
 
     if (totalComplexity < 80) {
-        fill.style.backgroundColor = "#28a745"; label.innerText = "Low Complexity";
+        fill.style.backgroundColor = "var(--risk-low)"; label.innerText = "Low Complexity";
     } else if (totalComplexity < 160) {
-        fill.style.backgroundColor = "#ffc107"; label.innerText = "Medium Complexity";
+        fill.style.backgroundColor = "var(--risk-serious)"; label.innerText = "Medium Complexity";
     } else {
-        fill.style.backgroundColor = "#dc3545"; label.innerText = "High Complexity";
+        fill.style.backgroundColor = "var(--risk-high)"; label.innerText = "High Complexity";
     }
 }
 
 function downloadRiskAssessment() {
     const data = gatherFormData();
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-    const downloadAnchorNode = document.createElement('a');
-    const filename = (data.meta.name || "Risk_Assessment").replace(/\s+/g, '_') + ".json";
-    
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", filename);
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    const a = document.createElement('a');
+    a.href = dataStr;
+    a.download = (data.meta.name || "Risk_Assessment").replace(/\s+/g, '_') + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
 }
 
 function loadLegendModal() {
-    fetch('legend.html')
-        .then(res => res.text())
-        .then(html => document.body.insertAdjacentHTML('beforeend', html))
-        .catch(e => console.log(e));
+    fetch('legend.html').then(r=>r.text()).then(h=>document.body.insertAdjacentHTML('beforeend', h)).catch(console.log);
 }
 window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display='none'; }
 function openLegend() { document.getElementById('legendModal').style.display='flex'; }

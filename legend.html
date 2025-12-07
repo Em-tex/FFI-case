@@ -4,7 +4,7 @@
         
         <div style="border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px;">
             <h2 style="color:var(--ffi-blue); margin: 0;">Risk Classification (MAA-NOR)</h2>
-            <p style="color:#666; margin: 5px 0 0 0; font-size: 0.9rem;">Reference: BLF / MAA-NOR Form MUASTA</p>
+            <p style="color:#666; margin: 5px 0 0 0; font-size: 0.9rem;">Reference: BLF / MAA-NOR Form MUASTA (Table 1 Risk Level Codes)</p>
         </div>
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
@@ -20,10 +20,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td><strong>Catastrophic</strong></td><td>Death, permanent total disability, irreversible significant environmental impact.</td></tr>
-                        <tr><td><strong>2</strong></td><td><strong>Critical</strong></td><td>Permanent partial disability, severe injury, reversible significant environmental impact.</td></tr>
-                        <tr><td><strong>3</strong></td><td><strong>Marginal</strong></td><td>Injury/illness (lost work day), reversible moderate environmental impact.</td></tr>
-                        <tr><td><strong>4</strong></td><td><strong>Negligible</strong></td><td>Minor injury (no lost day), minimal environmental impact.</td></tr>
+                        <tr><td><strong>1</strong></td><td><strong>Catastrophic</strong></td><td>Death, permanent total disability.</td></tr>
+                        <tr><td><strong>2</strong></td><td><strong>Critical</strong></td><td>Severe injury, permanent partial disability.</td></tr>
+                        <tr><td><strong>3</strong></td><td><strong>Marginal</strong></td><td>Injury/illness (lost work day).</td></tr>
+                        <tr><td><strong>4</strong></td><td><strong>Negligible</strong></td><td>Minor injury (no lost day).</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -35,22 +35,22 @@
                         <tr>
                             <th style="width:10%">Val</th>
                             <th style="width:25%">Level</th>
-                            <th>For Individual UAV</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>A</strong></td><td><strong>Frequent</strong></td><td>Likely to occur often in the life of an item.</td></tr>
-                        <tr><td><strong>B</strong></td><td><strong>Probable</strong></td><td>Will occur several times in the life of an item.</td></tr>
-                        <tr><td><strong>C</strong></td><td><strong>Occasional</strong></td><td>Likely to occur sometime in the life of an item.</td></tr>
-                        <tr><td><strong>D</strong></td><td><strong>Remote</strong></td><td>Unlikely, but possible to occur.</td></tr>
-                        <tr><td><strong>E</strong></td><td><strong>Improbable</strong></td><td>So unlikely, assumed not to be experienced.</td></tr>
+                        <tr><td><strong>A</strong></td><td><strong>Frequent</strong></td><td>Likely to occur often.</td></tr>
+                        <tr><td><strong>B</strong></td><td><strong>Probable</strong></td><td>Will occur several times.</td></tr>
+                        <tr><td><strong>C</strong></td><td><strong>Occasional</strong></td><td>Likely to occur sometime.</td></tr>
+                        <tr><td><strong>D</strong></td><td><strong>Remote</strong></td><td>Unlikely, but possible.</td></tr>
+                        <tr><td><strong>E</strong></td><td><strong>Improbable</strong></td><td>So unlikely, assumed not to occur.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div style="margin-top: 25px;">
-            <h3 class="legend-header"><i class="fa-solid fa-table-cells"></i> Risk Level Codes (Matrix)</h3>
+            <h3 class="legend-header"><i class="fa-solid fa-table-cells"></i> Risk Tolerability Matrix (Ref. Table 1)</h3>
             <div class="matrix-grid">
                 <div class="mtx-h" style="background:#fff; border:none;"></div> 
                 <div class="mtx-h">Cat (1)</div> <div class="mtx-h">Crit (2)</div> <div class="mtx-h">Marg (3)</div> <div class="mtx-h">Negl (4)</div>
@@ -65,17 +65,17 @@
                 <div class="mtx-cell bg-r">1-C</div> <div class="mtx-cell bg-o">2-C</div> <div class="mtx-cell bg-y">3-C</div> <div class="mtx-cell bg-g">4-C</div>
 
                 <div class="mtx-h">Rem (D)</div> 
-                <div class="mtx-cell bg-o">1-D</div> <div class="mtx-cell bg-o">2-D</div> <div class="mtx-cell bg-y">3-D</div> <div class="mtx-cell bg-g">4-D</div>
+                <div class="mtx-cell bg-o">1-D</div> <div class="mtx-cell bg-y">2-D</div> <div class="mtx-cell bg-y">3-D</div> <div class="mtx-cell bg-g">4-D</div>
 
                 <div class="mtx-h">Imp (E)</div> 
                 <div class="mtx-cell bg-y">1-E</div> <div class="mtx-cell bg-y">2-E</div> <div class="mtx-cell bg-y">3-E</div> <div class="mtx-cell bg-g">4-E</div>
             </div>
             
             <div style="display:flex; justify-content:center; gap:20px; margin-top:10px; font-size:0.9rem; font-weight:bold;">
-                <span style="color:var(--risk-high);">■ HIGH RISK</span>
-                <span style="color:var(--risk-serious);">■ SERIOUS RISK</span>
-                <span style="color:#d4ac0d;">■ MEDIUM RISK</span>
-                <span style="color:var(--risk-low);">■ LOW RISK</span>
+                <span style="color:var(--risk-high-text); background:var(--risk-high); padding:2px 6px; border-radius:4px;">HIGH RISK</span>
+                <span style="color:var(--risk-serious-text); background:var(--risk-serious); padding:2px 6px; border-radius:4px;">SERIOUS RISK</span>
+                <span style="color:var(--risk-medium-text); background:var(--risk-medium); padding:2px 6px; border-radius:4px;">MEDIUM RISK</span>
+                <span style="color:var(--risk-low-text); background:var(--risk-low); padding:2px 6px; border-radius:4px;">LOW RISK</span>
             </div>
         </div>
     </div>

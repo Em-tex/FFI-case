@@ -8,11 +8,18 @@
     --ffi-light-bg: #f4f6f9;
     --section-header-bg: #34495e;
     
-    /* MAA-NOR Risk Colors */
-    --risk-high: #FF0000;    /* Red */
-    --risk-serious: #FFC000; /* Orange */
-    --risk-medium: #FFFF00;  /* Yellow */
-    --risk-low: #00B050;     /* Green */
+    /* MAA-NOR Risk Colors (Pastell/Soft versions for UI) */
+    --risk-high: #ffcccc;    /* Light Red */
+    --risk-high-text: #8a0000;
+    
+    --risk-serious: #ffe5cc; /* Light Orange */
+    --risk-serious-text: #cc6600;
+    
+    --risk-medium: #ffffcc;  /* Light Yellow */
+    --risk-medium-text: #999900;
+    
+    --risk-low: #ccffcc;     /* Light Green */
+    --risk-low-text: #006600;
     
     --border-color: #e0e0e0;
 }
@@ -330,11 +337,11 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .hazard-table td { vertical-align: top; }
 .risk-mtx { font-weight:bold; padding:2px 6px; border-radius:4px; font-size:0.85em; display:inline-block; min-width:30px; text-align:center;}
 
-/* MAA-NOR Fargekoder for Risk Badges */
-.risk-H { background: var(--risk-high); color: white; }
-.risk-S { background: var(--risk-serious); color: black; }
-.risk-M { background: var(--risk-medium); color: black; }
-.risk-L { background: var(--risk-low); color: white; }
+/* Risk Levels (Using new variables) */
+.risk-H { background: var(--risk-high); color: var(--risk-high-text); border:1px solid #ff9999; }
+.risk-S { background: var(--risk-serious); color: var(--risk-serious-text); border:1px solid #ffcc99; }
+.risk-M { background: var(--risk-medium); color: var(--risk-medium-text); border:1px solid #ffff99; }
+.risk-L { background: var(--risk-low); color: var(--risk-low-text); border:1px solid #99ff99; }
 
 
 /* --- LEGEND TABLE & MATRIX --- */
@@ -345,31 +352,29 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .legend-table tr:nth-child(even) { background-color: #f9f9f9; }
 .legend-table tr:hover { background-color: #f1f1f1; }
 
-.matrix-grid { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; margin-top: 10px; text-align: center; font-size: 0.85rem;}
+.matrix-grid { display: grid; grid-template-columns: auto repeat(4, 1fr); /* Endret til 4 kolonner */ gap: 2px; margin-top: 10px; text-align: center; font-size: 0.85rem;}
 .mtx-h { font-weight: bold; background: #eee; padding: 8px; border: 1px solid #ccc; display:flex; align-items:center; justify-content:center;}
 .mtx-cell { padding: 8px; border: 1px solid #ccc; font-weight: bold; display:flex; align-items:center; justify-content:center;}
 
-/* Matrix Cells Colors */
-.bg-r { background: var(--risk-high); color: white; } 
-.bg-o { background: var(--risk-serious); color: black; } /* Ny Oransje */
-.bg-y { background: var(--risk-medium); color: black; } 
-.bg-g { background: var(--risk-low); color: white; } 
+.bg-r { background: var(--risk-high); color: var(--risk-high-text); } 
+.bg-o { background: var(--risk-serious); color: var(--risk-serious-text); } 
+.bg-y { background: var(--risk-medium); color: var(--risk-medium-text); } 
+.bg-g { background: var(--risk-low); color: var(--risk-low-text); } 
 
-/* --- COLOR DROPDOWNS (Pastellversjoner for lesbarhet) --- */
-.opt-sev-1 { background-color: #ffcccc; color: #990000; } /* Catastrophic (1) - Rød */
-.opt-sev-2 { background-color: #ffe5cc; color: #cc6600; } /* Critical (2) - Oransje */
-.opt-sev-3 { background-color: #ffffcc; color: #999900; } /* Marginal (3) - Gul */
-.opt-sev-4 { background-color: #ccffcc; color: #006600; } /* Negligible (4) - Grønn */
+/* --- COLOR DROPDOWNS (Matching Variables) --- */
+.opt-sev-1 { background-color: var(--risk-high); color: var(--risk-high-text); }
+.opt-sev-2 { background-color: var(--risk-serious); color: var(--risk-serious-text); }
+.opt-sev-3 { background-color: var(--risk-medium); color: var(--risk-medium-text); }
+.opt-sev-4 { background-color: var(--risk-low); color: var(--risk-low-text); }
 
-.opt-prob-a { background-color: #ffcccc; color: #990000; } /* Frequent (A) */
-.opt-prob-b { background-color: #ffe5cc; color: #cc6600; } /* Probable (B) */
-.opt-prob-c { background-color: #ffffcc; color: #999900; } /* Occasional (C) */
-.opt-prob-d { background-color: #e0f0ff; color: #003366; } /* Remote (D) - Bruker blålig da "Remote" er nøytralt */
-.opt-prob-e { background-color: #f0f0f0; color: #333333; } /* Improbable (E) */
+.opt-prob-a { background-color: var(--risk-high); color: var(--risk-high-text); }
+.opt-prob-b { background-color: var(--risk-serious); color: var(--risk-serious-text); }
+.opt-prob-c { background-color: var(--risk-medium); color: var(--risk-medium-text); }
+.opt-prob-d { background-color: var(--risk-low); color: var(--risk-low-text); }
+/* Note: Probability doesn't strictly map to color alone, but we color-code A-E as a heatmap in the dropdown for guidance */
 
-/* Select background styles */
-.ra-input.bg-red { background-color: #ffcccc; }
-.ra-input.bg-orange { background-color: #ffe5cc; }
-.ra-input.bg-yellow { background-color: #ffffcc; }
-.ra-input.bg-green { background-color: #ccffcc; }
+.ra-input.bg-red { background-color: var(--risk-high); color: var(--risk-high-text); border-color: #ff9999; }
+.ra-input.bg-orange { background-color: var(--risk-serious); color: var(--risk-serious-text); border-color: #ffcc99; }
+.ra-input.bg-yellow { background-color: var(--risk-medium); color: var(--risk-medium-text); border-color: #ffff99; }
+.ra-input.bg-green { background-color: var(--risk-low); color: var(--risk-low-text); border-color: #99ff99; }
 .ra-input.bg-white { background-color: #fff; }
