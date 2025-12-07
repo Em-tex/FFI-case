@@ -13,8 +13,8 @@ function initMap() {
     }
 
     // Startposisjon: Sentrert over Norge
-    const startLat = 65.0000; 
-    const startLon = 10.0000;
+    const startLat = 64.0000; 
+    const startLon = 13.0000;
     const zoomLevel = 4; 
 
     window.uavMap = L.map('map').setView([startLat, startLon], zoomLevel);
