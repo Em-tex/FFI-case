@@ -69,3 +69,4 @@ function clearMap() {
 // Eksporter funksjonene
 window.initMap = initMap;
 window.clearMap = clearMap;
+document.addEventListener("DOMContentLoaded", initMap);
