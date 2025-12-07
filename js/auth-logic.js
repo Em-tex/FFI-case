@@ -40,13 +40,11 @@ function toggleWarningIcon(groupId, show, type) {
 }
 
 function calculateRisk() {
-    // --- RESET STYLES ---
     document.querySelectorAll('.input-danger, .input-warning, .input-missing, .checkbox-danger').forEach(el => {
         el.classList.remove('input-danger', 'input-warning', 'input-missing', 'checkbox-danger');
     });
     document.querySelectorAll('.warning-icon-dynamic').forEach(el => el.style.display = 'none');
 
-    // --- GET ELEMENTS ---
     const elDroneType = document.getElementById('droneType');
     const elWeight = document.getElementById('weight');
     const elClassStatus = document.getElementById('classStatus');
@@ -62,7 +60,6 @@ function calculateRisk() {
     const elRecency = document.getElementById('recency');
     const elRA = document.getElementById('riskAssessment');
 
-    // --- CHECK FOR MISSING INPUTS ---
     let missingInput = false;
     const requiredFields = [
         elDroneType, elWeight, elClassStatus, elEnergy, elDangerous, 
@@ -95,7 +92,6 @@ function calculateRisk() {
         return; 
     }
 
-    // --- VALUES ---
     const droneType = elDroneType.value;
     const weight = elWeight.value;
     const classStatus = elClassStatus.value;
@@ -140,20 +136,18 @@ function calculateRisk() {
     let temNotes = []; 
     let riskScore = 5; 
 
-    // --- RISK SCORE CALCULATION (TUNED) ---
-    // System (Tuned down H2/Exp to allow Green status for tests)
+    // --- RISK SCORE CALCULATION ---
     if (weight === 'sub25') { riskScore += 5; riskFactors.push("Weight 4-25kg"); }
     if (weight === 'sub150') { riskScore += 30; riskFactors.push("Weight >25kg"); }
     if (weight === 'sub600' || weight === 'over600') { riskScore += 60; riskFactors.push("Heavy UAS"); }
     
-    if (classStatus === 'experimental') { riskScore += 5; riskFactors.push("Experimental"); } // Reduced from 10
-    if (energySource === 'hydrogen') { riskScore += 5; riskFactors.push("Hydrogen"); } // Reduced from 10
+    if (classStatus === 'experimental') { riskScore += 10; riskFactors.push("Experimental"); }
+    if (energySource === 'hydrogen') { riskScore += 10; riskFactors.push("Hydrogen"); }
     
     if (dangerousGoods === 'yes') { riskScore += 50; riskFactors.push("Weapons"); }
     if (dangerousGoods === 'pyro') { riskScore += 15; riskFactors.push("Pyro"); }
     
-    // Operation
-    if (area === 'populated') { riskScore += 20; riskFactors.push("Populated Area"); } // Reduced from 25
+    if (area === 'populated') { riskScore += 25; riskFactors.push("Populated Area"); }
     if (area === 'firing_range') { riskScore += 10; riskFactors.push("Firing Range"); }
     if (airspace === 'danger_area') { riskScore += 5; riskFactors.push("Danger Area"); }
     if (altitude === 'above120') { riskScore += 15; riskFactors.push(">120m"); }
@@ -164,12 +158,10 @@ function calculateRisk() {
     if (autopilot === 'manual') { riskScore += 10; riskFactors.push("Manual Flight"); }
     if (purpose === 'demo') { riskScore += 10; riskFactors.push("Demo"); }
     
-    // Recency (Heavy impact if expired)
     if (recency === 'recent') riskScore -= 5;
-    if (recency === 'expired') { riskScore += 30; riskFactors.push("Recency Expired"); } // Increased penalty
+    if (recency === 'expired') { riskScore += 15; riskFactors.push("Pilot Not Recent"); }
     
     riskScore = Math.max(0, Math.min(100, riskScore));
-
 
     // --- STOPPER LOGIC ---
     if (!ffiCourse) { status = "red"; markLabel('ffiCourse', 'red'); warnings.push("STOP: Missing FFI UAS Ground Course."); }
@@ -205,7 +197,6 @@ function calculateRisk() {
         warnings.push("STOP: Pilot lacks 'Above 120m' rating.");
     }
 
-    // Qualification Logic
     let pilotIsQualifiedForRisk = false;
     if (energySource === "hydrogen") {
         if (!hasRA) { status = "red"; mark('energySource', 'red'); mark('riskAssessment', 'red'); warnings.push("STOP: Hydrogen ops require Approved Risk Assessment."); } 
@@ -223,12 +214,11 @@ function calculateRisk() {
         if (!hasRA) { status = "red"; mark('weight', 'red'); mark('riskAssessment', 'red'); warnings.push("STOP: Class 2/3 always requires Risk Assessment."); }
     }
 
-    // --- STATUS & APPROVAL LOGIC ---
+    // --- STATUS ---
     let submissionType = "log"; 
 
     if (status !== "red") {
         
-        // RECENCY CHECK: Force Approval if expired
         if (recency === 'expired') {
             status = "yellow";
             submissionType = "approval";
@@ -237,14 +227,12 @@ function calculateRisk() {
             warnings.push("NOTICE: Recency expired. Please conduct supervised training.");
         }
         else {
-            // Normal Scoring Logic
             const isHighRisk = (riskScore > 70 || weight === 'sub150' || dangerousGoods === 'yes');
             
             if (isHighRisk) {
                 if (pilotIsQualifiedForRisk) {
-                    // Qualified pilots can self-authorize specific high risks (e.g. Hydrogen) if score is otherwise OK
                     if (riskScore < 60) {
-                        status = "green"; // Allowed to log
+                        status = "green"; 
                         title = "SELF-AUTHORIZATION PERMITTED";
                         desc = "Authorized based on specific qualification (RA-003/006).";
                     } else {
@@ -262,7 +250,7 @@ function calculateRisk() {
                     warnings.push("NOTICE: High Risk Factors: " + factors);
                 }
             }
-            else if (riskScore > 45) { // Threshold raised to 45
+            else if (riskScore > 45) { 
                 status = "yellow"; 
                 submissionType = "approval";
                 title = "REQUIRES APPROVAL (HEAD OF OPS)";
@@ -275,8 +263,7 @@ function calculateRisk() {
         submissionType = "denied";
     }
 
-    // TEM
-    if (recency === 'expired' && status !== 'red') temNotes.push("TEM: Pilot recency low. Fly practice battery first.");
+    if (recency === 'expired' && status !== 'red') temNotes.push("TEM: Pilot recency low. Fly practice battery.");
     if (autopilot === 'manual') temNotes.push("TEM: Manual mode. Check RTH failsafe.");
     
     const d = document.getElementById('flightDate').valueAsDate;
@@ -285,7 +272,6 @@ function calculateRisk() {
         if (m === 10 || m === 11 || m === 0 || m === 1 || m === 2) temNotes.push("TEM: Winter Ops. Pre-heat batteries >20°C.");
     }
 
-    // UI Updates
     resultBox.className = '';
     resultBox.classList.add(`res-${status}`);
     
@@ -308,11 +294,16 @@ function calculateRisk() {
         submissionForm.style.display = 'none';
     } else {
         submissionForm.style.display = 'block';
-        if (window.initMap && window.map) window.map.invalidateSize(); 
+        
+        // REFRESH MAP SIZE:
+        // Her bruker vi den sikre referansen window.uavMap fra map-logic.js
+        if (window.initMap && window.uavMap) {
+            window.uavMap.invalidateSize();
+        }
         
         if (submissionType === "approval") {
             formTitle.innerHTML = `<i class="fa-solid fa-file-signature"></i> Request Flight Approval`;
-            formDesc.innerText = "Risk score exceeds threshold or recency expired. Approval from Head of Operations is mandatory.";
+            formDesc.innerText = "Risk score exceeds threshold. Approval from Head of Operations is mandatory.";
             document.getElementById('submitBtn').innerText = "Submit Request for Approval";
             document.getElementById('submitBtn').style.backgroundColor = "#d35400"; 
         } else {

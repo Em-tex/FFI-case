@@ -1,36 +1,40 @@
 /* js/map-logic.js */
 
-let map;
+// Vi bruker window.uavMap for å unngå konflikt med <div id="map">
+// Nettlesere lager ofte automatisk en variabel 'map' av ID-en, som skaper krøll.
+window.uavMap = null;
 let marker;
 
 function initMap() {
-    if (map) {
-        map.invalidateSize(); 
+    // Sjekk om kartet allerede er initialisert
+    if (window.uavMap) {
+        window.uavMap.invalidateSize(); 
         return;
     }
 
-    // Startposisjon: Sentrert over Norge (Justert vestover fra Sverige)
-    // 65.0, 10.0 treffer bedre midt på landet visuelt ved zoom 4
+    // Startposisjon: Sentrert over Norge
     const startLat = 65.0000; 
     const startLon = 10.0000;
     const zoomLevel = 4; 
 
-    map = L.map('map').setView([startLat, startLon], zoomLevel);
+    window.uavMap = L.map('map').setView([startLat, startLon], zoomLevel);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    }).addTo(window.uavMap);
 
-    map.on('click', function(e) {
+    window.uavMap.on('click', function(e) {
         placeMarker(e.latlng);
     });
 }
 
 function placeMarker(latlng) {
+    if (!window.uavMap) return;
+
     if (marker) {
-        map.removeLayer(marker);
+        window.uavMap.removeLayer(marker);
     }
-    marker = L.marker(latlng).addTo(map);
+    marker = L.marker(latlng).addTo(window.uavMap);
 
     const locationInput = document.getElementById('locationInput');
     if (locationInput) {
@@ -44,8 +48,10 @@ function placeMarker(latlng) {
 }
 
 function clearMap() {
+    if (!window.uavMap) return;
+
     if (marker) {
-        map.removeLayer(marker);
+        window.uavMap.removeLayer(marker);
         marker = null;
     }
     const locationInput = document.getElementById('locationInput');
@@ -57,8 +63,9 @@ function clearMap() {
     }
     
     // Reset view til Norge
-    if(map) map.setView([65.0000, 10.0000], 4);
+    window.uavMap.setView([65.0000, 10.0000], 4);
 }
 
+// Eksporter funksjonene
 window.initMap = initMap;
 window.clearMap = clearMap;
