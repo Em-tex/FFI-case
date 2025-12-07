@@ -8,11 +8,11 @@
     --ffi-light-bg: #f4f6f9;
     --section-header-bg: #34495e;
     
-    /* Status Colors */
-    --status-green: #d4edda; --text-green: #155724; --border-green: #c3e6cb;
-    --status-yellow: #fff3cd; --text-yellow: #856404; --border-yellow: #ffeeba;
-    --status-orange: #ffebd3; --text-orange: #a35200; --border-orange: #ffe0b2;
-    --status-red: #f8d7da; --text-red: #721c24; --border-red: #f5c6cb;
+    /* MAA-NOR Risk Colors */
+    --risk-high: #FF0000;    /* Red */
+    --risk-serious: #FFC000; /* Orange */
+    --risk-medium: #FFFF00;  /* Yellow */
+    --risk-low: #00B050;     /* Green */
     
     --border-color: #e0e0e0;
 }
@@ -258,7 +258,7 @@ select:focus, input:focus {
 .gauge-wrapper {
     position: relative;
     width: 200px;
-    height: 140px; /* Increased to fit text below */
+    height: 140px; 
     margin: 0 auto;
     overflow: hidden;
     text-align: center;
@@ -329,9 +329,13 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 /* Hazard Table */
 .hazard-table td { vertical-align: top; }
 .risk-mtx { font-weight:bold; padding:2px 6px; border-radius:4px; font-size:0.85em; display:inline-block; min-width:30px; text-align:center;}
-.risk-L { background:#d4edda; color:#155724; }
-.risk-M { background:#fff3cd; color:#856404; }
-.risk-H { background:#f8d7da; color:#721c24; }
+
+/* MAA-NOR Fargekoder for Risk Badges */
+.risk-H { background: var(--risk-high); color: white; }
+.risk-S { background: var(--risk-serious); color: black; }
+.risk-M { background: var(--risk-medium); color: black; }
+.risk-L { background: var(--risk-low); color: white; }
+
 
 /* --- LEGEND TABLE & MATRIX --- */
 .legend-header { font-size:1.1rem; border-bottom:3px solid var(--ffi-blue); padding-bottom:5px; margin-bottom:10px; margin-top:0; }
@@ -345,25 +349,27 @@ th { background-color: var(--ffi-blue); color: white; font-weight: 600; }
 .mtx-h { font-weight: bold; background: #eee; padding: 8px; border: 1px solid #ccc; display:flex; align-items:center; justify-content:center;}
 .mtx-cell { padding: 8px; border: 1px solid #ccc; font-weight: bold; display:flex; align-items:center; justify-content:center;}
 
-.bg-r { background: #f8d7da; color: #721c24; } 
-.bg-y { background: #fff3cd; color: #856404; } 
-.bg-g { background: #d4edda; color: #155724; } 
+/* Matrix Cells Colors */
+.bg-r { background: var(--risk-high); color: white; } 
+.bg-o { background: var(--risk-serious); color: black; } /* Ny Oransje */
+.bg-y { background: var(--risk-medium); color: black; } 
+.bg-g { background: var(--risk-low); color: white; } 
 
-/* --- COLOR DROPDOWNS --- */
-.opt-sev-5 { background-color: #f8d7da; color: #721c24; }
-.opt-sev-4 { background-color: #f8d7da; color: #721c24; }
-.opt-sev-3 { background-color: #fff3cd; color: #856404; }
-.opt-sev-2 { background-color: #d4edda; color: #155724; }
-.opt-sev-1 { background-color: #d4edda; color: #155724; }
+/* --- COLOR DROPDOWNS (Pastellversjoner for lesbarhet) --- */
+.opt-sev-1 { background-color: #ffcccc; color: #990000; } /* Catastrophic (1) - Rød */
+.opt-sev-2 { background-color: #ffe5cc; color: #cc6600; } /* Critical (2) - Oransje */
+.opt-sev-3 { background-color: #ffffcc; color: #999900; } /* Marginal (3) - Gul */
+.opt-sev-4 { background-color: #ccffcc; color: #006600; } /* Negligible (4) - Grønn */
 
-.opt-prob-5 { background-color: #f8d7da; color: #721c24; }
-.opt-prob-4 { background-color: #f8d7da; color: #721c24; }
-.opt-prob-3 { background-color: #fff3cd; color: #856404; }
-.opt-prob-2 { background-color: #d4edda; color: #155724; }
-.opt-prob-1 { background-color: #d4edda; color: #155724; }
+.opt-prob-a { background-color: #ffcccc; color: #990000; } /* Frequent (A) */
+.opt-prob-b { background-color: #ffe5cc; color: #cc6600; } /* Probable (B) */
+.opt-prob-c { background-color: #ffffcc; color: #999900; } /* Occasional (C) */
+.opt-prob-d { background-color: #e0f0ff; color: #003366; } /* Remote (D) - Bruker blålig da "Remote" er nøytralt */
+.opt-prob-e { background-color: #f0f0f0; color: #333333; } /* Improbable (E) */
 
-/* Styles for dropdown background when selected */
-.ra-input.bg-red { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
-.ra-input.bg-yellow { background-color: #fff3cd; border-color: #ffeeba; color: #856404; }
-.ra-input.bg-green { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+/* Select background styles */
+.ra-input.bg-red { background-color: #ffcccc; }
+.ra-input.bg-orange { background-color: #ffe5cc; }
+.ra-input.bg-yellow { background-color: #ffffcc; }
+.ra-input.bg-green { background-color: #ccffcc; }
 .ra-input.bg-white { background-color: #fff; }
