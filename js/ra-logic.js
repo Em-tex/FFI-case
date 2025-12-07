@@ -26,11 +26,11 @@ const templateSections = [
         ]
     },
     {
-        // RENAMED from "SAFEGUARD FAILURES" for clarity
+        // RENAMED from "SAFEGUARD FAILURES"
         title: "CONTAINMENT & COLLISION RISKS",
         hazards: [
-            "Airspace violation (Geofence failure)",
-            "Mid-air Collision (DAA failure)"
+            "Airspace violation",
+            "Mid-air Collision"
         ]
     }
 ];
@@ -375,10 +375,10 @@ function updateCellColor(cell) {
     let color = '#d4edda'; let text = '#155724'; let score = 1;
 
     if ((sev === 5 && prob >= 3) || (sev === 4 && prob >= 4) || (sev === 3 && prob === 5)) {
-        color = '#f8d7da'; text = '#721c24'; score = 3; 
+        color = '#f8d7da'; text = '#721c24'; score = 3; // Red
     } 
     else if ((sev >= 3 && prob >= 2) || (sev === 2 && prob >= 4) || (sev === 5 && prob <= 2) || (sev === 1 && prob === 5)) {
-        color = '#fff3cd'; text = '#856404'; score = 2; 
+        color = '#fff3cd'; text = '#856404'; score = 2; // Yellow
     }
 
     badge.style.backgroundColor = color;
