@@ -49,21 +49,21 @@
 /* --- VENN DIAGRAM (OVALER) --- */
 .venn-wrapper { 
     position: relative; 
-    width: 650px; /* Økt totalbredde */
+    width: 600px; /* Smalere wrapper for å tvinge sirklene sammen */
     height: 350px; 
     margin: 40px auto; 
 }
 
 .venn-circle {
     position: absolute; 
-    width: 380px; /* Brede ovaler */
+    width: 420px; /* Enda bredere ovaler */
     height: 280px; 
     border-radius: 50%;
     display: flex; 
     align-items: center; 
     justify-content: center;
     font-weight: bold; 
-    font-size: 1.3rem; /* Større tekst */
+    font-size: 1.3rem; 
     text-transform: uppercase;
     transition: all 0.3s;
     text-align: center;
@@ -77,7 +77,8 @@
     border: 5px solid var(--ffi-blue); 
     color: var(--ffi-blue);
     background-color: rgba(3, 71, 127, 0.05);
-    padding-right: 60px; /* Skyver teksten mot venstre unna overlappet */
+    /* Skyver teksten langt til venstre for å unngå kollisjon med strekene */
+    padding-right: 160px; 
     z-index: 1;
 }
 
@@ -87,25 +88,9 @@
     border: 5px solid var(--risk-high); 
     color: var(--risk-high);
     background-color: rgba(220, 53, 69, 0.05);
-    padding-left: 60px; /* Skyver teksten mot høyre unna overlappet */
+    /* Skyver teksten langt til høyre for å unngå kollisjon med strekene */
+    padding-left: 160px; 
     z-index: 2;
-}
-
-.venn-center-text {
-    position: absolute; 
-    top: 45%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
-    background: white; 
-    padding: 10px 25px; 
-    border-radius: 30px;
-    font-weight: 800; 
-    color: #333; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    font-size: 1.1rem; 
-    z-index: 10;
-    border: 1px solid #ccc;
-    white-space: nowrap;
 }
 
 /* Content Elements */
