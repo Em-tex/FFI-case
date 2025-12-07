@@ -10,12 +10,13 @@
 .slide-container { 
     display: none; 
     animation: fadeInSlide 0.4s ease-in-out; 
-    /* ENDRET: Fra fast height til min-height, og redusert litt */
-    min-height: 600px; 
-    /* ENDRET: Justert padding. Mindre topp-padding, mer bunn-padding for å sikre avstand til knappene */
-    padding: 30px 60px 80px 60px; 
+    
+    /* ENDRET: Bruker flex: 1 for å fylle ledig plass, i stedet for fast høyde */
+    flex: 1; 
+    overflow-y: auto; /* Tillater scrolling inni sliden hvis innholdet er enormt, uten å flytte navigasjonen */
+    
+    padding: 40px 60px; 
     box-sizing: border-box;
-    position: relative; /* Lagt til for sikkerhets skyld */
 }
 
 /* Når sliden er aktiv, VIS den og sentrer innholdet */
@@ -23,21 +24,25 @@
     display: flex !important; 
     flex-direction: column;
     justify-content: flex-start;
-    /* Denne sikrer at hvis innholdet er kort, strekkes containeren slik at nav havner i bunn */
-    flex: 1; 
 }
 
 /* Navigation Controls */
 .slide-nav { 
     display: flex; 
     justify-content: space-between; 
-    margin-top: auto; /* Dytter navigasjonen helt til bunnen */
+    align-items: center;
+    
+    /* ENDRET: Denne dytter navigasjonen helt til bunnen av containeren */
+    margin-top: auto; 
+    
     border-top: 1px solid #eee; 
-    padding-top: 20px; 
-    /* Lagt til: Sikrer at navbaren ikke kolliderer med innhold som flyter over */
-    background: var(--ffi-light-bg); 
-    position: relative;
-    z-index: 10;
+    padding: 20px 60px; /* Samme side-padding som innholdet for pen linjering */
+    
+    /* ENDRET: Fjernet bakgrunnsfarge (var grå/ffi-light-bg) */
+    background: transparent; 
+    
+    /* Sikrer at navigasjonen ikke krymper */
+    flex-shrink: 0;
 }
 
 .slide-nav button { 
@@ -112,10 +117,9 @@
     padding-left: 30px;
 }
 .bullet-list li { 
-    margin-bottom: 12px; /* Litt luft mellom punktene */
+    margin-bottom: 12px; 
 }
 
-/* Sub-lists (for nøstede punkter) */
 .bullet-list ul {
     margin-top: 5px;
     margin-bottom: 10px;
@@ -128,7 +132,7 @@
     border-left: 6px solid var(--ffi-blue); 
     padding: 25px; 
     border-radius: 4px; 
-    margin: 20px 0; /* ENDRET: Redusert margin fra 30px til 20px */
+    margin: 20px 0; 
     font-size: 1.3rem; 
 }
 
