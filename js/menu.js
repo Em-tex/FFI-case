@@ -2,10 +2,12 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     const menuItems = [
-        { name: "Home", link: "index.html", icon: "fa-house" },
+        { name: "Hjem", link: "index.html", icon: "fa-house" },
+        // NY LENKE FOR PRESENTASJON
+        { name: "Presentasjon", link: "presentation.html", icon: "fa-tv" },
         { name: "Flight Authorization", link: "flight-auth.html", icon: "fa-check-to-slot" },
         { name: "Risk Assessments", link: "risk-assessments.html", icon: "fa-folder-open" },
-        { name: "Create RA", link: "create-ra.html", icon: "fa-pen-to-square" }, // NY SIDE
+        { name: "Create RA", link: "create-ra.html", icon: "fa-pen-to-square" },
         { name: "Map", link: "https://www.dronesoner.no", icon: "fa-map", target: "_blank" }
     ];
 
@@ -22,10 +24,16 @@ document.addEventListener("DOMContentLoaded", function() {
     menuItems.forEach(item => {
         const isActive = (page === item.link) ? 'class="active"' : '';
         const target = item.target ? `target="${item.target}"` : '';
-        menuHtml += `<li><a href="${item.link}" ${isActive} ${target}><i class="fa-solid ${item.icon}"></i> ${item.name}</a></li>`;
+        
+        // Legger til en liten style-tweak for Presentasjon for å gjøre den diskret men synlig
+        let style = "";
+        if (item.name === "Presentasjon") {
+            style = "style='border-bottom-color:rgba(255,255,255,0.3);'";
+        }
+
+        menuHtml += `<li><a href="${item.link}" ${isActive} ${target} ${style}><i class="fa-solid ${item.icon}"></i> ${item.name}</a></li>`;
     });
 
-    // Pilot Overview flyttet hit (Management section til høyre)
     menuHtml += `
         </ul>
         <div style="flex:1; text-align:right; display:flex; justify-content:flex-end; gap:15px; align-items:center;">
