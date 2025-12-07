@@ -8,22 +8,18 @@
 
 /* Slide Containers */
 .slide-container { 
-    display: none; 
+    display: none; /* SKAL VÆRE SKJULT SOM STANDARD */
     animation: fadeInSlide 0.4s ease-in-out; 
-    /* FAST HØYDE for å hindre at knapper hopper */
-    height: 600px; 
-    padding: 20px 40px; /* Mer luft på sidene */
+    height: 600px; /* Fast høyde */
+    padding: 20px 40px; 
     box-sizing: border-box;
-    
-    /* Sentrer innhold vertikalt for penere look */
-    display: flex; /* Merk: Dette overskrives av 'display: none' når inaktiv, men 'slide-active' setter den til flex */
-    flex-direction: column;
-    justify-content: center; 
 }
 
-/* Når sliden er aktiv, bruk flex for å sentrere */
+/* Når sliden er aktiv, VIS den og sentrer innholdet */
 .slide-active { 
     display: flex !important; 
+    flex-direction: column;
+    justify-content: center; 
 }
 
 /* Navigation Controls */
@@ -33,14 +29,12 @@
     margin-top: 20px; 
     border-top: 1px solid #eee; 
     padding-top: 20px; 
-    /* Låser navbaren til bunnen av containeren hvis vi vil, 
-       men med fast høyde på slide-container trengs ikke det. */
 }
 
 .slide-nav button { 
     background: #f8f9fa; 
     border: 1px solid #ccc; 
-    padding: 10px 20px; /* Større knapper */
+    padding: 10px 20px; 
     border-radius: 4px; 
     cursor: pointer; 
     color: #333; 
@@ -57,7 +51,7 @@
     background: #e2e6ea; 
 }
 
-/* --- VENN DIAGRAM (JUSTERT) --- */
+/* --- VENN DIAGRAM --- */
 .venn-wrapper { 
     position: relative; 
     width: 600px; 
@@ -77,9 +71,9 @@
 /* Labels positioned HIGHER above circles */
 .venn-label {
     position: absolute;
-    top: -40px; /* Flyttet lenger opp */
+    top: -40px; 
     font-weight: 800;
-    font-size: 1.6rem; /* Større tekst */
+    font-size: 1.6rem; 
     text-transform: uppercase;
     width: 400px;
     text-align: center;
@@ -101,7 +95,7 @@
 /* Right Circle (Safety) */
 .venn-right { 
     right: 0; 
-    border: 5px solid #d35400; /* Mørk oransje */
+    border: 5px solid #d35400; 
     background-color: rgba(211, 84, 0, 0.1);
     z-index: 2;
 }
@@ -110,9 +104,9 @@
     color: #d35400;
 }
 
-/* Content Elements - STØRRE TEKST */
+/* Content Elements */
 .bullet-list { 
-    font-size: 1.4rem; /* Økt fra 1.1/1.2 */
+    font-size: 1.4rem; 
     line-height: 1.6; 
     margin: 20px 0; 
     padding-left: 30px;
@@ -128,7 +122,7 @@
     padding: 25px; 
     border-radius: 4px; 
     margin: 30px 0; 
-    font-size: 1.3rem; /* Større tekst */
+    font-size: 1.3rem; 
 }
 
 /* Link Styles */
