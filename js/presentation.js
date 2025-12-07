@@ -1,7 +1,7 @@
 /* js/presentation.js */
 
 let currentSlide = 1;
-const totalSlides = 6; 
+const totalSlides = 7; // Oppdatert antall slides til 7
 
 document.addEventListener("DOMContentLoaded", function() {
     updateCounter();

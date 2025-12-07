@@ -114,7 +114,7 @@
     </div>
 
     <div class="slide-container" id="slide-5">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Løsningsforslag case 1</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Løsningsforslag Oppgave 1</h1>
         
         <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
             <div style="font-size:4rem; color:#dc3545; width:100px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
@@ -128,8 +128,8 @@
             <h3 style="color:var(--ffi-blue);">Tiltaksplan</h3>
             <ol class="bullet-list">
                 <li>Snakke med Jørgen. Kartlegge kompetanse, teknisk dokumentasjon og behov. Avklare forventninger.</li>
-                <li>Risikovurdering. Inkludere Jørgen i brainstorming</li>
-                <li>Implementere operasjonen i FFI sitt system</li>
+                <li>Risikovurdering. Inkludere Jørgen i brainstorming.</li>
+                <li>Implementere operasjonen i FFI sitt system.</li>
             </ol>
         </div>
 
@@ -142,7 +142,7 @@
     </div>
 
     <div class="slide-container" id="slide-6">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Case 2: Angrepsdrone</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Oppgave 2: Angrepsdrone</h1>
         
         <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
             <div style="font-size:4rem; color:#333; width:100px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
@@ -152,26 +152,56 @@
             </div>
         </div>
 
-        <div style="background:#f8f9fa; padding:30px; border-radius:8px;">
-            <h3 style="color:var(--ffi-blue);">Løsning & Tiltak</h3>
-            <ul class="bullet-list">
-                <li><strong>1. "Showstopper":</strong> Ingen skarp testing før dokumentasjon foreligger.</li>
-                <li><strong>2. Gradvis tilnærming:</strong> Dummy-load -> Tethered flight -> Skarp i skytefelt.</li>
-                <li><strong>3. Kritisk Barriere:</strong> Uavhengig FTS (Flight Termination System) kreves pga usikker software.</li>
-            </ul>
+        <div style="background:#fff3cd; padding:30px; border-left: 6px solid #ffc107; border-radius:4px;">
+            <h3 style="color:#856404; margin-top:0;">Problemstilling</h3>
+            <p style="font-size:1.3rem; line-height:1.6; color:#555;">
+                Manglende teknisk dokumentasjon gjør det vanskelig å få godkjent operasjonen (MAA-NOR). 
+                Hvordan kan vi gjennomføre dette med akseptabel risiko?
+            </p>
         </div>
+    </div>
 
-        <div style="margin-top:40px; text-align:center;">
-            <p style="margin-bottom:15px; font-style:italic; font-size:1.1rem;">Klikk under for å vise risikovurderingen:</p>
-            <a href="ra-attack-drone.html" class="btn" style="font-size:1.4rem; padding: 15px 40px; background-color:#dc3545;">
-                <i class="fa-solid fa-file-shield"></i> Vis Risikoanalyse (RA-006)
+    <div class="slide-container" id="slide-7">
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Løsningsforslag Oppgave 2</h1>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
+            
+            <div>
+                <div style="background:#f8f9fa; padding:20px; border-radius:8px; height:100%;">
+                    <h3 style="color:var(--ffi-blue); border-bottom: 2px solid #ddd; padding-bottom:10px;">Strategi: Gradvis tilnærming</h3>
+                    <ul class="bullet-list" style="font-size:1.15rem;">
+                        <li><strong>Vær tålmodig.</strong> Start uten eksplosiver (Dummy load).</li>
+                        <li>Dokumenter alle tester for å bevise driftssikkerhet.</li>
+                        <li>Trening av personell før skarpe forsøk.</li>
+                        <li>Målet er å bygge tillit til systemet over tid.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <div style="background:#fff5f5; padding:20px; border-radius:8px; border:1px solid #f5c6cb; height:100%;">
+                    <h3 style="color:#dc3545; border-bottom: 2px solid #f5c6cb; padding-bottom:10px;">Operative Begrensninger</h3>
+                    <ul class="bullet-list" style="font-size:1.15rem;">
+                        <li><strong>Miljø:</strong> Åpne luftinntak = Ingen flyging i regn (fare for kortslutning).</li>
+                        <li><strong>Fly-away:</strong> Tethered test &rarr; Uavhengig FTS (MOC 2511) &rarr; Energibegrensning.</li>
+                        <li><strong>Safe/Arm:</strong> Må ha dokumentasjon på virkemåte. Hvordan vet piloten status?</li>
+                        <li>Skarpe forsøk <strong>kun</strong> i godkjent skytefelt.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        
+        <div style="margin-top:20px; text-align:center;">
+             <a href="ra-attack-drone.html" class="btn" style="font-size:1.1rem; padding: 10px 25px; background-color:#dc3545;">
+                <i class="fa-solid fa-file-shield"></i> Se Risikoanalyse (RA-006)
             </a>
         </div>
     </div>
 
     <div class="slide-nav">
         <button onclick="changeSlide(-1)"><i class="fa-solid fa-arrow-left"></i> Forrige</button>
-        <span id="slide-counter" style="align-self:center; color:#888; font-size:1.2rem; font-weight:bold;">1 / 6</span>
+        <span id="slide-counter" style="align-self:center; color:#888; font-size:1.2rem; font-weight:bold;">1 / 7</span>
         <button onclick="changeSlide(1)">Neste <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
