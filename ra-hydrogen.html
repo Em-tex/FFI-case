@@ -3,115 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RA-003: Hydrogen Drone Risk Matrix</title>
+    <title>RA-003: Hydrogen Drone Winter Test</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚁</text></svg>">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/menu.js"></script>
     <script src="js/ra-logic.js"></script>
+    <style>
+        /* Samme stil som create-ra for konsistens */
+        .ra-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px; table-layout: fixed; }
+        .ra-table th { position: sticky; top: 0; background-color: #f8f9fa; color: #333; padding: 10px; border-bottom: 2px solid #ddd; text-align: left; font-size: 0.85rem; z-index: 10;}
+        .ra-table td { vertical-align: top; padding: 10px; border-bottom: 1px solid #eee; background: white; font-size: 0.9rem; }
+        
+        .section-header-row td { background-color: var(--ffi-blue); color: white; padding: 8px 15px; font-weight: 600; }
+        
+        /* Risk Badges (MAA-NOR colors) */
+        .risk-badge { display:inline-block; padding:4px 8px; border-radius:4px; font-weight:bold; font-size: 0.85rem; }
+        .risk-H { background: var(--risk-high); color: white; }
+        .risk-S { background: var(--risk-serious); color: black; }
+        .risk-M { background: var(--risk-medium); color: black; }
+        .risk-L { background: var(--risk-low); color: white; }
+
+        ul { margin: 0; padding-left: 20px; }
+        li { margin-bottom: 4px; }
+    </style>
 </head>
 <body>
 
 <div class="container" style="max-width: 1400px;">
     <div style="display:flex; justify-content: space-between; align-items: flex-start;">
-        <h1>RA-003: Hydrogen Prototype VLOS</h1>
+        <div>
+            <h1>Hydrogen Drone Winter Test</h1>
+            <span style="color:#666; font-size:0.9rem;">Ref: RA-003 | Date: 2025-12-07 | Assessor: Hans Petter Heimro</span>
+        </div>
         <div>
             <button class="btn-sm" style="background:#6c757d; margin-right:10px;" onclick="openLegend()">Matrix Legend</button>
             <span class="tag tag-active" style="font-size: 1rem; padding: 8px 12px;">Active</span>
         </div>
     </div>
     
-    <div class="meta-header" style="background-color: #f8f9fa; padding: 15px; border-left: 5px solid var(--ffi-blue); margin-bottom: 20px;">
+    <div class="meta-header" style="background-color: #f8f9fa; padding: 15px; border-left: 5px solid var(--ffi-blue); margin: 20px 0;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div><strong>Assessment ID:</strong> FFI-RA-003</div>
             <div><strong>Operation Type:</strong> Specific / Test</div>
             <div><strong>Drone:</strong> Custom Quadcopter w/ 800W Fuel Cell</div>
-            <div><strong>Location:</strong> Segregated Area (Kjeller)</div>
+            <div><strong>Location:</strong> Segregated Area (Kjeller/Felt)</div>
+            <div><strong>Conditions:</strong> Winter / Sub-zero</div>
         </div>
     </div>
 
-    <h2>1. Concept of Operations</h2>
-    <p>Testing of range extension capabilities using hydrogen fuel cells. The drone is a modified commercial frame. Hydrogen is stored in a 2L composite tank at 300 bar.</p>
-
-    <h2>2. Risk Matrix</h2>
-    
-    <table class="hazard-table" style="width:100%; border-collapse: collapse;">
+    <table class="ra-table">
+        <colgroup>
+            <col style="width: 4%;">  <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 12%;"> <col style="width: 7%;">  <col style="width: 18%;"> <col style="width: 18%;"> <col style="width: 7%;">  </colgroup>
         <thead>
             <tr>
-                <th style="width: 5%">ID</th>
-                <th style="width: 20%">Hazard</th>
-                <th style="width: 10%">Initial</th>
-                <th style="width: 25%">Preventative Barriers</th>
-                <th style="width: 25%">Recovery Measures</th>
-                <th style="width: 10%">Residual</th>
+                <th>ID</th>
+                <th>Hazard</th>
+                <th>Cause</th>
+                <th>Effect</th>
+                <th>Initial</th>
+                <th>Preventative Barriers</th>
+                <th>Recovery Measures</th>
+                <th>Residual</th>
             </tr>
         </thead>
         
         <tbody>
-            <tr class="section-header-row"><td colspan="6" class="section-header-cell">GENERAL (HYDROGEN SPECIFIC)</td></tr>
+            <tr class="section-header-row"><td colspan="8">GENERAL</td></tr>
             <tr>
                 <td>H-01</td>
-                <td><strong>Tank Rupture (Hard Landing)</strong><br><span style="font-size:0.8rem; color:#666;">Impact damage</span></td>
-                <td><span class="risk-mtx risk-H">5C</span></td>
+                <td>Lithium Battery Fire/Explosion</td>
+                <td>Batteries not stored at storage voltage. Overheating during charging.</td>
+                <td>Escalating fire.</td>
+                <td><span class="risk-badge risk-M">3-C</span></td>
                 <td>
                     <ul>
-                        <li>Use only CE/TÜV certified tanks.</li>
-                        <li>Pressure relief valve installed.</li>
-                        <li>Pilot training (Smooth landing focus).</li>
+                        <li>Procedures implemented for inspecting batteries before flight</li>
+                        <li>Storing at correct voltage</li>
+                        <li>Supervised charging</li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li><strong>Buffer:</strong> Min 200m to people/buildings.</li>
-                        <li><strong>SOP:</strong> Evacuate area, gas meter check before approach.</li>
+                        <li>Transport and store batteries in LiPo safe bags.</li>
+                        <li>Class D fire extinguisher available.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-M">3C</span></td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
             </tr>
             <tr>
-                <td>H-04</td>
-                <td><strong>Hydrogen Leak (Flight/Ground)</strong><br><span style="font-size:0.8rem; color:#666;">Valve failure/Vibration</span></td>
-                <td><span class="risk-mtx risk-H">4B</span></td>
+                <td>H-02</td>
+                <td>Unsuccessful Launch/Landing</td>
+                <td>Pilot error, Wind, Wrong mounted propellers.</td>
+                <td>Crash and hits persons. Battery fire escalating to a forest fire.</td>
+                <td><span class="risk-badge risk-S">2-C</span></td>
                 <td>
                     <ul>
-                        <li><strong>Pre-flight:</strong> Soap water/Sniffer check.</li>
-                        <li>On-board H2 Sniffer with alarm downlink.</li>
-                        <li>Vibration isolation on mounts.</li>
+                        <li>Pilot training.</li>
+                        <li>Stabilize mode always used.</li>
+                        <li>Wind limitations implemented.</li>
+                        <li>Weather checked before takeoff.</li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li>Immediate Land ASAP procedure.</li>
-                        <li>Fire extinguisher (ABC) on standby.</li>
+                        <li>Operations only over a controlled ground area.</li>
+                        <li>Min safe distance 200m horizontally from uninvolved.</li>
+                        <li>Do not fly in high forest fire risk.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-M">3C</span></td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
             </tr>
         </tbody>
 
         <tbody>
-            <tr class="section-header-row"><td colspan="6" class="section-header-cell">LOSS OF CONTROL</td></tr>
+            <tr class="section-header-row"><td colspan="8">LOSS OF CONTROL</td></tr>
             <tr>
-                <td>H-02</td>
-                <td><strong>Fuel Cell Freeze/Stall</strong><br><span style="font-size:0.8rem; color:#666;">Low temp operation</span></td>
-                <td><span class="risk-mtx risk-M">4D</span></td>
+                <td>H-03</td>
+                <td>Loss of Command Link</td>
+                <td>RC power runs out, inadvertently turned off, or receiver cable loose.</td>
+                <td>Loss of ability to control.</td>
+                <td><span class="risk-badge risk-M">3-C</span></td>
                 <td>
                     <ul>
-                        <li>Heated purging procedure pre-flight.</li>
-                        <li>Incremental exposure testing.</li>
+                        <li>Check power on transmitter before flight.</li>
+                        <li>Transmitter button design (guarded/press-and-hold).</li>
+                        <li>Preflight inspection.</li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li>Hybrid Battery backup (3 min flight time).</li>
-                        <li>Auto-land on power loss.</li>
+                        <li>Flight controller failsafe (RTH).</li>
+                        <li>Loiter 5s then autoland.</li>
+                        <li>Max altitude 4m AGL over level terrain.</li>
                     </ul>
                 </td>
-                <td><span class="risk-mtx risk-L">2E</span></td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr class="section-header-row"><td colspan="8">CONTAINMENT & COLLISION RISKS</td></tr>
+            <tr>
+                <td>H-04</td>
+                <td>Airspace violation</td>
+                <td>Fly away due to FC error.</td>
+                <td>Near mid air collision or mid-air collision.</td>
+                <td><span class="risk-badge risk-H">1-C</span></td>
+                <td>
+                    <ul>
+                        <li>Standard procedures for checking airspace.</li>
+                        <li>Operate min 5 km from airports.</li>
+                        <li>Reliable COTS flight controller.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Map nearby airspace.</li>
+                        <li>ATC phone number in ERP.</li>
+                        <li>Notify ATC if fly-away occurs.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+            <tr>
+                <td>H-05</td>
+                <td>Mid-air Collision</td>
+                <td>Low flying aircraft entering the airspace.</td>
+                <td>Crash / Fatality.</td>
+                <td><span class="risk-badge risk-H">1-C</span></td>
+                <td>
+                    <ul>
+                        <li>Max altitude 4m AGL (below tree top).</li>
+                        <li>Check area far from airfields/helipads.</li>
+                        <li>Pilot lands immediately if aircraft detected.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>None (Collision at 4m is catastrophic but extremely unlikely if barrier holds).</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-M">1-E</span></td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr class="section-header-row"><td colspan="8">HYDROGEN FUEL CELL RISKS</td></tr>
+            <tr>
+                <td>H-06</td>
+                <td>Tank rupture or hydrogen leak</td>
+                <td>Hard landing or crash.</td>
+                <td>Hydrogen explosion / Fire.</td>
+                <td><span class="risk-badge risk-S">2-C</span></td>
+                <td>
+                    <ul>
+                        <li>Use certified tank (pressure tested yearly).</li>
+                        <li>Pilot training (smooth landing).</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Altitude restriction 4m AGL.</li>
+                        <li>Protective structure around tank.</li>
+                        <li>Min safe distance 300m.</li>
+                        <li>Post-crash: Keep clear 1 hour / Vent check.</li>
+                        <li>Limit pressure to 150 bar (Incremental test).</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+            <tr>
+                <td>H-07</td>
+                <td>Hydrogen leak (System)</td>
+                <td>Valve or seal failure.</td>
+                <td>Gas pockets in fuselage igniting.</td>
+                <td><span class="risk-badge risk-S">2-B</span></td>
+                <td>
+                    <ul>
+                        <li>Hydrogen gas detector monitoring.</li>
+                        <li>Pressure sensor alert (unexpected drop).</li>
+                        <li>Inspect seals/hoses pre/post flight.</li>
+                        <li>Leak check (sniffer/spray).</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Ventilation holes in fuselage.</li>
+                        <li>Well ventilated storage.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+            <tr>
+                <td>H-08</td>
+                <td>Fuel cell failure</td>
+                <td>Complex failure modes.</td>
+                <td>Loss of power leading to crash.</td>
+                <td><span class="risk-badge risk-S">2-B</span></td>
+                <td>
+                    <ul>
+                        <li>Back-up batteries for landing (Hybrid system).</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Altitude restriction 4m AGL reduces impact energy.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+            <tr>
+                <td>H-09</td>
+                <td>Freezing water/air damage</td>
+                <td>Sub-zero ops. Moisture freezing in cell/valves.</td>
+                <td>Fuel cell/Valve/Seal failure. H2 Leak.</td>
+                <td><span class="risk-badge risk-S">2-B</span></td>
+                <td>
+                    <ul>
+                        <li>Use FC approved for sub-zero.</li>
+                        <li>Low-temp seals.</li>
+                        <li>Store cool/dry (avoid condensation shock).</li>
+                        <li>Purge procedure.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Backup batteries.</li>
+                        <li>Inspect for ice/leaks pre/post flight.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
+            </tr>
+            <tr>
+                <td>H-10</td>
+                <td>Ignition of H2 indoors</td>
+                <td>Static electricity / Sparks.</td>
+                <td>Fire/Explosion in workshop.</td>
+                <td><span class="risk-badge risk-M">3-B</span></td>
+                <td>
+                    <ul>
+                        <li>Ground drone (anti-static strap).</li>
+                        <li>No open flames.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Well ventilated room.</li>
+                        <li>Daily leak checks.</li>
+                    </ul>
+                </td>
+                <td><span class="risk-badge risk-L">4-D</span></td>
             </tr>
         </tbody>
     </table>
+
+    <div class="section" style="margin-top: 30px; padding: 25px; background: #fff; border: 1px solid #e0e0e0;">
+        <div style="display:flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex:2; padding-right: 40px;">
+                <h3 style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> Operational Complexity</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                    Assessment based on residual risk profile and number of active mitigations.
+                </p>
+                <div style="font-size: 0.95rem; font-style: italic; color: #555; background: #f8f9fa; padding: 10px; border-radius: 4px;">
+                    Extensive mitigations (Barriers & Measures) successfully reduce high initial risks (Hydrogen/Airspace) to acceptable levels. Management burden is Moderate due to strict procedures (300m buffer, 4m altitude).
+                </div>
+            </div>
+            
+            <div style="flex: 1;">
+                <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1rem; margin-bottom: 5px;">
+                    <span>Medium Complexity</span>
+                    <span>145 pts</span>
+                </div>
+                <div style="height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; margin-top: 5px;">
+                    <div style="height: 100%; width: 50%; background: #ffc107;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
         <a href="risk-assessments.html" class="btn" style="background-color: #6c757d;">&larr; Back</a>
