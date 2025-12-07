@@ -144,20 +144,34 @@
     <div class="slide-container" id="slide-6">
         <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Oppgave 2: Angrepsdrone</h1>
         
-        <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
-            <div style="font-size:4rem; color:#333; width:100px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
-            <div>
-                <h3 style="margin:0; font-size:1.8rem;">Utfordring</h3>
-                <p style="font-size:1.2rem;">Militær bestilling, skarp ammunisjon, "Black Box" drone (ukjent IP/opphav).</p>
+        <div style="display:flex; gap: 50px; margin-top: 30px; align-items: flex-start;">
+            
+             <div style="flex: 1;">
+                <img src="https://images.gfx.no/860x/2896/2896164/original.jpg" 
+                     alt="Angrepsdrone" 
+                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                <div style="font-size: 0.85rem; color: #888; margin-top: 8px;">
+                    Foto: https://www.tu.no/artikler/denne-norske-angrepsdronen-kommer-helt-uten-komponenter-fra-kina/563121
+                </div>
             </div>
-        </div>
 
-        <div style="background:#fff3cd; padding:30px; border-left: 6px solid #ffc107; border-radius:4px;">
-            <h3 style="color:#856404; margin-top:0;">Problemstilling</h3>
-            <p style="font-size:1.3rem; line-height:1.6; color:#555;">
-                Manglende teknisk dokumentasjon gjør det vanskelig å få godkjent operasjonen (MAA-NOR). 
-                Hvordan kan vi gjennomføre dette med akseptabel risiko?
-            </p>
+            <div style="flex: 1;">
+                <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
+                    <div style="font-size:4rem; color:#333; width:80px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
+                    <div>
+                        <h3 style="margin:0; font-size:1.8rem;">Utfordring</h3>
+                        <p style="font-size:1.2rem;">Militær bestilling, skarp ammunisjon, "Black Box" drone (ukjent IP/opphav).</p>
+                    </div>
+                </div>
+
+                <div style="background:#fff3cd; padding:30px; border-left: 6px solid #ffc107; border-radius:4px;">
+                    <h3 style="color:#856404; margin-top:0;">Problemstilling</h3>
+                    <p style="font-size:1.3rem; line-height:1.6; color:#555;">
+                        Manglende teknisk dokumentasjon gjør det vanskelig å få godkjent operasjonen (MAA-NOR). 
+                        Hvordan kan vi gjennomføre dette med akseptabel risiko?
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -170,10 +184,11 @@
                 <div style="background:#f8f9fa; padding:20px; border-radius:8px; height:100%;">
                     <h3 style="color:var(--ffi-blue); border-bottom: 2px solid #ddd; padding-bottom:10px;">Strategi: Gradvis tilnærming</h3>
                     <ul class="bullet-list" style="font-size:1.15rem;">
-                        <li><strong>Vær tålmodig.</strong> Start uten eksplosiver (Dummy load).</li>
+                        <li>Vær tålmodig.</li>
+                        <li>Start tester uten eksplosiver (Dummy load).</li>
                         <li>Dokumenter alle tester for å bevise driftssikkerhet.</li>
+                        <li>Innhent dokumentasjon fra produsenten</li>
                         <li>Trening av personell før skarpe forsøk.</li>
-                        <li>Målet er å bygge tillit til systemet over tid.</li>
                     </ul>
                 </div>
             </div>
@@ -182,20 +197,17 @@
                 <div style="background:#fff5f5; padding:20px; border-radius:8px; border:1px solid #f5c6cb; height:100%;">
                     <h3 style="color:#dc3545; border-bottom: 2px solid #f5c6cb; padding-bottom:10px;">Operative Begrensninger</h3>
                     <ul class="bullet-list" style="font-size:1.15rem;">
-                        <li><strong>Miljø:</strong> Åpne luftinntak = Ingen flyging i regn (fare for kortslutning).</li>
-                        <li><strong>Fly-away:</strong> Tethered test &rarr; Uavhengig FTS (MOC 2511) &rarr; Energibegrensning.</li>
-                        <li><strong>Safe/Arm:</strong> Må ha dokumentasjon på virkemåte. Hvordan vet piloten status?</li>
-                        <li>Skarpe forsøk <strong>kun</strong> i godkjent skytefelt.</li>
+                        <li>Åpne luftinntak = Usikker IP rating og påvirkning av regn. Må undersøkes nærmere. Ingen skarp testing i regn før det er avklart.</li>
+                        <li>Fly-away: Konsekvensen kan være katastrofal om den havner utenfor skytefeltet.</li>
+                        <li>Forslag til å redusere sannsynligheten kan være fly med et lite batteri, installere et uavhengig termineringssystem, tjore dronen fast.</li>
+                        <li>Safe/arm: Trenger dokumentasjon. Virkemåte og brukermanual.</li>
+                        <li>Ammunisjonsbruk må risikovurderes av de som kan faget.</li>
+                        <li>Krype - gå - løpe. Trene og teste først uten skarp ammunisjon.</li>
+                        <li>Skarpe forsøk kun i godkjent skytefelt.</li>
                     </ul>
                 </div>
             </div>
 
-        </div>
-        
-        <div style="margin-top:20px; text-align:center;">
-             <a href="ra-attack-drone.html" class="btn" style="font-size:1.1rem; padding: 10px 25px; background-color:#dc3545;">
-                <i class="fa-solid fa-file-shield"></i> Se Risikoanalyse (RA-006)
-            </a>
         </div>
     </div>
 
