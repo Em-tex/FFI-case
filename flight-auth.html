@@ -179,8 +179,7 @@
                     <option value="maak">MÅK (Militær Åpen Kategori)</option>
                     <option value="a1a3">Open A1 / A3</option>
                     <option value="a2">Open A2</option>
-                    <option value="sts">Specific (STS/PDRA/SORA)</option>
-                </select>
+                    <option value="sts">Specific</option> </select>
             </div>
             <div class="form-group" id="grp_recency">
                 <label>Recency (Time since last flight) <i class="fa-solid fa-triangle-exclamation warning-icon-dynamic"></i></label>
@@ -211,7 +210,7 @@
                     <label class="checkbox-item" id="lbl_rate_fixed"><input type="checkbox" id="rate_fixed"> Fixed Wing</label>
                     <label class="checkbox-item" id="lbl_rate_heli"><input type="checkbox" id="rate_heli"> Helicopter</label>
                     <label class="checkbox-item" id="lbl_rate_vtol"><input type="checkbox" id="rate_vtol"> VTOL</label>
-                    <label class="checkbox-item" id="lbl_rate_lta"><input type="checkbox" id="rate_lta"> Lighter than Air</label>
+                    <label class="checkbox-item" id="lbl_rate_lta"><input type="checkbox" id="rate_lta"> Lighter than air</label>
                 </div>
             </div>
 
@@ -279,15 +278,10 @@
                 <label>Date & Time</label>
                 <div style="display:flex; gap:10px; align-items: center;">
                     <input type="date" id="flightDate" onchange="calculateRisk()" style="cursor:pointer;">
-                    
-                    <div style="position:relative; flex:1; cursor:pointer;" onclick="document.getElementById('flightTime').showPicker()">
-                        <input type="time" id="flightTime" style="width:100%; cursor:pointer; padding-right:30px;">
-                        <i class="fa-solid fa-clock" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#666;"></i>
-                    </div>
+                    <input type="time" id="flightTime" style="cursor:pointer;">
                 </div>
             </div>
         </div>
-        
         <div class="grid-row">
             <div class="form-group" style="border:none; padding:0;">
                 <label>Location (Coordinates/Name)</label>
