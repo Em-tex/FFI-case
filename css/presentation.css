@@ -2,47 +2,56 @@
 
 /* Animation */
 @keyframes fadeInSlide { 
-    from { opacity: 0; transform: translateX(10px); } 
-    to { opacity: 1; transform: translateX(0); } 
+    from { opacity: 0; transform: translateY(5px); } 
+    to { opacity: 1; transform: translateY(0); } 
 }
 
-/* Slide Containers */
+/* Slide Containers - Innholdsområdet */
 .slide-container { 
     display: none; 
-    animation: fadeInSlide 0.4s ease-in-out; 
+    animation: fadeInSlide 0.3s ease-out; 
     
-    /* ENDRET: Bruker flex: 1 for å fylle ledig plass, i stedet for fast høyde */
-    flex: 1; 
-    overflow-y: auto; /* Tillater scrolling inni sliden hvis innholdet er enormt, uten å flytte navigasjonen */
+    /* VIKTIG: Dette låser innholdet til å fylle plassen mellom toppen og navigasjonen */
+    position: absolute;
+    top: 40px;    /* Plass til "Bruk piltastene" teksten øverst */
+    bottom: 80px; /* Plass til navigasjonen nederst */
+    left: 0;
+    right: 0;
     
-    padding: 40px 60px; 
+    overflow-y: auto; /* Scroller inni her hvis teksten er for lang */
+    padding: 20px 60px; /* Luft rundt teksten */
     box-sizing: border-box;
 }
 
-/* Når sliden er aktiv, VIS den og sentrer innholdet */
+/* Scrollbar styling (gjør den penere/mindre påtrengende) */
+.slide-container::-webkit-scrollbar { width: 8px; }
+.slide-container::-webkit-scrollbar-track { background: #f1f1f1; }
+.slide-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+.slide-container::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+/* Når sliden er aktiv, VIS den */
 .slide-active { 
-    display: flex !important; 
-    flex-direction: column;
-    justify-content: flex-start;
+    display: block !important; 
 }
 
-/* Navigation Controls */
+/* Navigation Controls - Låst til bunnen */
 .slide-nav { 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Fast høyde */
+    
     display: flex; 
     justify-content: space-between; 
     align-items: center;
     
-    /* ENDRET: Denne dytter navigasjonen helt til bunnen av containeren */
-    margin-top: auto; 
-    
     border-top: 1px solid #eee; 
-    padding: 20px 60px; /* Samme side-padding som innholdet for pen linjering */
+    padding: 0 60px; /* Luft på sidene, men ikke høyden */
+    box-sizing: border-box;
     
-    /* ENDRET: Fjernet bakgrunnsfarge (var grå/ffi-light-bg) */
-    background: transparent; 
-    
-    /* Sikrer at navigasjonen ikke krymper */
-    flex-shrink: 0;
+    background: white; /* Hvit bakgrunn fjerner "grått felt" */
+    z-index: 100;
 }
 
 .slide-nav button { 
@@ -65,12 +74,23 @@
     background: #e2e6ea; 
 }
 
+/* --- STANDARDISERT HEADER --- */
+/* Bruk denne klassen på alle H1 for å unngå hopping */
+.slide-header {
+    font-size: 2.4rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #eee;
+    padding-bottom: 15px;
+    color: var(--ffi-blue);
+}
+
 /* --- VENN DIAGRAM --- */
 .venn-wrapper { 
     position: relative; 
     width: 600px; 
     height: 350px; 
-    margin: 80px auto 0 auto; 
+    margin: 60px auto 0 auto; 
 }
 
 .venn-circle {
@@ -111,7 +131,7 @@
 
 /* Content Elements */
 .bullet-list { 
-    font-size: 1.3rem; 
+    font-size: 1.25rem; 
     line-height: 1.5; 
     margin: 20px 0; 
     padding-left: 30px;
@@ -139,7 +159,6 @@
 .slide-link { color: var(--ffi-blue); text-decoration: underline; cursor: pointer; }
 .slide-link:hover { color: #002a4d; }
 
-.slide-container h1 { font-size: 2.4rem; margin-top: 0; }
 .slide-container h3 { font-size: 1.5rem; margin-bottom: 15px; }
 
 /* Popup */

@@ -19,18 +19,18 @@
     <button class="btn" onclick="closePopup()" style="float:right; background:#6c757d; font-size:1rem;">Lukk</button>
 </div>
 
-<div class="container" style="max-width: 1300px; margin-top: 20px; height: 800px; display: flex; flex-direction: column; overflow: hidden;">
+<div class="container" style="max-width: 1300px; margin-top: 20px; height: 800px; position: relative; overflow: hidden; background: white;">
     
-    <div style="text-align:right; font-size:0.9rem; color:#888; margin-bottom:10px; flex-shrink: 0;">
+    <div style="position: absolute; top: 15px; right: 40px; font-size:0.9rem; color:#888; z-index: 20;">
         <i class="fa-solid fa-keyboard"></i> Bruk piltastene (V/H) for å navigere
     </div>
 
     <div class="slide-container slide-active" id="slide-1">
-        <div style="text-align:center; margin-top: 50px;">
-            <i class="fa-solid fa-plane-up" style="font-size: 6rem; color:var(--ffi-blue); margin-bottom:30px;"></i>
-            <h1 style="font-size: 3.5rem; margin-bottom: 20px;">Operativ Leder UAS</h1>
+        <div style="text-align:center; margin-top: 80px;">
+            <i class="fa-solid fa-plane-up" style="font-size: 7rem; color:var(--ffi-blue); margin-bottom:30px;"></i>
+            <h1 style="font-size: 3.5rem; margin-bottom: 20px; color: var(--ffi-blue);">Operativ Leder UAS</h1>
             <h2 style="color:#666; font-size: 2rem; font-weight:400;">Løsningsforslag Caseoppgave</h2>
-            <div style="margin-top: 50px; font-size: 1.4rem; color: #444;">
+            <div style="margin-top: 60px; font-size: 1.4rem; color: #444;">
                 <strong>Kandidat:</strong> Hans Petter Heimro<br>
                 <strong>Dato:</strong> 08.12.2025
             </div>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="slide-container" id="slide-2">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
+        <h1 class="slide-header">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
         
         <div style="display:flex; gap: 50px; margin-top: 30px; align-items: flex-start;">
             <div style="flex: 1;">
@@ -73,7 +73,7 @@
     </div>
 
     <div class="slide-container" id="slide-4">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Rammeverk & Forutsetninger</h1>
+        <h1 class="slide-header">Rammeverk & Forutsetninger</h1>
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top:20px;">
             <div>
@@ -81,8 +81,8 @@
                 <ul class="bullet-list">
                     <li><strong>Teknisk:</strong> 
                         <ul>
-                            <li><a href="https://www.fma.no/maanor/regulations" target="_blank" class="slide-link">MAA-NOR</a> må godkjenne - Military UAS Technical Approval (<a href="https://www.fma.no/maanor/applications/military-uas-technical-approval-application" target="_blank" class="slide-link">Form MUASTA</a>)</li>
-                            <li>Forskjellige tekniske kategorier i <a href="https://www.fma.no/maanor/downloads/regulations/blf/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf/_/attachment/inline/31cc7c40-840a-4e11-bb20-cae250bc0a9c:6567ee71ec9d53f1b3a5fadca96197c40588793f/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf" target="_blank" class="slide-link">BLF Appendix 6</a></li>
+                            <li><a href="https://www.fma.no/maanor/regulations" target="_blank" class="slide-link">MAA-NOR</a> må godkjenne - Military UAS Technical Approval (MUASTA)</li>
+                            <li>Tekniske krav i <a href="https://www.fma.no/maanor/downloads/regulations/blf/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf" target="_blank" class="slide-link">BLF Appendix 6</a></li>
                             <li>Eller ha en <span class="slide-link" onclick="openPopup()">godkjent organisasjon</span> <i class="fa-solid fa-circle-question" style="color:#17a2b8; font-size:0.8em; vertical-align: middle;"></i></li>
                         </ul>
                     </li>
@@ -90,11 +90,6 @@
                         <ul>
                             <li>Militær åpen kategori (MÅK) (140-11)</li>
                             <li>Reglement for operasjoner med UAS (140-10)</li>
-                        </ul>
-                    </li>
-                    <li><strong>Pilotkvalifikasjoner:</strong>
-                        <ul>
-                            <li>Reglement for klassifisering, trening og utdanning av UAS operatører (140-20)</li>
                         </ul>
                     </li>
                 </ul>
@@ -106,7 +101,6 @@
                     <li>Hydrogenbrenselceller med ukjente spesifikasjoner</li>
                     <li>Testing i forskjellige værforhold og minusgrader</li>
                     <li>Uviss pilotkompetanse</li>
-                    <li>Ukjent dronesystem</li>
                     <li>Kan være lurt med en <em>"krype - gå - løpe"</em> tilnærming</li>
                 </ul>
             </div>
@@ -114,7 +108,7 @@
     </div>
 
     <div class="slide-container" id="slide-5">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">Løsningsforslag Oppgave 1</h1>
+        <h1 class="slide-header">Løsningsforslag Oppgave 1</h1>
         
         <div style="display:flex; gap:30px; align-items:center; margin-bottom:20px;">
             <div style="font-size:4rem; color:#dc3545; width:100px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
@@ -124,16 +118,16 @@
             </div>
         </div>
 
-        <div style="background:#f8f9fa; padding:20px 30px; border-radius:8px; margin-bottom: 20px;">
+        <div style="background:#f8f9fa; padding:20px 30px; border-radius:8px; margin-bottom: 30px;">
             <h3 style="color:var(--ffi-blue); margin-bottom: 10px;">Tiltaksplan</h3>
-            <ol class="bullet-list" style="margin: 10px 0; font-size: 1.2rem;">
+            <ol class="bullet-list" style="margin: 10px 0;">
                 <li>Snakke med Jørgen. Kartlegge kompetanse, teknisk dokumentasjon og behov. Avklare forventninger.</li>
                 <li>Risikovurdering. Inkludere Jørgen i brainstorming.</li>
                 <li>Implementere operasjonen i FFI sitt system.</li>
             </ol>
         </div>
 
-        <div style="margin-top:auto; text-align:center; padding-bottom: 20px;">
+        <div style="text-align:center;">
             <p style="margin-bottom:15px; font-style:italic; font-size:1.1rem;">Klikk under for å demonstrere saksgangen i portalen:</p>
             <a href="flight-auth.html" target="_blank" class="btn" style="font-size:1.4rem; padding: 15px 40px;">
                 <i class="fa-solid fa-play"></i> Start Demo: Flight Auth (Jørgen)
@@ -142,7 +136,7 @@
     </div>
 
     <div class="slide-container" id="slide-6">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Oppgave 2: Angrepsdrone</h1>
+        <h1 class="slide-header">Oppgave 2: Angrepsdrone</h1>
         
         <div style="display:flex; gap: 50px; margin-top: 30px; align-items: flex-start;">
             
@@ -151,7 +145,7 @@
                      alt="Angrepsdrone" 
                      style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
                 <div style="font-size: 0.85rem; color: #888; margin-top: 8px;">
-                    Foto: https://www.tu.no/artikler/denne-norske-angrepsdronen-kommer-helt-uten-komponenter-fra-kina/563121
+                    Foto: Teknisk Ukeblad
                 </div>
             </div>
 
@@ -176,7 +170,7 @@
     </div>
 
     <div class="slide-container" id="slide-7">
-        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Løsningsforslag Oppgave 2</h1>
+        <h1 class="slide-header">Løsningsforslag Oppgave 2</h1>
         
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items: start; margin-top: 20px;">
             
@@ -186,8 +180,8 @@
                     <ul class="bullet-list" style="font-size: 1.1rem;">
                         <li>Vær tålmodig.</li>
                         <li>Start tester uten eksplosiver (Dummy load).</li>
-                        <li>Dokumenter alle tester for å bevise driftssikkerhet.</li>
-                        <li>Innhent dokumentasjon fra produsenten</li>
+                        <li>Dokumenter tester for å bevise driftssikkerhet.</li>
+                        <li>Innhent dokumentasjon fra produsenten.</li>
                         <li>Trening av personell før skarpe forsøk.</li>
                     </ul>
                 </div>
@@ -197,17 +191,15 @@
                 <div style="background:#fff5f5; padding:25px; border-radius:8px; border:1px solid #f5c6cb;">
                     <h3 style="color:#dc3545; border-bottom: 2px solid #f5c6cb; padding-bottom:10px;">Operative Begrensninger</h3>
                     <ul class="bullet-list" style="font-size:1.1rem;">
-                        <li>Åpne luftinntak = Usikker IP rating og påvirkning av regn. Må undersøkes nærmere. Ingen skarp testing i regn før det er avklart.</li>
+                        <li>Åpne luftinntak = Usikker IP rating. Ingen skarp testing i regn før det er avklart.</li>
                         
-                        <li style="margin-top: 15px;">Fly-away: Konsekvensen kan være katastrofal om den havner utenfor skytefeltet.
+                        <li style="margin-top: 15px;">Fly-away:
                             <ul style="font-size: 1rem; margin-top: 5px;">
-                                <li><em>Forslag til å redusere sannsynligheten kan være fly med et lite batteri, installere et uavhengig termineringssystem, tjore dronen fast.</em></li>
+                                <li><em>Forslag: Fly med lite batteri, installer FTS (Flight Termination System), tjor dronen fast i starten.</em></li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;">Safe/arm: Trenger dokumentasjon. Virkemåte og brukermanual.</li>
-                        <li>Ammunisjonsbruk må risikovurderes av de som kan faget.</li>
-                        <li>Krype - gå - løpe. Trene og teste først uten skarp ammunisjon.</li>
+                        <li style="margin-top: 15px;">Safe/arm: Trenger dokumentasjon.</li>
                         <li>Skarpe forsøk kun i godkjent skytefelt.</li>
                     </ul>
                 </div>
