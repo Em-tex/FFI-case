@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FFI Case - Presentasjon</title>
-    <!-- Base Styles (Variables etc) -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Presentation Specific Styles -->
     <link rel="stylesheet" href="css/presentation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/menu.js"></script>
@@ -15,12 +13,10 @@
 
 <div class="container" style="max-width: 1100px; margin-top: 20px;">
     
-    <!-- CONTROLS INFO -->
     <div style="text-align:right; font-size:0.8rem; color:#888; margin-bottom:10px;">
         <i class="fa-solid fa-keyboard"></i> Bruk piltastene (V/H) for å navigere
     </div>
 
-    <!-- SLIDE 1: TITTEL -->
     <div class="slide-container slide-active" id="slide-1">
         <div style="height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
             <i class="fa-solid fa-plane-up" style="font-size: 5rem; color:var(--ffi-blue); margin-bottom:20px;"></i>
@@ -33,7 +29,6 @@
         </div>
     </div>
 
-    <!-- SLIDE 2: FILOSOFI (VENN) -->
     <div class="slide-container" id="slide-2">
         <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Min Tilnærming</h1>
         
@@ -42,19 +37,9 @@
             <div class="venn-circle venn-right">Safety<br><span style="font-size:0.7rem; font-weight:normal;">(Sikkerhet)</span></div>
             <div class="venn-center-text">Operativ Ledelse</div>
         </div>
-
-        <div class="highlight-box" style="text-align:center;">
-            "En Operativ Leder må balansere formelle krav med praktisk sikkerhet i felt."
-        </div>
         
-        <ul class="bullet-list">
-            <li><strong>Compliance:</strong> Sikrer at vi følger lover, MAA-NOR krav og interne instrukser.</li>
-            <li><strong>Safety:</strong> Fokus på reell risikoreduksjon og sikkerhetskultur i organisasjonen.</li>
-            <li><strong>Mål:</strong> Etablere systemer som gjør det <em>enkelt</em> å gjøre rett.</li>
-        </ul>
     </div>
 
-    <!-- SLIDE 3: FORUTSETNINGER -->
     <div class="slide-container" id="slide-3">
         <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Rammeverk & Forutsetninger</h1>
         
@@ -83,9 +68,30 @@
         </div>
     </div>
 
-    <!-- SLIDE 4: CASE 1 - HYDROGEN -->
     <div class="slide-container" id="slide-4">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Case 1: Hydrogendrone (Jørgen)</h1>
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
+        
+        <div style="display:flex; gap: 40px; margin-top: 30px; align-items:center;">
+            <div style="flex: 1;">
+                <img src="https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden/_/image/79c8de0a-daab-4147-b89c-0593af3193be:b32b93e8bb47dbe6478cd2098c145c36b1563dd1/width-2048-/HydrogendroneUtenKort.jpg?quality=50" 
+                     alt="Hydrogendrone" 
+                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            </div>
+            
+            <div style="flex: 1;">
+                <h3 style="color: var(--ffi-blue);">Scenariobeskrivelse</h3>
+                <ul class="bullet-list">
+                    <li><strong>Hydrogen:</strong> Eksperimentell teknologi.</li>
+                    <li><strong>Testflyging:</strong> Må gjennomføres under forskjellige værforhold.</li>
+                    <li><strong>Vintertest:</strong> Ukjent ytelse i minusgrader (batteri vs. brenselcelle).</li>
+                    <li><strong>Demonstrasjon:</strong> Skal vises frem (høyere risiko ved publikum).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide-5">
+        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Løsning: Case 1 (Jørgen)</h1>
         
         <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
             <div style="font-size:3rem; color:#dc3545; width:80px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
@@ -113,8 +119,7 @@
         </div>
     </div>
 
-    <!-- SLIDE 5: CASE 2 - ANGREPSDRONE -->
-    <div class="slide-container" id="slide-5">
+    <div class="slide-container" id="slide-6">
         <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Case 2: Angrepsdrone</h1>
         
         <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
@@ -142,10 +147,9 @@
         </div>
     </div>
 
-    <!-- NAVIGASJON -->
     <div class="slide-nav">
         <button onclick="changeSlide(-1)"><i class="fa-solid fa-arrow-left"></i> Forrige</button>
-        <span id="slide-counter" style="align-self:center; color:#888;">1 / 5</span>
+        <span id="slide-counter" style="align-self:center; color:#888;">1 / 6</span>
         <button onclick="changeSlide(1)">Neste <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
@@ -153,7 +157,7 @@
 
 <script>
     let currentSlide = 1;
-    const totalSlides = 5;
+    const totalSlides = 6; // Oppdatert antall slides
 
     function changeSlide(direction) {
         // Hide current
