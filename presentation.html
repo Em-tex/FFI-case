@@ -16,21 +16,21 @@
 <div id="infoPopup" class="info-popup">
     <h3 style="margin-top:0; color:var(--ffi-blue);">Godkjent Organisasjon</h3>
     <p>Disse kan selv godkjenne egne utviklede droner innenfor visse rammer. De må ha et kvalitetssystem med blant annet risikostyring, kompetansekrav, prosedyrer for utvikling, og internrevisjon.</p>
-    <button class="btn-sm" onclick="closePopup()" style="float:right;">Lukk</button>
+    <button class="btn" onclick="closePopup()" style="float:right; background:#6c757d; font-size:1rem;">Lukk</button>
 </div>
 
-<div class="container" style="max-width: 1100px; margin-top: 20px;">
+<div class="container" style="max-width: 1300px; margin-top: 20px;">
     
-    <div style="text-align:right; font-size:0.8rem; color:#888; margin-bottom:10px;">
+    <div style="text-align:right; font-size:0.9rem; color:#888; margin-bottom:10px;">
         <i class="fa-solid fa-keyboard"></i> Bruk piltastene (V/H) for å navigere
     </div>
 
     <div class="slide-container slide-active" id="slide-1">
-        <div style="height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-            <i class="fa-solid fa-plane-up" style="font-size: 5rem; color:var(--ffi-blue); margin-bottom:20px;"></i>
-            <h1 style="font-size: 3rem; margin-bottom: 10px;">Operativ Leder UAS</h1>
-            <h2 style="color:#666; font-size: 1.5rem; font-weight:400;">Løsningsforslag Caseoppgave</h2>
-            <div style="margin-top: 40px; font-size: 1.1rem; color: #444;">
+        <div style="text-align:center;">
+            <i class="fa-solid fa-plane-up" style="font-size: 6rem; color:var(--ffi-blue); margin-bottom:30px;"></i>
+            <h1 style="font-size: 3.5rem; margin-bottom: 20px;">Operativ Leder UAS</h1>
+            <h2 style="color:#666; font-size: 2rem; font-weight:400;">Løsningsforslag Caseoppgave</h2>
+            <div style="margin-top: 50px; font-size: 1.4rem; color: #444;">
                 <strong>Kandidat:</strong> Hans Petter Heimro<br>
                 <strong>Dato:</strong> 08.12.2025
             </div>
@@ -38,14 +38,14 @@
     </div>
 
     <div class="slide-container" id="slide-2">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Oppgave 1: Drone med hydrogenbrenselcelle</h1>
         
-        <div style="display:flex; gap: 40px; margin-top: 30px; align-items: flex-start;">
+        <div style="display:flex; gap: 50px; margin-top: 30px; align-items: flex-start;">
             <div style="flex: 1;">
                 <img src="https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden/_/image/79c8de0a-daab-4147-b89c-0593af3193be:b32b93e8bb47dbe6478cd2098c145c36b1563dd1/width-2048-/HydrogendroneUtenKort.jpg?quality=50" 
                      alt="Hydrogendrone" 
-                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <div style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+                     style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                <div style="font-size: 0.85rem; color: #888; margin-top: 8px;">
                     Foto: https://www.ffi.no/aktuelt/nyheter/er-hydrogendroner-fremtiden
                 </div>
             </div>
@@ -64,8 +64,8 @@
 
     <div class="slide-container" id="slide-3">
         <div class="venn-wrapper">
-            <div class="venn-label label-left">Compliance<br><span style="font-size:0.9rem; font-weight:normal;">(Regelverk)</span></div>
-            <div class="venn-label label-right">Safety<br><span style="font-size:0.9rem; font-weight:normal;">(Sikkerhet)</span></div>
+            <div class="venn-label label-left">Compliance<br><span style="font-size:1rem; font-weight:normal;">(Regelverk)</span></div>
+            <div class="venn-label label-right">Safety<br><span style="font-size:1rem; font-weight:normal;">(Sikkerhet)</span></div>
             
             <div class="venn-circle venn-left"></div>
             <div class="venn-circle venn-right"></div>
@@ -73,17 +73,17 @@
     </div>
 
     <div class="slide-container" id="slide-4">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Rammeverk & Forutsetninger</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Rammeverk & Forutsetninger</h1>
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top:30px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top:20px;">
             <div>
-                <h3 style="color:var(--ffi-blue); border-bottom-color:var(--ffi-blue);"><i class="fa-solid fa-book"></i> Regelverk</h3>
-                <ul class="bullet-list" style="font-size:0.95rem;">
+                <h3 style="color:var(--ffi-blue); border-bottom: 2px solid var(--ffi-blue); padding-bottom:5px;"><i class="fa-solid fa-book"></i> Regelverk</h3>
+                <ul class="bullet-list">
                     <li><strong>Teknisk:</strong> 
                         <ul>
                             <li><a href="https://www.fma.no/maanor/regulations" target="_blank" class="slide-link">MAA-NOR</a> må godkjenne - Military UAS Technical Approval (<a href="https://www.fma.no/maanor/applications/military-uas-technical-approval-application" target="_blank" class="slide-link">Form MUASTA</a>)</li>
                             <li>Forskjellige tekniske kategorier i <a href="https://www.fma.no/maanor/downloads/regulations/blf/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf/_/attachment/inline/31cc7c40-840a-4e11-bb20-cae250bc0a9c:6567ee71ec9d53f1b3a5fadca96197c40588793f/BLF%20Appendix%206%20-%20UAV%20Airworthiness%20Requirements.pdf" target="_blank" class="slide-link">BLF Appendix 6</a></li>
-                            <li>Eller ha en <span class="slide-link" onclick="openPopup()">godkjent organisasjon</span> <i class="fa-solid fa-circle-question" style="color:#17a2b8; font-size:0.8em;"></i></li>
+                            <li>Eller ha en <span class="slide-link" onclick="openPopup()">godkjent organisasjon</span> <i class="fa-solid fa-circle-question" style="color:#17a2b8; font-size:0.8em; vertical-align: middle;"></i></li>
                         </ul>
                     </li>
                     <li><strong>Operativt:</strong>
@@ -101,69 +101,69 @@
             </div>
             
             <div>
-                <h3 style="color:#d35400; border-bottom-color:#d35400;"><i class="fa-solid fa-triangle-exclamation"></i> Risikomomenter</h3>
-                <ul class="bullet-list" style="font-size:1rem;">
+                <h3 style="color:#d35400; border-bottom: 2px solid #d35400; padding-bottom:5px;"><i class="fa-solid fa-triangle-exclamation"></i> Risikomomenter</h3>
+                <ul class="bullet-list">
                     <li>Hydrogenbrenselceller med ukjente spesifikasjoner</li>
                     <li>Testing i forskjellige værforhold og minusgrader</li>
                     <li>Uviss pilotkompetanse</li>
                     <li>Ukjent dronesystem</li>
-                    <li>Kan være lurt med en krype - gå - løpe tilnærming</li>
+                    <li>Kan være lurt med en <em>"krype - gå - løpe"</em> tilnærming</li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="slide-container" id="slide-5">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Løsningsforslag case 1</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Løsningsforslag case 1</h1>
         
-        <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
-            <div style="font-size:3rem; color:#dc3545; width:80px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
+        <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
+            <div style="font-size:4rem; color:#dc3545; width:100px; text-align:center;"><i class="fa-solid fa-user-graduate"></i></div>
             <div>
-                <h3 style="margin:0;">Jørgen (Gjesteforsker)</h3>
-                <p>Mål: Teste hydrogendrone under vinterforhold.</p>
+                <h3 style="margin:0; font-size:1.8rem;">Jørgen (Gjesteforsker)</h3>
+                <p style="font-size:1.2rem;">Mål: Teste hydrogendrone under vinterforhold.</p>
             </div>
         </div>
 
-        <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
+        <div style="background:#f8f9fa; padding:30px; border-radius:8px;">
             <h3 style="color:var(--ffi-blue);">Tiltaksplan</h3>
-            <ol class="bullet-list" style="font-size:1.2rem;">
+            <ol class="bullet-list">
                 <li><strong>Snakke med Jørgen.</strong> Kartlegge kompetanse, teknisk dokumentasjon og behov. Avklare forventninger.</li>
                 <li><strong>Risikovurdering.</strong> Inkludere Jørgen i brainstorming for å avdekke farer (HAZID).</li>
                 <li><strong>Implementere operasjonen</strong> i FFI sitt system (Autorisasjon, SJA).</li>
             </ol>
         </div>
 
-        <div style="margin-top:30px; text-align:center;">
-            <p style="margin-bottom:10px; font-style:italic;">Klikk under for å demonstrere saksgangen i portalen:</p>
-            <a href="flight-auth.html" class="btn" style="font-size:1.2rem; padding: 15px 30px;">
+        <div style="margin-top:40px; text-align:center;">
+            <p style="margin-bottom:15px; font-style:italic; font-size:1.1rem;">Klikk under for å demonstrere saksgangen i portalen:</p>
+            <a href="flight-auth.html" class="btn" style="font-size:1.4rem; padding: 15px 40px;">
                 <i class="fa-solid fa-play"></i> Start Demo: Flight Auth (Jørgen)
             </a>
         </div>
     </div>
 
     <div class="slide-container" id="slide-6">
-        <h1 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Case 2: Angrepsdrone</h1>
+        <h1 style="border-bottom: 3px solid #eee; padding-bottom: 15px;">Case 2: Angrepsdrone</h1>
         
-        <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
-            <div style="font-size:3rem; color:#333; width:80px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
+        <div style="display:flex; gap:30px; align-items:center; margin-bottom:30px;">
+            <div style="font-size:4rem; color:#333; width:100px; text-align:center;"><i class="fa-solid fa-jet-fighter"></i></div>
             <div>
-                <h3 style="margin:0;">Utfordring</h3>
-                <p>Militær bestilling, skarp ammunisjon, "Black Box" drone (ukjent IP/opphav).</p>
+                <h3 style="margin:0; font-size:1.8rem;">Utfordring</h3>
+                <p style="font-size:1.2rem;">Militær bestilling, skarp ammunisjon, "Black Box" drone (ukjent IP/opphav).</p>
             </div>
         </div>
 
-        <div style="background:#f8f9fa; padding:20px; border-radius:8px;">
+        <div style="background:#f8f9fa; padding:30px; border-radius:8px;">
             <h3 style="color:var(--ffi-blue);">Løsning & Tiltak</h3>
-            <ul class="bullet-list" style="font-size:1rem;">
+            <ul class="bullet-list">
                 <li><strong>1. "Showstopper":</strong> Ingen skarp testing før dokumentasjon foreligger.</li>
                 <li><strong>2. Gradvis tilnærming:</strong> Dummy-load -> Tethered flight -> Skarp i skytefelt.</li>
                 <li><strong>3. Kritisk Barriere:</strong> Uavhengig FTS (Flight Termination System) kreves pga usikker software.</li>
             </ul>
         </div>
 
-        <div style="margin-top:30px; text-align:center;">
-            <p style="margin-bottom:10px; font-style:italic;">Klikk under for å vise risikovurderingen:</p>
-            <a href="ra-attack-drone.html" class="btn" style="font-size:1.2rem; padding: 15px 30px; background-color:#dc3545;">
+        <div style="margin-top:40px; text-align:center;">
+            <p style="margin-bottom:15px; font-style:italic; font-size:1.1rem;">Klikk under for å vise risikovurderingen:</p>
+            <a href="ra-attack-drone.html" class="btn" style="font-size:1.4rem; padding: 15px 40px; background-color:#dc3545;">
                 <i class="fa-solid fa-file-shield"></i> Vis Risikoanalyse (RA-006)
             </a>
         </div>
@@ -171,7 +171,7 @@
 
     <div class="slide-nav">
         <button onclick="changeSlide(-1)"><i class="fa-solid fa-arrow-left"></i> Forrige</button>
-        <span id="slide-counter" style="align-self:center; color:#888;">1 / 6</span>
+        <span id="slide-counter" style="align-self:center; color:#888; font-size:1.2rem; font-weight:bold;">1 / 6</span>
         <button onclick="changeSlide(1)">Neste <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
