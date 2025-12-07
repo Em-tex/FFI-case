@@ -190,6 +190,10 @@ function addRowToSection(tbodyId, rowData = {}) {
 
     const tr = document.createElement('tr');
     tr.className = "hazard-row"; 
+    
+    const deleteBtnStyle = "background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer; transition:color 0.2s;";
+    const deleteIcon = `<i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i>`;
+
     tr.innerHTML = `
         <td class="row-id" style="font-size:0.8rem; color:#888;">...</td>
         <td><textarea class="ra-input inp-hazard" placeholder="Hazard">${d.hazard}</textarea></td>
@@ -198,19 +202,19 @@ function addRowToSection(tbodyId, rowData = {}) {
         
         <td class="risk-cell" data-type="initial">
             <select class="ra-input sev-select" onchange="updateRow(this)">
-                <option value="0" class="bg-white">- Sev -</option>
-                <option value="1" ${d.initial.sev=='1'?'selected':''} class="opt-sev-1">1 (Catastrophic)</option>
-                <option value="2" ${d.initial.sev=='2'?'selected':''} class="opt-sev-2">2 (Critical)</option>
-                <option value="3" ${d.initial.sev=='3'?'selected':''} class="opt-sev-3">3 (Marginal)</option>
-                <option value="4" ${d.initial.sev=='4'?'selected':''} class="opt-sev-4">4 (Negligible)</option>
+                <option value="0">- Sev -</option>
+                <option value="1" ${d.initial.sev=='1'?'selected':''} class="opt-sev-1">1 (Cat)</option>
+                <option value="2" ${d.initial.sev=='2'?'selected':''} class="opt-sev-2">2 (Crit)</option>
+                <option value="3" ${d.initial.sev=='3'?'selected':''} class="opt-sev-3">3 (Marg)</option>
+                <option value="4" ${d.initial.sev=='4'?'selected':''} class="opt-sev-4">4 (Negl)</option>
             </select>
             <select class="ra-input prob-select" onchange="updateRow(this)">
-                <option value="0" class="bg-white">- Prob -</option>
-                <option value="A" ${d.initial.prob=='A'?'selected':''} class="opt-prob-a">A (Frequent)</option>
-                <option value="B" ${d.initial.prob=='B'?'selected':''} class="opt-prob-b">B (Probable)</option>
-                <option value="C" ${d.initial.prob=='C'?'selected':''} class="opt-prob-c">C (Occasional)</option>
-                <option value="D" ${d.initial.prob=='D'?'selected':''} class="opt-prob-d">D (Remote)</option>
-                <option value="E" ${d.initial.prob=='E'?'selected':''} class="opt-prob-e">E (Improbable)</option>
+                <option value="0">- Prob -</option>
+                <option value="A" ${d.initial.prob=='A'?'selected':''} class="opt-prob-a">A (Freq)</option>
+                <option value="B" ${d.initial.prob=='B'?'selected':''} class="opt-prob-b">B (Prob)</option>
+                <option value="C" ${d.initial.prob=='C'?'selected':''} class="opt-prob-c">C (Occas)</option>
+                <option value="D" ${d.initial.prob=='D'?'selected':''} class="opt-prob-d">D (Rem)</option>
+                <option value="E" ${d.initial.prob=='E'?'selected':''} class="opt-prob-e">E (Impr)</option>
             </select>
             <div class="risk-badge">...</div>
         </td>
@@ -220,25 +224,27 @@ function addRowToSection(tbodyId, rowData = {}) {
 
         <td class="risk-cell" data-type="residual">
              <select class="ra-input sev-select" onchange="updateRow(this)">
-                <option value="0" class="bg-white">- Sev -</option>
-                <option value="1" ${d.residual.sev=='1'?'selected':''} class="opt-sev-1">1 (Catastrophic)</option>
-                <option value="2" ${d.residual.sev=='2'?'selected':''} class="opt-sev-2">2 (Critical)</option>
-                <option value="3" ${d.residual.sev=='3'?'selected':''} class="opt-sev-3">3 (Marginal)</option>
-                <option value="4" ${d.residual.sev=='4'?'selected':''} class="opt-sev-4">4 (Negligible)</option>
+                <option value="0">- Sev -</option>
+                <option value="1" ${d.residual.sev=='1'?'selected':''} class="opt-sev-1">1 (Cat)</option>
+                <option value="2" ${d.residual.sev=='2'?'selected':''} class="opt-sev-2">2 (Crit)</option>
+                <option value="3" ${d.residual.sev=='3'?'selected':''} class="opt-sev-3">3 (Marg)</option>
+                <option value="4" ${d.residual.sev=='4'?'selected':''} class="opt-sev-4">4 (Negl)</option>
             </select>
             <select class="ra-input prob-select" onchange="updateRow(this)">
-                <option value="0" class="bg-white">- Prob -</option>
-                <option value="A" ${d.residual.prob=='A'?'selected':''} class="opt-prob-a">A (Frequent)</option>
-                <option value="B" ${d.residual.prob=='B'?'selected':''} class="opt-prob-b">B (Probable)</option>
-                <option value="C" ${d.residual.prob=='C'?'selected':''} class="opt-prob-c">C (Occasional)</option>
-                <option value="D" ${d.residual.prob=='D'?'selected':''} class="opt-prob-d">D (Remote)</option>
-                <option value="E" ${d.residual.prob=='E'?'selected':''} class="opt-prob-e">E (Improbable)</option>
+                <option value="0">- Prob -</option>
+                <option value="A" ${d.residual.prob=='A'?'selected':''} class="opt-prob-a">A (Freq)</option>
+                <option value="B" ${d.residual.prob=='B'?'selected':''} class="opt-prob-b">B (Prob)</option>
+                <option value="C" ${d.residual.prob=='C'?'selected':''} class="opt-prob-c">C (Occas)</option>
+                <option value="D" ${d.residual.prob=='D'?'selected':''} class="opt-prob-d">D (Rem)</option>
+                <option value="E" ${d.residual.prob=='E'?'selected':''} class="opt-prob-e">E (Impr)</option>
             </select>
             <div class="risk-badge">...</div>
         </td>
 
         <td style="text-align:center; vertical-align:middle;">
-            <button style="background:transparent; color:#adb5bd; border:none; padding:5px; cursor:pointer;" onclick="removeRow(this)" title="Delete"><i class="fa-solid fa-trash" onmouseover="this.style.color='#dc3545'" onmouseout="this.style.color='#adb5bd'"></i></button>
+            <button style="${deleteBtnStyle}" onclick="removeRow(this)" title="Delete Row">
+                ${deleteIcon}
+            </button>
         </td>
     `;
 
@@ -247,9 +253,10 @@ function addRowToSection(tbodyId, rowData = {}) {
     
     updateCellColor(tr.querySelector('.risk-cell[data-type="initial"]'));
     updateCellColor(tr.querySelector('.risk-cell[data-type="residual"]'));
-    tr.querySelectorAll('select').forEach(s => updateSelectStyle(s));
+    // Removed updateSelectStyle to keep background white
 
     renumberRows();
+    saveDataToStorage(); 
 }
 
 function removeRow(btn) {
@@ -272,20 +279,9 @@ function renumberRows() {
 
 function updateRow(select) {
     updateCellColor(select.closest('.risk-cell'));
-    updateSelectStyle(select); 
+    // Removed updateSelectStyle
     updateComplexity();
     saveDataToStorage(); 
-}
-
-function updateSelectStyle(select) {
-    const val = select.value;
-    select.className = 'ra-input ' + (select.classList.contains('prob-select') ? 'prob-select' : 'sev-select');
-    
-    if (val === '0') select.classList.add('bg-white');
-    // Basic tint logic for UX
-    else if (['1','2','A','B'].includes(val)) select.classList.add('bg-red'); // Highish
-    else if (['3','C'].includes(val)) select.classList.add('bg-yellow'); // Medish
-    else select.classList.add('bg-green'); // Lowish
 }
 
 function updateCellColor(cell) {
@@ -306,19 +302,19 @@ function updateCellColor(cell) {
     // LOGIC FROM IMAGE (Corrected)
     // RED (HIGH): 1A, 2A, 1B, 2B, 1C
     if (['1A','2A','1B','2B','1C'].includes(code)) {
-        color = 'var(--risk-high)'; text = 'var(--risk-high-text)'; score = 4;
+        color = 'var(--risk-high)'; text = 'white'; score = 4;
     }
     // ORANGE (SERIOUS): 3A, 3B, 2C, 1D
     else if (['3A','3B','2C','1D'].includes(code)) {
-        color = 'var(--risk-serious)'; text = 'var(--risk-serious-text)'; score = 3;
+        color = 'var(--risk-serious)'; text = 'black'; score = 3;
     }
     // YELLOW (MEDIUM): 4A, 4B, 3C, 2D, 3D, 1E, 2E, 3E
     else if (['4A','4B','3C','2D','3D','1E','2E','3E'].includes(code)) {
-        color = 'var(--risk-medium)'; text = 'var(--risk-medium-text)'; score = 2;
+        color = 'var(--risk-medium)'; text = 'black'; score = 2;
     }
     // GREEN (LOW): 4C, 4D, 4E
     else if (['4C','4D','4E'].includes(code)) {
-        color = 'var(--risk-low)'; text = 'var(--risk-low-text)'; score = 1;
+        color = 'var(--risk-low)'; text = 'white'; score = 1;
     }
 
     badge.style.backgroundColor = color;
@@ -334,7 +330,6 @@ function updateComplexity() {
         
         if (initScore > 0) {
             let gap = Math.max(0, initScore - resScore);
-            // Example scoring: High Gap = 15pts. Residual Risk penalty = Score * 10.
             totalComplexity += 5 + (gap * 15) + (resScore * 10);
         }
     });
